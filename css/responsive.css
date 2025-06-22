@@ -1,0 +1,1021 @@
+/* 响应式设计 */
+
+/* 平板设备 (768px - 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 2rem;
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+    
+    .stat-content h3 {
+        font-size: 2rem;
+    }
+    
+    .stats-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .chart-container {
+        min-height: 300px;
+        padding: 2rem;
+    }
+}
+
+/* 小平板和大手机 (600px - 768px) */
+@media (max-width: 768px) {
+    .header {
+        border-radius: 0 0 15px 15px;
+        padding: 1.2rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .nav-list {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+        border-radius: 10px;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .nav-link::before {
+        border-radius: 10px;
+    }
+    
+    .logo h1 {
+        font-size: 1.8rem;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    .welcome-text {
+        font-size: 1.1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+        border-radius: 18px;
+    }
+    
+    .stat-card .stat-icon {
+        margin-bottom: 1rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .knowledge-controls {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .search-box {
+        min-width: auto;
+    }
+    
+    .filter-controls {
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+    
+    .filter-controls select {
+        flex: 1;
+        border-radius: 10px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+        border-radius: 18px;
+    }
+    
+    .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-radius: 18px 18px 0 0;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1.25rem 1.5rem;
+        flex-direction: column;
+        gap: 0.75rem;
+        border-radius: 0 0 18px 18px;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        border-radius: 10px;
+    }
+    
+    .review-container {
+        padding: 0 10px;
+    }
+    
+    .review-modes {
+        padding: 2rem;
+        border-radius: 18px;
+    }
+    
+    .mode-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .mode-buttons .btn {
+        margin-bottom: 0;
+        border-radius: 10px;
+    }
+    
+    .review-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .card-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    /* 小屏幕下的导航按钮优化 */
+    .nav-btn {
+        width: 48px;
+        height: 68px;
+        border-radius: 12px;
+        background: rgba(102, 126, 234, 0.5);
+        border: 2px solid rgba(102, 126, 234, 0.3);
+        font-size: 0;
+    }
+
+    .nav-btn-left {
+        left: -55px;
+        border-radius: 12px 0 0 12px;
+    }
+
+    .nav-btn-right {
+        right: -55px;
+        border-radius: 0 12px 12px 0;
+    }
+
+    .nav-btn span {
+        display: none;
+    }
+    
+    /* 移动端答案控制区域样式 */
+    .answer-section-controls {
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .show-answer-container {
+        flex-shrink: 0;
+    }
+    
+    .show-answer-container .btn {
+        border-radius: 10px;
+        min-width: 100px;
+    }
+
+    .rating-section {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .rating-buttons {
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .rating-label {
+        font-size: 14px;
+        margin-right: 8px;
+        white-space: nowrap;
+    }
+
+    .rating-buttons .btn {
+        flex: 1;
+        min-width: 60px;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+        border-radius: 10px;
+    }
+    
+    .knowledge-card {
+        border-radius: 12px;
+    }
+    
+    .knowledge-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .knowledge-card-actions {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .quick-actions {
+        padding: 2rem;
+        border-radius: 18px;
+    }
+    
+    .quick-actions .action-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .chart-container {
+        padding: 2rem;
+        border-radius: 18px;
+    }
+}
+
+/* 手机设备 (480px - 600px) */
+@media (max-width: 600px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .main {
+        padding: 1rem 0;
+    }
+    
+    .header {
+        padding: 1rem 0;
+        border-radius: 0 0 12px 12px;
+        margin-bottom: 1rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.6rem;
+    }
+    
+    .logo .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .nav-list {
+        gap: 0.5rem;
+    }
+    
+    .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+        border-radius: 10px;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .nav-link::before {
+        border-radius: 10px;
+    }
+    
+    .dashboard-header {
+        margin-bottom: 2rem;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .welcome-text {
+        font-size: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.8rem;
+    }
+    
+    .quick-actions {
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .knowledge-controls {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+    
+    .search-box input {
+        font-size: 16px; /* 防止iOS缩放 */
+        border-radius: 8px;
+    }
+    
+    .filter-controls select {
+        border-radius: 8px;
+    }
+    
+    .knowledge-card {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+    
+    .knowledge-card-title h4 {
+        font-size: 1rem;
+    }
+    
+    .review-modes {
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+    
+    .review-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    /* 小屏幕下的答案控制区域优化 */
+    .answer-section-controls {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .show-answer-container {
+        order: 1;
+        text-align: center;
+    }
+    
+    .show-answer-container .btn {
+        width: 100%;
+        border-radius: 8px;
+    }
+    
+    .rating-section {
+        order: 2;
+    }
+
+    .question-section h3,
+    .answer-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .rating-buttons {
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .rating-label {
+        flex-basis: 100%;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        font-size: 14px;
+        margin-right: 0;
+    }
+
+    .rating-buttons .btn {
+        flex: 1;
+        min-width: 80px;
+        border-radius: 8px;
+    }
+    
+    .question-text,
+    .answer-text,
+    .explanation-text {
+        padding: 1rem;
+        font-size: 0.95rem;
+        border-radius: 8px;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .modal-content {
+        width: 98%;
+        margin: 10px;
+        max-height: 95vh;
+        border-radius: 15px;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        border-radius: 8px;
+    }
+    
+    .form-group textarea {
+        min-height: 80px;
+    }
+    
+    .notification {
+        left: 10px;
+        right: 10px;
+        top: 10px;
+        max-width: none;
+        border-radius: 10px;
+    }
+    
+    .chart-container {
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+    
+    .mistake-card {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+    
+    .difficulty-badge {
+        border-radius: 12px;
+    }
+    
+    .tag {
+        border-radius: 12px;
+    }
+    
+    /* 错题本响应式样式 */
+    .mistakes-overview {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .overview-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .overview-item {
+        padding: 0.8rem;
+        border-radius: 8px;
+    }
+    
+    .overview-number {
+        font-size: 1.5rem;
+    }
+    
+    .overview-label {
+        font-size: 0.8rem;
+    }
+    
+    .filter-tabs {
+        padding: 0.3rem;
+        border-radius: 10px;
+        gap: 0.3rem;
+    }
+    
+    .filter-tab {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+        border-radius: 6px;
+    }
+    
+    .mistake-area-group {
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .mistake-area-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .area-title-with-count {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .area-title {
+        font-size: 1.1rem;
+    }
+    
+    .mistakes-count-badge {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.6rem;
+    }
+    
+    .area-review-btn {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .mistake-area-content {
+        padding: 0.8rem 1rem 1rem;
+    }
+    
+    .mistakes-empty {
+        padding: 2rem;
+        border-radius: 12px;
+    }
+    
+    .mistakes-empty .icon {
+        font-size: 3rem;
+    }
+    
+    .mistakes-empty h3 {
+        font-size: 1.3rem;
+    }
+    
+    .mistakes-empty p {
+        font-size: 1rem;
+    }
+}
+
+/* 小手机设备 (320px - 480px) */
+@media (max-width: 480px) {
+    .header-content {
+        padding: 0 5px;
+    }
+    
+    .nav-list {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .nav-link {
+        text-align: center;
+        width: 100%;
+        padding: 0.6rem;
+        border-radius: 8px;
+        min-width: auto;
+        display: block;
+    }
+    
+    .nav-link::before {
+        border-radius: 8px;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .stat-icon {
+        font-size: 2rem;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .quick-actions {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .action-buttons .btn {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+    
+    .knowledge-controls {
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .knowledge-card {
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
+    .knowledge-card-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .tags-container {
+        margin-top: 0.75rem;
+    }
+    
+    .tag {
+        border-radius: 10px;
+    }
+    
+    .review-modes {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .mode-buttons .btn {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .review-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .question-section h3,
+    .answer-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .chart-container {
+        padding: 1.25rem;
+        min-height: 250px;
+        border-radius: 12px;
+    }
+    
+    .mistake-card {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .pagination .btn {
+        min-width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+    }
+    
+    .difficulty-badge {
+        border-radius: 10px;
+    }
+}
+
+/* 横屏手机优化 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .header {
+        padding: 0.75rem 0;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .main {
+        padding: 1rem 0;
+    }
+    
+    .dashboard-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .dashboard-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+        flex-direction: row;
+        border-radius: 10px;
+    }
+    
+    .modal-content {
+        max-height: 85vh;
+        border-radius: 12px;
+    }
+    
+    .review-card {
+        margin-top: 1rem;
+        border-radius: 12px;
+    }
+    
+    .review-modes {
+        border-radius: 12px;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .header,
+    .nav-list,
+    .quick-actions,
+    .header-actions,
+    .knowledge-card-actions,
+    .card-actions,
+    .modal,
+    .notification {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    body::before {
+        display: none !important;
+    }
+    
+    .content-section {
+        display: block !important;
+    }
+    
+    .knowledge-card,
+    .review-card,
+    .mistake-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        margin-bottom: 1rem;
+        background: white !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .question-text,
+    .answer-text,
+    .explanation-text {
+        border: 1px solid #ccc !important;
+        background: white !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .stat-card,
+    .chart-container,
+    .quick-actions {
+        background: white !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 1px solid #ccc !important;
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .btn {
+        border: 2px solid currentColor;
+    }
+    
+    .knowledge-card,
+    .review-card,
+    .mistake-card,
+    .stat-card {
+        border: 2px solid #2c3e50;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: white;
+    }
+    
+    .modal-content {
+        border: 3px solid #2c3e50;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: white;
+    }
+    
+    .header {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+}
+
+/* 减少动画效果（用户偏好） */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    body::before {
+        animation: none !important;
+    }
+}
+
+/* 深色模式支持 - 毛玻璃主题适配 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d1b3d 40%, #1e1e2e 100%);
+        color: #e1e1e1;
+    }
+    
+    body::before {
+        background: 
+            radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 40% 60%, rgba(102, 126, 234, 0.10) 0%, transparent 50%);
+    }
+    
+    .header {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    }
+    
+    .stat-card,
+    .knowledge-card,
+    .review-card,
+    .mistake-card,
+    .quick-actions,
+    .knowledge-controls,
+    .review-modes,
+    .chart-container,
+    .modal-content {
+        background: rgba(30, 30, 46, 0.8);
+        color: #e1e1e1;
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select,
+    .search-box input,
+    .filter-controls select {
+        background: rgba(45, 45, 60, 0.8);
+        color: #e1e1e1;
+        border-color: rgba(102, 126, 234, 0.4);
+    }
+    
+    .question-text,
+    .answer-text,
+    .explanation-text {
+        background: rgba(102, 126, 234, 0.1);
+        border-left-color: #667eea;
+        border-color: rgba(102, 126, 234, 0.2);
+    }
+    
+    .tag {
+        background: rgba(102, 126, 234, 0.2);
+        color: #a8b5ff;
+        border-color: rgba(102, 126, 234, 0.4);
+    }
+    
+    .dropdown-menu,
+    .timeline-content {
+        background: rgba(30, 30, 46, 0.9);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    .empty-state {
+        background: rgba(30, 30, 46, 0.6);
+        border-color: rgba(102, 126, 234, 0.2);
+    }
+}
+
+.question-section,
+.answer-section,
+.user-answer-section {
+    margin-bottom: 1.5rem;
+}
+
+.question-section h3,
+.answer-section h3,
+.user-answer-section h3 {
+    font-size: 1.1rem;
+}
+
+.question-text,
+.answer-text {
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.user-answer-input {
+    min-height: 100px;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.explanation-text {
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.chart-container {
+    padding: 2rem;
+    border-radius: 18px;
+}
+
+/* 超小屏幕下的导航按钮优化 */
+.nav-btn {
+    width: 45px; /* 超小屏幕下进一步缩小，但仍比原来大 */
+    height: 60px;
+    border-radius: 10px;
+    background: rgba(102, 126, 234, 0.5);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    font-size: 0;
+}
+
+.nav-btn-left {
+    left: -50px;
+    border-radius: 10px 0 0 10px;
+}
+
+.nav-btn-right {
+    right: -50px;
+    border-radius: 0 10px 10px 0;
+}
+
+.nav-btn span {
+    display: none;
+} 

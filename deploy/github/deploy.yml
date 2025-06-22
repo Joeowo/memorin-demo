@@ -1,0 +1,78 @@
+name: Deploy Memorin to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+      
+    - name: Install dependencies
+      run: |
+        npm install --only=production || echo "No package.json found, skipping npm install"
+        
+    - name: Build project
+      run: |
+        chmod +x deploy/scripts/build.sh
+        ./deploy/scripts/build.sh -e prod -c
+        
+    - name: Create deployment info
+      run: |
+        echo "BUILD_TIME=$(date '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_ENV
+        echo "COMMIT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+        
+    - name: Add deployment metadata
+      run: |
+        cat > dist/deployment.json << EOF
+        {
+          "deployedAt": "${{ env.BUILD_TIME }}",
+          "commit": "${{ env.COMMIT_SHA }}",
+          "branch": "${{ github.ref_name }}",
+          "workflow": "${{ github.run_id }}",
+          "environment": "production"
+        }
+        EOF
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist'
+        
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4 

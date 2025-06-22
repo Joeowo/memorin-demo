@@ -1,0 +1,76 @@
+{
+  "name": "memorin",
+  "version": "1.0.0",
+  "description": "智能知识复习系统 - 基于间隔重复算法的本地知识管理应用",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8080",
+    "dev:node": "npx http-server -p 8080 -c-1",
+    "build": "deploy\\scripts\\build.bat -e prod -c",
+    "build:dev": "deploy\\scripts\\build.bat -e dev -c",
+    "build:test": "deploy\\scripts\\build.bat -e test -c",
+    "build:zip": "deploy\\scripts\\build.bat -e prod -c -z",
+    "build:unix": "chmod +x deploy/scripts/build.sh && ./deploy/scripts/build.sh -e prod -c",
+    "docker:build": "deploy\\scripts\\build.bat -e prod -c -d",
+    "docker:run": "docker-compose -f deploy/docker/docker-compose.yml up",
+    "docker:stop": "docker-compose -f deploy/docker/docker-compose.yml down",
+    "deploy:github": "deploy\\scripts\\build.bat -e prod -c -p",
+    "test:deployment": "node deploy/scripts/test-deployment.js",
+    "clean": "if exist dist rmdir /s /q dist && if exist node_modules rmdir /s /q node_modules",
+    "clean:unix": "rm -rf dist node_modules",
+    "lint:html": "htmlhint index.html",
+    "lint:css": "stylelint css/**/*.css",
+    "lint:js": "eslint js/**/*.js",
+    "test": "echo Running tests... && npm run lint:html && npm run lint:css && npm run lint:js",
+    "serve": "npm run build && npm run dev",
+    "start": "npm run dev"
+  },
+  "keywords": [
+    "memorin",
+    "spaced-repetition",
+    "knowledge-management",
+    "study-tool",
+    "sm2-algorithm",
+    "education",
+    "learning",
+    "flashcards",
+    "review-system"
+  ],
+  "author": {
+    "name": "Memorin Team",
+    "email": "support@memorin.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/memorin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/memorin/issues"
+  },
+  "homepage": "https://username.github.io/memorin",
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "stylelint": "^15.0.0",
+    "htmlhint": "^1.1.0",
+    "http-server": "^14.0.0",
+    "uglify-js": "^3.17.0",
+    "clean-css-cli": "^5.6.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "os": ["win32", "darwin", "linux"]
+} 

@@ -36,11 +36,6 @@ Memorin 是一个基于浏览器的静态知识复习系统，采用现代化的
   - 先思考后对比的学习模式
   - 快捷键支持（Ctrl+Enter）
   - 自适应界面设计
-- ✅ **选择题智能评分** 🆕：
-  - 自动判断答案正确性
-  - 即时显示评分结果
-  - 停留页面查看解析（不自动跳转）
-  - 手动切换题目控制
 - ✅ 实时进度跟踪
 - ✅ 3级评价系统（错误/模糊/正确）
 
@@ -68,8 +63,7 @@ Memorin 是一个基于浏览器的静态知识复习系统，采用现代化的
 - ✅ 完整的响应式适配
 - ✅ 无障碍性支持
 - ✅ 深色模式兼容
-- ✅ 快捷键操作支持 ��
-- ✅ 选择题停留查看功能 🆕
+- ✅ 快捷键操作支持 🆕
 
 ## 🚀 快速开始
 
@@ -118,17 +112,7 @@ memorin-demo/
 │   ├── review.js       # 复习功能
 │   ├── statistics.js   # 统计分析
 │   ├── utils.js        # 工具函数
-│   ├── question-list-generator.js # 题目列表生成器
-│   └── imports/        # 导入文件夹 🆕
-│       ├── README.md   # 导入文件说明
-│       ├── military-import-complete.js # 军理知识库
-│       ├── software-engineering-import.js # 软件工程基础
-│       ├── requirements-analysis-import.js # 需求分析
-│       ├── software-design-import.js # 概要设计
-│       ├── detailed-design-import.js # 详细设计
-│       ├── software-implementation-import.js # 软件实现
-│       ├── software-testing-import.js # 软件测试
-│       └── software-deployment-import.js # 部署运维
+│   └── military-import-complete.js # 军理知识库
 ├── docs/               # 文档目录
 │   ├── README.md       # 项目说明
 │   └── 使用演示.md      # 详细使用指南
@@ -315,12 +299,6 @@ function calculateNextReview(easeFactor, interval, quality) {
 
 ## 🆕 最新功能更新
 
-### v2.1 主要更新 🆕
-- **选择题体验优化** - 答题后不再自动跳转，用户可停留查看解析
-- **手动切换控制** - 通过导航按钮或快捷键手动切换题目
-- **静态提示显示** - 替换倒计时为友好的操作提示
-- **深度学习支持** - 鼓励用户仔细阅读解析和反思答题过程
-
 ### v2.0 主要更新
 - **用户答案输入框** - 支持先思考后对比的学习模式
 - **快捷键操作** - Ctrl+Enter 快速显示答案
@@ -335,7 +313,6 @@ function calculateNextReview(easeFactor, interval, quality) {
 - 知识区复习专用模式（隐藏分类复习按钮）
 - 移动端输入体验优化
 - 按钮文字更新（定时复习→顺序复习）
-- 选择题结果展示优化（静态提示替代自动跳转）
 
 ## 🔮 未来扩展
 
@@ -349,7 +326,6 @@ function calculateNextReview(easeFactor, interval, quality) {
 - 更多图表类型
 - 知识点难度自适应调整 🔄
 - 学习路径智能规划 🔄
-- 选择题解析深度分析 🔄
 
 ### 技术升级方向
 - PWA支持，离线使用
@@ -388,10 +364,9 @@ function calculateNextReview(easeFactor, interval, quality) {
 - **考试准备** - 系统化的知识点梳理和记忆
 - **知识管理** - 个人知识库的建立和维护
 - **团队学习** - 知识点共享和协作学习
-- **深度学习** - 通过停留查看功能深入理解知识点 🆕
 
 ---
 
 **Memorin** - 让学习更高效，让记忆更持久 🧠✨
 
-> **新版本亮点**：通过用户答案输入功能，实现了"先思考再对比"的主动学习模式，选择题答题后停留查看解析，显著提升学习效果和记忆质量！ 
+> **新版本亮点**：通过用户答案输入功能，实现了"先思考再对比"的主动学习模式，显著提升学习效果和记忆质量！ 
