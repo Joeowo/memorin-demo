@@ -96,7 +96,7 @@ const detailedDesignPart1 = [
             { key: 'B', text: '范围（全局性 vs 局部性）' },
             { key: 'C', text: '重点（关键性 vs 细节性）' },
             { key: 'D', text: '粒度（粗粒度 vs 细粒度）' },
-            { key: 'E', text: '成本（高成本 vs 低成本）（干扰项）' }
+            { key: 'E', text: '成本（高成本 vs 低成本）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '概要设计与详细设计的对比主要从技术特征角度分析，成本不是主要对比维度。',
@@ -113,7 +113,7 @@ const detailedDesignPart1 = [
             { key: 'A', text: '输入/输出定义' },
             { key: 'B', text: '处理流程' },
             { key: 'C', text: '异常处理' },
-            { key: 'D', text: '性能监控（干扰项）' }
+            { key: 'D', text: '性能监控' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '函数设计关注接口定义、逻辑流程和异常处理，性能监控属于运维层面。',
@@ -131,7 +131,7 @@ const detailedDesignPart1 = [
             { key: 'B', text: '技术可行性验证' },
             { key: 'C', text: '文档规范性检查' },
             { key: 'D', text: '可维护性评估' },
-            { key: 'E', text: '市场前景分析（干扰项）' }
+            { key: 'E', text: '市场前景分析' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '设计评审关注技术和工程层面的质量保证，市场前景属于产品管理范畴。',
@@ -148,7 +148,7 @@ const detailedDesignPart1 = [
             { key: 'A', text: '展示系统中各个类的属性、方法和类间关系的详细设计模型' },
             { key: 'B', text: '展示用户操作的业务流程' },
             { key: 'C', text: '展示数据库的表结构设计' },
-            { key: 'D', text: '展示系统的网络架构部署（干扰项）' }
+            { key: 'D', text: '展示系统的网络架构部署' }
         ],
         correctAnswer: 'A',
         explanation: '类图是面向对象详细设计的核心模型，展示类的结构和关系。',
@@ -172,7 +172,7 @@ const detailedDesignPart2 = [
             { key: 'A', text: '展示用例实现中对象间的消息传递和交互时序' },
             { key: 'B', text: '展示数据库的查询优化过程' },
             { key: 'C', text: '展示用户界面的页面跳转流程' },
-            { key: 'D', text: '展示系统的错误处理机制（干扰项）' }
+            { key: 'D', text: '展示系统的错误处理机制' }
         ],
         correctAnswer: 'A',
         explanation: '顺序图是用例设计的重要产出，展示对象间的动态交互过程。',
@@ -189,7 +189,7 @@ const detailedDesignPart2 = [
             { key: 'A', text: '展示机器人控制的详细交互流程，指导控制模块的具体实现' },
             { key: 'B', text: '展示机器人的硬件组装方式' },
             { key: 'C', text: '展示机器人的成本核算过程' },
-            { key: 'D', text: '展示机器人的市场定位分析（干扰项）' }
+            { key: 'D', text: '展示机器人的市场定位分析' }
         ],
         correctAnswer: 'A',
         explanation: '顺序图为复杂控制系统的实现提供了详细的交互设计指导。',
@@ -206,7 +206,7 @@ const detailedDesignPart2 = [
             { key: 'A', text: '展示旅行服务的微服务拆分和服务间调用关系的详细设计' },
             { key: 'B', text: '展示服务器的硬件配置规格' },
             { key: 'C', text: '展示用户的消费行为分析' },
-            { key: 'D', text: '展示竞争对手的服务对比（干扰项）' }
+            { key: 'D', text: '展示竞争对手的服务对比' }
         ],
         correctAnswer: 'A',
         explanation: '微服务架构图指导服务的详细划分和接口设计。',
@@ -265,7 +265,7 @@ const detailedDesignPart2 = [
             { key: 'B', text: '完整性（覆盖所有需求）' },
             { key: 'C', text: '一致性（与架构设计协调）' },
             { key: 'D', text: '可追踪性（需求-设计映射清晰）' },
-            { key: 'E', text: '美观性（图表绘制精美）（干扰项）' }
+            { key: 'E', text: '美观性（图表绘制精美）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '详细设计质量评估关注功能和技术层面的指标，美观性不是核心标准。',
@@ -283,7 +283,7 @@ const detailedDesignPart2 = [
             { key: 'B', text: '原型验证（构建演示原型）' },
             { key: 'C', text: '工具检查（建模工具验证）' },
             { key: 'D', text: '客户确认（需求符合性检查）' },
-            { key: 'E', text: '性能测试（实际运行验证）（干扰项）' }
+            { key: 'E', text: '性能测试（实际运行验证）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '设计阶段的验证主要通过评审、原型和工具检查，性能测试属于实现后的验证。',
@@ -301,7 +301,7 @@ const detailedDesignPart2 = [
             { key: 'B', text: '架构细化（模块、接口、数据）' },
             { key: 'C', text: '用例实现（顺序图、交互设计）' },
             { key: 'D', text: '类设计（属性、方法、关系）' },
-            { key: 'E', text: '营销策略（市场推广方案）（干扰项）' }
+            { key: 'E', text: '营销策略（市场推广方案）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '详细设计文档包含技术设计的各个层面，不包括营销等非技术内容。',
@@ -318,7 +318,7 @@ const detailedDesignPart2 = [
             { key: 'A', text: '面向对象以类和对象为中心，面向过程以函数和数据流为中心' },
             { key: 'B', text: '面向对象适合大型项目，面向过程适合小型项目' },
             { key: 'C', text: '面向对象使用UML建模，面向过程使用文字描述' },
-            { key: 'D', text: '面向对象成本更高，面向过程成本更低（干扰项）' }
+            { key: 'D', text: '面向对象成本更高，面向过程成本更低' }
         ],
         correctAnswer: 'A',
         explanation: '两种方法的根本区别在于建模思路和核心抽象概念的不同。',
@@ -335,7 +335,7 @@ const detailedDesignPart2 = [
             { key: 'A', text: '位于需求分析和编码实现之间，承担设计细化的关键作用' },
             { key: 'B', text: '位于测试和维护之间，负责bug修复' },
             { key: 'C', text: '位于项目启动和需求分析之间，进行可行性研究' },
-            { key: 'D', text: '位于产品发布和用户培训之间，制定推广计划（干扰项）' }
+            { key: 'D', text: '位于产品发布和用户培训之间，制定推广计划' }
         ],
         correctAnswer: 'A',
         explanation: '详细设计是连接需求与实现的重要桥梁，在软件生命周期中承担设计细化的职责。',
@@ -431,7 +431,7 @@ const detailedDesignPart3 = [
             { key: 'A', text: '类 → 表' },
             { key: 'B', text: '对象 → 记录' },
             { key: 'C', text: '属性 → 字段' },
-            { key: 'D', text: '方法 → 触发器（干扰项）' }
+            { key: 'D', text: '方法 → 触发器' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '对象-关系映射主要针对数据结构，方法不直接映射为触发器。',
@@ -448,7 +448,7 @@ const detailedDesignPart3 = [
             { key: 'A', text: '1:1关系：在任一表中添加外键' },
             { key: 'B', text: '1:n关系：在n端表添加外键' },
             { key: 'C', text: 'n:m关系：创建关联表存储外键对' },
-            { key: 'D', text: '复合关系：使用视图实现（干扰项）' }
+            { key: 'D', text: '复合关系：使用视图实现' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '关联关系映射通过外键实现，视图不是关系映射的基本方式。',
@@ -464,7 +464,7 @@ const detailedDesignPart3 = [
         options: [
             { key: 'A', text: '单表继承（所有字段放子表）' },
             { key: 'B', text: '外键关联（子表存储特有属性）' },
-            { key: 'C', text: '存储过程（用代码实现继承）（干扰项）' }
+            { key: 'C', text: '存储过程（用代码实现继承）' }
         ],
         correctAnswer: 'A,B',
         explanation: '继承映射主要通过表结构设计实现，存储过程不是继承映射方案。',
@@ -483,7 +483,7 @@ const detailedDesignPart3 = [
             { key: 'C', text: '更新（Update）' },
             { key: 'D', text: '删除（Delete）' },
             { key: 'E', text: '验证（Validate）' },
-            { key: 'F', text: '监控（Monitor）（干扰项）' }
+            { key: 'F', text: '监控（Monitor）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: 'CRUD操作加上验证是基本的数据操作，监控属于运维层面。',
@@ -502,7 +502,7 @@ const detailedDesignPart3 = [
             { key: 'C', text: '效率（时空性能）' },
             { key: 'D', text: '可扩展性（支持演进）' },
             { key: 'E', text: '安全性（数据保护）' },
-            { key: 'F', text: '美观性（界面设计）（干扰项）' }
+            { key: 'F', text: '美观性（界面设计）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '数据设计评审关注功能、性能和安全性，界面美观性不是数据设计的评审要点。',
@@ -519,7 +519,7 @@ const detailedDesignPart3 = [
             { key: 'A', text: '展示复杂业务场景下的多表关联关系和数据完整性约束' },
             { key: 'B', text: '展示用户界面的操作流程' },
             { key: 'C', text: '展示系统的性能优化策略' },
-            { key: 'D', text: '展示项目的成本控制方案（干扰项）' }
+            { key: 'D', text: '展示项目的成本控制方案' }
         ],
         correctAnswer: 'A',
         explanation: '航空票务数据模型是复杂关联关系设计的典型案例。',
@@ -536,7 +536,7 @@ const detailedDesignPart3 = [
             { key: 'A', text: '展示学生、课程、教师等实体间的复杂关联关系设计' },
             { key: 'B', text: '展示系统的用户权限管理' },
             { key: 'C', text: '展示课程内容的知识结构' },
-            { key: 'D', text: '展示学校的组织架构图（干扰项）' }
+            { key: 'D', text: '展示学校的组织架构图' }
         ],
         correctAnswer: 'A',
         explanation: '教务系统数据模型重点展示教学业务中各实体的关联关系。',
@@ -553,7 +553,7 @@ const detailedDesignPart3 = [
             { key: 'A', text: '展示简单表结构的设计原则和字段定义方法' },
             { key: 'B', text: '展示传感器的硬件连接方式' },
             { key: 'C', text: '展示数据采集的算法实现' },
-            { key: 'D', text: '展示设备的采购成本分析（干扰项）' }
+            { key: 'D', text: '展示设备的采购成本分析' }
         ],
         correctAnswer: 'A',
         explanation: '传感器数据表是简单表结构设计的基础示例。',
@@ -661,7 +661,7 @@ const detailedDesignPart4 = [
             { key: 'C', text: '判断框（逻辑分支）' },
             { key: 'D', text: '输入输出（数据交互）' },
             { key: 'E', text: '连线（执行流向）' },
-            { key: 'F', text: '装饰符（美化图形）（干扰项）' }
+            { key: 'F', text: '装饰符（美化图形）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '流程图符号体系包含逻辑和数据流的基本元素，装饰符不是标准符号。',
@@ -679,7 +679,7 @@ const detailedDesignPart4 = [
             { key: 'B', text: '缺点：不利于逐步求精' },
             { key: 'C', text: '缺点：易导致非结构化设计' },
             { key: 'D', text: '缺点：难以表示数据结构' },
-            { key: 'E', text: '优点：支持面向对象设计（干扰项）' }
+            { key: 'E', text: '优点：支持面向对象设计' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '流程图的评价主要针对结构化程序设计，与面向对象设计无直接关系。',
@@ -696,7 +696,7 @@ const detailedDesignPart4 = [
             { key: 'A', text: '展示递归算法的程序流程控制结构和循环逻辑' },
             { key: 'B', text: '展示数学公式的推导过程' },
             { key: 'C', text: '展示计算机的运算原理' },
-            { key: 'D', text: '展示算法的时间复杂度分析（干扰项）' }
+            { key: 'D', text: '展示算法的时间复杂度分析' }
         ],
         correctAnswer: 'A',
         explanation: '阶乘计算流程图是程序流程设计的经典示例。',
@@ -713,7 +713,7 @@ const detailedDesignPart4 = [
             { key: 'A', text: '展示结构化程序设计的规范表示方法和层次结构' },
             { key: 'B', text: '展示算法的性能优化技巧' },
             { key: 'C', text: '展示编程语言的语法特性' },
-            { key: 'D', text: '展示软件测试的用例设计（干扰项）' }
+            { key: 'D', text: '展示软件测试的用例设计' }
         ],
         correctAnswer: 'A',
         explanation: 'N-S图示例展示了结构化设计的标准化表示方法。',
@@ -730,7 +730,7 @@ const detailedDesignPart4 = [
             { key: 'A', text: '展示PAD图的符号体系和层次表示方法' },
             { key: 'B', text: '展示数据库的ER图符号' },
             { key: 'C', text: '展示UML的类图符号' },
-            { key: 'D', text: '展示网络拓扑的连接符号（干扰项）' }
+            { key: 'D', text: '展示网络拓扑的连接符号' }
         ],
         correctAnswer: 'A',
         explanation: 'PAD基本符号是问题分析图的标准表示元素。',
@@ -747,7 +747,7 @@ const detailedDesignPart4 = [
             { key: 'A', text: '展示数据结构如何驱动程序结构的设计方法' },
             { key: 'B', text: '展示面向对象的类继承关系' },
             { key: 'C', text: '展示数据库的表关联关系' },
-            { key: 'D', text: '展示用户界面的组件布局（干扰项）' }
+            { key: 'D', text: '展示用户界面的组件布局' }
         ],
         correctAnswer: 'A',
         explanation: 'Jackson方法强调数据结构与程序结构的对应关系。',
@@ -765,7 +765,7 @@ const detailedDesignPart4 = [
             { key: 'B', text: '团队熟悉度（团队技能和经验）' },
             { key: 'C', text: '项目要求（文档标准和规范）' },
             { key: 'D', text: '工具支持（建模工具的可用性）' },
-            { key: 'E', text: '成本预算（工具采购费用）（干扰项）' }
+            { key: 'E', text: '成本预算（工具采购费用）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '设计工具选择主要考虑技术和项目因素，成本通常不是主要决策因素。',
@@ -864,7 +864,7 @@ const detailedDesignPart5 = [
             { key: 'D', text: '可实施性（指导编码）' },
             { key: 'E', text: '可追踪性（需求-设计映射）' },
             { key: 'F', text: '一致性（模型间协调）' },
-            { key: 'G', text: '经济性（成本控制）（干扰项）' }
+            { key: 'G', text: '经济性（成本控制）' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '设计质量评估关注技术和工程层面的指标，经济性不是设计质量的直接维度。',
@@ -882,7 +882,7 @@ const detailedDesignPart5 = [
             { key: 'B', text: '循环控制（while/end）' },
             { key: 'C', text: '数据处理（seq操作）' },
             { key: 'D', text: '输出生成（打印/换行）' },
-            { key: 'E', text: '图形绘制（画线/画圆）（干扰项）' }
+            { key: 'E', text: '图形绘制（画线/画圆）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '伪代码要素涵盖程序设计的基本控制和处理结构，图形绘制不是通用要素。',
@@ -899,7 +899,7 @@ const detailedDesignPart5 = [
             { key: 'A', text: '展示零件表处理的详细算法逻辑和程序结构设计' },
             { key: 'B', text: '展示数据库的查询优化技巧' },
             { key: 'C', text: '展示用户界面的交互设计' },
-            { key: 'D', text: '展示系统的性能测试方法（干扰项）' }
+            { key: 'D', text: '展示系统的性能测试方法' }
         ],
         correctAnswer: 'A',
         explanation: '伪代码示例展示了详细设计中算法实现的标准表示方法。',
@@ -916,7 +916,7 @@ const detailedDesignPart5 = [
             { key: 'A', text: '展示详细设计评审的标准化流程和各阶段关系' },
             { key: 'B', text: '展示项目管理的时间安排' },
             { key: 'C', text: '展示团队的组织架构' },
-            { key: 'D', text: '展示产品的销售流程（干扰项）' }
+            { key: 'D', text: '展示产品的销售流程' }
         ],
         correctAnswer: 'A',
         explanation: '评审流程示意图指导评审活动的规范化执行。',
@@ -935,7 +935,7 @@ const detailedDesignPart5 = [
             { key: 'C', text: '模型间的一致性验证' },
             { key: 'D', text: '实现指导的详细程度' },
             { key: 'E', text: '文档格式的规范性' },
-            { key: 'F', text: '团队成员的满意度（干扰项）' }
+            { key: 'F', text: '团队成员的满意度' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '评审关注技术和工程质量，团队满意度不是评审的直接关注点。',
@@ -952,7 +952,7 @@ const detailedDesignPart5 = [
             { key: 'A', text: '作为架构设计和编码实现之间的桥梁，确保设计的可实施性' },
             { key: 'B', text: '替代需求分析，直接指导开发' },
             { key: 'C', text: '主要用于项目进度管理和成本控制' },
-            { key: 'D', text: '专门用于用户培训和文档编写（干扰项）' }
+            { key: 'D', text: '专门用于用户培训和文档编写' }
         ],
         correctAnswer: 'A',
         explanation: '详细设计的核心价值在于连接设计与实现，确保可操作性。',

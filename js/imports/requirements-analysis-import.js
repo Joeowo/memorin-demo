@@ -88,7 +88,7 @@ const requirementsAnalysisPart1 = [
             { key: 'D', text: '易变性：经常发生变化' },
             { key: 'E', text: '领域知识相关性：与特定领域相关' },
             { key: 'F', text: '价值不均性：有核心和外围需求之分' },
-            { key: 'G', text: '稳定性：一旦确定就不会改变（干扰项）' }
+            { key: 'G', text: '稳定性：一旦确定就不会改变' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '需求具有隐式性、隐晦性、多源性、易变性、领域知识相关性、价值不均性等特点，而非稳定性。',
@@ -110,7 +110,7 @@ const requirementsAnalysisPart1 = [
             { key: 'F', text: '一致' },
             { key: 'G', text: '可追踪' },
             { key: 'H', text: '可验证' },
-            { key: 'I', text: '复杂抽象（干扰项）' }
+            { key: 'I', text: '复杂抽象' }
         ],
         correctAnswer: 'A,B,C,D,E,F,G,H',
         explanation: '高质量需求应该具备价值性、正确性、完整性、无二义性、可行性、一致性、可追踪性、可验证性，而非复杂抽象。',
@@ -128,7 +128,7 @@ const requirementsAnalysisPart1 = [
             { key: 'B', text: '现有文档' },
             { key: 'C', text: '领域专家' },
             { key: 'D', text: '类似系统' },
-            { key: 'E', text: '竞争对手机密资料（干扰项）' }
+            { key: 'E', text: '竞争对手机密资料' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '需求获取的主要来源是利益相关者、现有文档、领域专家和类似系统，而非竞争对手的机密资料。',
@@ -147,7 +147,7 @@ const requirementsAnalysisPart1 = [
             { key: 'C', text: '观察' },
             { key: 'D', text: '原型法' },
             { key: 'E', text: '头脑风暴' },
-            { key: 'F', text: '主观臆断（干扰项）' }
+            { key: 'F', text: '主观臆断' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '需求获取需要使用科学的方法如访谈、问卷、观察、原型、头脑风暴等，而非主观臆断。',
@@ -167,7 +167,7 @@ const requirementsAnalysisPart1 = [
             { key: 'D', text: '系统级顺序图/状态图/活动图' },
             { key: 'E', text: '概念类图' },
             { key: 'F', text: '数据流图' },
-            { key: 'G', text: '源代码注释（干扰项）' }
+            { key: 'G', text: '源代码注释' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '需求规约使用各种建模技术，包括自然语言、UML图、数据流图等，而非源代码注释。',
@@ -185,7 +185,7 @@ const requirementsAnalysisPart1 = [
             { key: 'B', text: '原型' },
             { key: 'C', text: '测试用例' },
             { key: 'D', text: '形式化验证' },
-            { key: 'E', text: '随意猜测（干扰项）' }
+            { key: 'E', text: '随意猜测' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '需求确认与验证需要采用科学方法如评审、原型、测试用例、形式化验证等，而非随意猜测。',
@@ -205,7 +205,7 @@ const requirementsAnalysisPart1 = [
             { key: 'D', text: '成本可行性' },
             { key: 'E', text: '商业可行性' },
             { key: 'F', text: '社会可行性' },
-            { key: 'G', text: '个人偏好可行性（干扰项）' }
+            { key: 'G', text: '个人偏好可行性' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '可行性分析从技术、设备、进度、成本、商业、社会等多个维度评估项目的可行性，个人偏好不是标准维度。',
@@ -227,7 +227,7 @@ const requirementsAnalysisPart1 = [
             { key: 'F', text: '技术可行性' },
             { key: 'G', text: '社会可行性' },
             { key: 'H', text: '其他相关问题' },
-            { key: 'I', text: '项目终止建议（干扰项）' }
+            { key: 'I', text: '项目终止建议' }
         ],
         correctAnswer: 'A,B,C,D,E,F,G,H',
         explanation: '可行性研究报告包含项目背景、管理概要、候选方案、系统描述、各类可行性分析和其他相关问题，而非预设的项目终止建议。',
@@ -244,7 +244,7 @@ const requirementsAnalysisPart1 = [
             { key: 'A', text: '用户-其他系统-利益相关方-软件需求的关系' },
             { key: 'B', text: '开发者-测试者-管理者的层次关系' },
             { key: 'C', text: '成本-进度-质量的平衡关系' },
-            { key: 'D', text: '技术-业务-流程的映射关系（干扰项）' }
+            { key: 'D', text: '技术-业务-流程的映射关系' }
         ],
         correctAnswer: 'A',
         explanation: '软件利益相关者关系图展示了用户、其他系统、利益相关方与软件需求之间的相互关系。',
@@ -261,7 +261,7 @@ const requirementsAnalysisPart1 = [
             { key: 'A', text: '技术-设备-进度-成本-商业-社会可行性的关系' },
             { key: 'B', text: '功能-性能-质量需求的分层结构' },
             { key: 'C', text: '用户-系统-开发者的交互模式' },
-            { key: 'D', text: '需求-设计-实现的顺序流程（干扰项）' }
+            { key: 'D', text: '需求-设计-实现的顺序流程' }
         ],
         correctAnswer: 'A',
         explanation: '需求可行性分析框架图展示了技术、设备、进度、成本、商业、社会等各维度可行性的关系。',
@@ -337,7 +337,7 @@ const requirementsAnalysisPart2 = [
             { key: 'A', text: '需求不完整（15.1%）' },
             { key: 'B', text: '缺少用户参与（12.4%）' },
             { key: 'C', text: '需求变更（8.7%）' },
-            { key: 'D', text: '技术选型错误（25%）（干扰项）' }
+            { key: 'D', text: '技术选型错误（25%）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '根据统计数据，需求不完整、缺少用户参与、需求变更是主要的需求错误类型，技术选型错误不是统计的主要类型。',
@@ -354,7 +354,7 @@ const requirementsAnalysisPart2 = [
             { key: 'A', text: '外部质量属性（性能、可靠性）' },
             { key: 'B', text: '内部质量属性（可维护性、可扩展性）' },
             { key: 'C', text: '开发约束（成本、进度、技术选型）' },
-            { key: 'D', text: '业务流程约束（工作流程定义）（干扰项）' }
+            { key: 'D', text: '业务流程约束（工作流程定义）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '非功能性需求包括外部质量属性、内部质量属性和开发约束，业务流程约束通常属于功能需求范畴。',
@@ -372,7 +372,7 @@ const requirementsAnalysisPart2 = [
             { key: 'B', text: '多方参与（用户、开发者、专家等）' },
             { key: 'C', text: '多种获取形式（访谈、原型等）' },
             { key: 'D', text: '持续迭代（贯穿生命周期）' },
-            { key: 'E', text: '一次性完成（前期确定不变）（干扰项）' }
+            { key: 'E', text: '一次性完成（前期确定不变）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '需求工程具有知识密集、多方参与、多种获取形式、持续迭代的特点，而非一次性完成。',
@@ -389,7 +389,7 @@ const requirementsAnalysisPart2 = [
             { key: 'A', text: '划分（整体/部分）' },
             { key: 'B', text: '抽象（一般/特例）' },
             { key: 'C', text: '投影（多维视图）' },
-            { key: 'D', text: '复制（完全照搬现有系统）（干扰项）' }
+            { key: 'D', text: '复制（完全照搬现有系统）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求获取使用划分、抽象、投影三类抽象手段来处理复杂问题，而非简单复制现有系统。',
@@ -406,7 +406,7 @@ const requirementsAnalysisPart2 = [
             { key: 'A', text: '确认：通过评审或原型确认需求正确性；验证：检查需求文档与后续设计的一致性' },
             { key: 'B', text: '确认：检查代码实现；验证：测试用户接受度' },
             { key: 'C', text: '确认：技术可行性评估；验证：商业价值评估' },
-            { key: 'D', text: '确认：需求收集；验证：需求分析（干扰项）' }
+            { key: 'D', text: '确认：需求收集；验证：需求分析' }
         ],
         correctAnswer: 'A',
         explanation: '需求确认重点是确认需求的正确性（是否符合用户期望），验证重点是检查需求与设计的一致性。',
@@ -423,7 +423,7 @@ const requirementsAnalysisPart2 = [
             { key: 'A', text: '变更溯源（合法性判别）' },
             { key: 'B', text: '影响域分析' },
             { key: 'C', text: '配置管理（建立需求基线）' },
-            { key: 'D', text: '直接修改（无需评估）（干扰项）' }
+            { key: 'D', text: '直接修改（无需评估）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求变更管理需要科学的流程控制，包括溯源、影响分析、配置管理，而非直接修改。',
@@ -440,7 +440,7 @@ const requirementsAnalysisPart2 = [
             { key: 'A', text: '三层次（业务/用户/系统需求）和三阶段（获取→精化→确认）的迭代过程' },
             { key: 'B', text: '瀑布式的线性开发流程' },
             { key: 'C', text: '敏捷开发的冲刺周期' },
-            { key: 'D', text: '项目管理的时间进度安排（干扰项）' }
+            { key: 'D', text: '项目管理的时间进度安排' }
         ],
         correctAnswer: 'A',
         explanation: '需求工程螺旋模型体现了三个需求层次和三个工程阶段的迭代关系。',
@@ -526,7 +526,7 @@ const requirementsAnalysisPart3 = [
             { key: 'A', text: '业务需求' },
             { key: 'B', text: '用户需求' },
             { key: 'C', text: '系统需求' },
-            { key: 'D', text: '技术需求（干扰项）' }
+            { key: 'D', text: '技术需求' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求分为业务需求、用户需求和系统需求三个层次，技术需求属于系统需求的一部分。',
@@ -546,7 +546,7 @@ const requirementsAnalysisPart3 = [
             { key: 'D', text: '分析业务资料' },
             { key: 'E', text: '群体化方法' },
             { key: 'F', text: '大语言模型推荐' },
-            { key: 'G', text: '网络爬虫自动采集（干扰项）' }
+            { key: 'G', text: '网络爬虫自动采集' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '需求获取方法包括访谈、问卷、观摩、资料分析、群体化方法和新兴的AI推荐技术，但不包括自动爬虫采集。',
@@ -562,7 +562,7 @@ const requirementsAnalysisPart3 = [
         options: [
             { key: 'A', text: '质量要求（性能、可靠性、易用性、安全性等）' },
             { key: 'B', text: '约束性要求（开发进度、成本、技术选型等）' },
-            { key: 'C', text: '功能性要求（业务逻辑处理）（干扰项）' }
+            { key: 'C', text: '功能性要求（业务逻辑处理）' }
         ],
         correctAnswer: 'A,B',
         explanation: '非功能性需求包括质量要求和约束性要求，功能性要求属于功能需求范畴。',
@@ -584,7 +584,7 @@ const requirementsAnalysisPart3 = [
             { key: 'F', text: '准确性' },
             { key: 'G', text: '正确性' },
             { key: 'H', text: '一致性' },
-            { key: 'I', text: '复杂性（干扰项）' }
+            { key: 'I', text: '复杂性' }
         ],
         correctAnswer: 'A,B,C,D,E,F,G,H',
         explanation: '需求评审检查需求的多个质量维度，追求简洁明确，而非复杂性。',
@@ -602,7 +602,7 @@ const requirementsAnalysisPart3 = [
             { key: 'B', text: '导出和构思软件需求' },
             { key: 'C', text: '描述初步软件需求' },
             { key: 'D', text: '评审初步软件需求' },
-            { key: 'E', text: '直接编写代码（干扰项）' }
+            { key: 'E', text: '直接编写代码' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '需求获取是一个循序渐进的过程，从问题分析到需求评审，不包括直接编写代码。',
@@ -621,7 +621,7 @@ const requirementsAnalysisPart3 = [
             { key: 'C', text: '明确系统的使用场景' },
             { key: 'D', text: '构建用例模型（行为）' },
             { key: 'E', text: '构建领域概念模型（结构）' },
-            { key: 'F', text: '确定技术架构（干扰项）' }
+            { key: 'F', text: '确定技术架构' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '需求精化与规约关注需求层面的建模，确定技术架构属于设计阶段的任务。',
@@ -638,7 +638,7 @@ const requirementsAnalysisPart3 = [
             { key: 'A', text: '评审' },
             { key: 'B', text: '原型验证' },
             { key: 'C', text: '测试用例设计' },
-            { key: 'D', text: '性能压力测试（干扰项）' }
+            { key: 'D', text: '性能压力测试' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求确认与验证使用评审、原型、测试用例等方法，性能压力测试属于系统测试阶段。',
@@ -655,7 +655,7 @@ const requirementsAnalysisPart3 = [
             { key: 'A', text: '包含业务、用户和系统需求三个层次，以及需求获取、精化与规约、确认与验证三个阶段的迭代过程' },
             { key: 'B', text: '线性的瀑布式需求开发流程' },
             { key: 'C', text: '敏捷开发的快速迭代模式' },
-            { key: 'D', text: '原型驱动的增量式开发（干扰项）' }
+            { key: 'D', text: '原型驱动的增量式开发' }
         ],
         correctAnswer: 'A',
         explanation: '需求工程中的螺旋模型体现了三层次需求和三阶段活动的螺旋迭代关系。',
@@ -721,7 +721,7 @@ const requirementsAnalysisPart4 = [
             { key: 'A', text: '业务需求（企业级目标）' },
             { key: 'B', text: '用户需求（用户视角的功能）' },
             { key: 'C', text: '系统需求（可开发的详细需求）' },
-            { key: 'D', text: '实现需求（代码级别要求）（干扰项）' }
+            { key: 'D', text: '实现需求（代码级别要求）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求分为业务需求、用户需求和系统需求三个层次，实现需求属于设计实现阶段而非需求层次。',
@@ -739,7 +739,7 @@ const requirementsAnalysisPart4 = [
             { key: 'B', text: '建立需求模型（行为+结构）' },
             { key: 'C', text: '发现并修复需求缺陷' },
             { key: 'D', text: '形成高质量需求规格说明书' },
-            { key: 'E', text: '编写程序代码（干扰项）' }
+            { key: 'E', text: '编写程序代码' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '需求精化包括优先级分析、建模、缺陷修复和文档编写，不包括程序编写。',
@@ -757,7 +757,7 @@ const requirementsAnalysisPart4 = [
             { key: 'B', text: '实现技术难度' },
             { key: 'C', text: '业务风险等级' },
             { key: 'D', text: '开发成本估算' },
-            { key: 'E', text: '开发人员个人喜好（干扰项）' }
+            { key: 'E', text: '开发人员个人喜好' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '需求优先级应基于客观因素如用户价值、技术难度、风险和成本，而非个人喜好。',
@@ -775,7 +775,7 @@ const requirementsAnalysisPart4 = [
             { key: 'B', text: '结构建模：概念类图 vs E-R图' },
             { key: 'C', text: '约束表达：OCL语言 vs 数据字典' },
             { key: 'D', text: '交互描述：系统操作合约 vs 加工说明' },
-            { key: 'E', text: '界面设计：原型图 vs 流程图（干扰项）' }
+            { key: 'E', text: '界面设计：原型图 vs 流程图' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '这些是面向对象与结构化方法在不同建模维度的正确对比，界面设计不是核心区别。',
@@ -854,7 +854,7 @@ const requirementsAnalysisPart5 = [
             { key: 'D', text: '不准确需求 → 深入沟通理解' },
             { key: 'E', text: '不规范文档 → 按标准模板重构' },
             { key: 'F', text: '不规范模型 → 学习UML规范' },
-            { key: 'G', text: '完美需求 → 直接采用（干扰项）' }
+            { key: 'G', text: '完美需求 → 直接采用' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '这些是需求工程中常见问题及其对应的解决策略，完美需求在实际项目中是不存在的。',
@@ -871,7 +871,7 @@ const requirementsAnalysisPart5 = [
             { key: 'A', text: '业务需求层' },
             { key: 'B', text: '用户需求层' },
             { key: 'C', text: '系统需求层' },
-            { key: 'D', text: '技术实现层（干扰项）' }
+            { key: 'D', text: '技术实现层' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '螺旋模型包含三个需求层次，技术实现层属于后续的设计开发阶段。',
@@ -888,7 +888,7 @@ const requirementsAnalysisPart5 = [
             { key: 'A', text: '需求评审(Systematic manual analysis)' },
             { key: 'B', text: '原型生成(Executable model验证)' },
             { key: 'C', text: '测试用例生成(Testability检查)' },
-            { key: 'D', text: '用户满意度调查（干扰项）' }
+            { key: 'D', text: '用户满意度调查' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求验证使用评审、原型、测试用例等技术手段，用户满意度调查属于需求确认范畴。',
@@ -909,7 +909,7 @@ const requirementsAnalysisPart5 = [
             { key: 'E', text: '可追踪性（需求标识唯一）' },
             { key: 'F', text: '文档规范性（符合标准模板）' },
             { key: 'G', text: '图符规范性（UML正确使用）' },
-            { key: 'H', text: '代码质量（程序结构合理）（干扰项）' }
+            { key: 'H', text: '代码质量（程序结构合理）' }
         ],
         correctAnswer: 'A,B,C,D,E,F,G',
         explanation: '需求评审关注需求文档的各个质量维度，代码质量属于实现阶段的评审内容。',
@@ -926,7 +926,7 @@ const requirementsAnalysisPart5 = [
             { key: 'A', text: '需求模型（用例图/类图/状态图等）' },
             { key: 'B', text: '软件原型（可运行演示）' },
             { key: 'C', text: '需求文档（图文规格说明书）' },
-            { key: 'D', text: '源代码文件（程序实现）（干扰项）' }
+            { key: 'D', text: '源代码文件（程序实现）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '需求分析的输出是各种需求制品，源代码文件属于实现阶段的产出。',
@@ -945,7 +945,7 @@ const requirementsAnalysisPart5 = [
             { key: 'C', text: '功能/非功能需求完整' },
             { key: 'D', text: '多方共同参与' },
             { key: 'E', text: '语言简洁一致' },
-            { key: 'F', text: '技术细节详尽（干扰项）' }
+            { key: 'F', text: '技术细节详尽' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '需求文档应该清晰、完整、规范，但不应包含过多技术实现细节。',
@@ -962,7 +962,7 @@ const requirementsAnalysisPart5 = [
             { key: 'A', text: '需求与设计/代码/测试用例的验证/满足关系' },
             { key: 'B', text: '项目进度与时间的关系' },
             { key: 'C', text: '团队成员与角色的分配关系' },
-            { key: 'D', text: '成本与收益的平衡关系（干扰项）' }
+            { key: 'D', text: '成本与收益的平衡关系' }
         ],
         correctAnswer: 'A',
         explanation: '需求追踪关系图展示了需求在软件开发各阶段的传递和满足关系。',

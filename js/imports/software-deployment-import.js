@@ -113,7 +113,7 @@ const softwareDeploymentKnowledge = [
         options: [
             { key: 'A', text: '单机部署：集中部署到单一计算设备' },
             { key: 'B', text: '分布式部署：分散部署在多个计算设备' },
-            { key: 'C', text: '云端部署：部署到云计算平台（干扰项）' }
+            { key: 'C', text: '云端部署：部署到云计算平台' }
         ],
         correctAnswer: 'A,B',
         explanation: '部署分类主要基于设备数量，云端部署是部署方法而非基本分类。',
@@ -131,7 +131,7 @@ const softwareDeploymentKnowledge = [
             { key: 'B', text: '基于软件开发框架的部署' },
             { key: 'C', text: '基于虚拟机的部署' },
             { key: 'D', text: '基于容器的部署' },
-            { key: 'E', text: '基于硬件的部署（干扰项）' }
+            { key: 'E', text: '基于硬件的部署' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '部署方法基于软件技术栈，硬件部署不是软件部署方法分类。',
@@ -149,7 +149,7 @@ const softwareDeploymentKnowledge = [
             { key: 'B', text: '适应性维护：适应新环境' },
             { key: 'C', text: '完善性维护：增加新功能' },
             { key: 'D', text: '预防性维护：提高可靠性' },
-            { key: 'E', text: '应急性维护：处理紧急故障（干扰项）' }
+            { key: 'E', text: '应急性维护：处理紧急故障' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '标准维护分类为四种类型，应急性维护通常归入纠错性维护范畴。',
@@ -166,7 +166,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '面向过程维护方法' },
             { key: 'B', text: '面向数据维护方法' },
             { key: 'C', text: '面向对象维护方法' },
-            { key: 'D', text: '面向服务维护方法（干扰项）' }
+            { key: 'D', text: '面向服务维护方法' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '维护方法对应主要的编程范式，面向服务不是基本的维护方法分类。',
@@ -183,7 +183,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '展示软件系统与运行环境的依赖关系和交互模式' },
             { key: 'B', text: '展示软件的功能模块结构' },
             { key: 'C', text: '展示系统的网络拓扑结构' },
-            { key: 'D', text: '展示项目的组织架构图（干扰项）' }
+            { key: 'D', text: '展示项目的组织架构图' }
         ],
         correctAnswer: 'A',
         explanation: '运行环境关系图主要说明软件与环境的依赖和交互关系。',
@@ -200,7 +200,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '展示Docker容器构建和部署的完整流程和操作步骤' },
             { key: 'B', text: '展示容器的内部架构设计' },
             { key: 'C', text: '展示容器的性能监控指标' },
-            { key: 'D', text: '展示容器的成本分析报告（干扰项）' }
+            { key: 'D', text: '展示容器的成本分析报告' }
         ],
         correctAnswer: 'A',
         explanation: '容器部署流程图指导容器技术的实际应用和操作。',
@@ -217,7 +217,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '展示四种维护类型的特点、目的和适用场景的对比分析' },
             { key: 'B', text: '展示维护工具的功能对比' },
             { key: 'C', text: '展示维护团队的技能要求' },
-            { key: 'D', text: '展示维护成本的预算分析（干扰项）' }
+            { key: 'D', text: '展示维护成本的预算分析' }
         ],
         correctAnswer: 'A',
         explanation: '维护分类对比表帮助理解不同维护类型的区别和应用。',
@@ -234,7 +234,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '展示八大软件演化法则，指导软件系统的长期演进策略' },
             { key: 'B', text: '展示软件版本的发布计划' },
             { key: 'C', text: '展示软件的技术架构演进' },
-            { key: 'D', text: '展示软件的市场竞争分析（干扰项）' }
+            { key: 'D', text: '展示软件的市场竞争分析' }
         ],
         correctAnswer: 'A',
         explanation: '演化法则图示提供了软件演化的理论指导和实践原则。',
@@ -253,7 +253,7 @@ const softwareDeploymentKnowledge = [
             { key: 'C', text: '环境一致性好（镜像标准化）' },
             { key: 'D', text: '可移植性强（跨平台运行）' },
             { key: 'E', text: '开发成本低（减少编码工作）' },
-            { key: 'F', text: '硬件性能强（提升计算能力）（干扰项）' }
+            { key: 'F', text: '硬件性能强（提升计算能力）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '容器技术主要在部署和运维层面提供优势，不直接提升硬件性能。',
@@ -273,7 +273,7 @@ const softwareDeploymentKnowledge = [
             { key: 'D', text: '生产环境（Production）' },
             { key: 'E', text: '灾备环境（Disaster Recovery）' },
             { key: 'F', text: '演示环境（Demo）' },
-            { key: 'G', text: '研究环境（Research）（干扰项）' }
+            { key: 'G', text: '研究环境（Research）' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '部署环境基于软件生命周期阶段，研究环境不是标准的部署环境类型。',
@@ -292,7 +292,7 @@ const softwareDeploymentKnowledge = [
             { key: 'C', text: '变更控制（Change Control）' },
             { key: 'D', text: '配置审计（Configuration Audit）' },
             { key: 'E', text: '基线管理（Baseline Management）' },
-            { key: 'F', text: '性能监控（Performance Monitoring）（干扰项）' }
+            { key: 'F', text: '性能监控（Performance Monitoring）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '配置管理关注软件制品的版本和变更控制，性能监控属于运维范畴。',
@@ -311,7 +311,7 @@ const softwareDeploymentKnowledge = [
             { key: 'C', text: '业务指标（用户数、交易量）' },
             { key: 'D', text: '可用性指标（正常运行时间）' },
             { key: 'E', text: '安全指标（入侵检测、访问控制）' },
-            { key: 'F', text: '开发指标（代码质量、提交频率）（干扰项）' }
+            { key: 'F', text: '开发指标（代码质量、提交频率）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '运维监控关注系统运行状态，开发指标属于开发阶段的度量。',
@@ -328,7 +328,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '部署是完整的发布过程，安装只是部署的一个环节' },
             { key: 'B', text: '部署和安装是同一个概念' },
             { key: 'C', text: '安装比部署的范围更大' },
-            { key: 'D', text: '部署只针对大型系统，安装针对小型软件（干扰项）' }
+            { key: 'D', text: '部署只针对大型系统，安装针对小型软件' }
         ],
         correctAnswer: 'A',
         explanation: '软件部署是包含安装在内的完整发布流程，范围更广。',
@@ -345,7 +345,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '维护是小规模调整，演化是大规模功能增强和结构调整' },
             { key: 'B', text: '维护和演化没有区别' },
             { key: 'C', text: '演化只是维护的一种类型' },
-            { key: 'D', text: '维护是主动的，演化是被动的（干扰项）' }
+            { key: 'D', text: '维护是主动的，演化是被动的' }
         ],
         correctAnswer: 'A',
         explanation: '维护和演化的主要区别在于变更的规模和影响范围。',
@@ -362,7 +362,7 @@ const softwareDeploymentKnowledge = [
             { key: 'A', text: '位于软件开发完成后，负责系统的发布、运行和维护' },
             { key: 'B', text: '贯穿整个软件开发过程' },
             { key: 'C', text: '只在软件开发初期进行规划' },
-            { key: 'D', text: '主要在软件测试阶段进行（干扰项）' }
+            { key: 'D', text: '主要在软件测试阶段进行' }
         ],
         correctAnswer: 'A',
         explanation: '部署运维是软件生命周期的后期阶段，确保软件的正常运行和持续服务。',

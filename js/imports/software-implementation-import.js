@@ -87,7 +87,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '高级语言（C/Java等）' },
             { key: 'D', text: '面向对象语言（Java/C++）' },
             { key: 'E', text: '描述性语言（Prolog）' },
-            { key: 'F', text: '自然语言（英语/中文）（干扰项）' }
+            { key: 'F', text: '自然语言（英语/中文）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '程序设计语言分类基于抽象级别和编程范式，自然语言不是程序设计语言。',
@@ -106,7 +106,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '特殊功能要求' },
             { key: 'D', text: '目标平台支持' },
             { key: 'E', text: '开发团队经验' },
-            { key: 'F', text: '编程语言流行度排名（干扰项）' }
+            { key: 'F', text: '编程语言流行度排名' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '语言选择应基于项目需求和技术约束，流行度排名不是主要决策因素。',
@@ -125,7 +125,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: 'IntelliJ IDEA（多语言）' },
             { key: 'D', text: 'PyCharm（Python）' },
             { key: 'E', text: 'VS Code（轻量级）' },
-            { key: 'F', text: 'Microsoft Word（文档编辑）（干扰项）' }
+            { key: 'F', text: 'Microsoft Word（文档编辑）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '这些是主流的集成开发环境，Microsoft Word是文档编辑软件而非IDE。',
@@ -144,7 +144,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '复杂循环' },
             { key: 'D', text: '低内聚类' },
             { key: 'E', text: '过多参数' },
-            { key: 'F', text: '注释太多（干扰项）' }
+            { key: 'F', text: '注释太多' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '代码重构针对结构和逻辑问题，注释多通常是好事而非重构理由。',
@@ -161,7 +161,7 @@ const softwareImplementationPart1 = [
             { key: 'A', text: '展示编码-测试-调试的软件实现流程和各阶段关系' },
             { key: 'B', text: '展示项目管理的时间进度安排' },
             { key: 'C', text: '展示团队成员的角色分工' },
-            { key: 'D', text: '展示用户需求的功能列表（干扰项）' }
+            { key: 'D', text: '展示用户需求的功能列表' }
         ],
         correctAnswer: 'A',
         explanation: '实现过程示意图主要展示软件实现的技术流程和活动关系。',
@@ -178,7 +178,7 @@ const softwareImplementationPart1 = [
             { key: 'A', text: '展示主流IDE的演进时间线和技术发展趋势' },
             { key: 'B', text: '展示各个IDE的市场占有率统计' },
             { key: 'C', text: '展示IDE的安装使用教程' },
-            { key: 'D', text: '展示程序员的薪资水平变化（干扰项）' }
+            { key: 'D', text: '展示程序员的薪资水平变化' }
         ],
         correctAnswer: 'A',
         explanation: 'IDE发展历程图展示开发工具的技术演进和发展规律。',
@@ -195,7 +195,7 @@ const softwareImplementationPart1 = [
             { key: 'A', text: '展示TIOBE和IEEE语言排行榜，反映编程语言的流行趋势' },
             { key: 'B', text: '确定项目必须使用的编程语言' },
             { key: 'C', text: '评估编程语言的技术优劣' },
-            { key: 'D', text: '预测程序员的就业前景（干扰项）' }
+            { key: 'D', text: '预测程序员的就业前景' }
         ],
         correctAnswer: 'A',
         explanation: '编程语言排名表反映市场趋势，为技术选择提供参考。',
@@ -214,7 +214,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '集成测试验证' },
             { key: 'D', text: '性能测试评估' },
             { key: 'E', text: '版本控制管理' },
-            { key: 'F', text: '用户培训计划（干扰项）' }
+            { key: 'F', text: '用户培训计划' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '质量保证措施关注代码和系统质量，用户培训不属于实现阶段的质量保证。',
@@ -233,7 +233,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '促进团队协作' },
             { key: 'D', text: '减少代码缺陷' },
             { key: 'E', text: '支持代码重用' },
-            { key: 'F', text: '增加程序运行速度（干扰项）' }
+            { key: 'F', text: '增加程序运行速度' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '编程规范主要影响代码质量和开发效率，对运行速度的直接影响有限。',
@@ -252,7 +252,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '开发环境配置' },
             { key: 'D', text: '第三方组件库' },
             { key: 'E', text: '测试用例设计' },
-            { key: 'F', text: '用户操作手册（干扰项）' }
+            { key: 'F', text: '用户操作手册' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '实现阶段的输入是技术相关的文档和资源，用户手册是实现的输出而非输入。',
@@ -271,7 +271,7 @@ const softwareImplementationPart1 = [
             { key: 'C', text: '单步执行（逐行跟踪）' },
             { key: 'D', text: '变量监视（实时查看值）' },
             { key: 'E', text: '异常捕获（错误处理）' },
-            { key: 'F', text: '代码重写（完全重构）（干扰项）' }
+            { key: 'F', text: '代码重写（完全重构）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '调试技术用于定位和分析问题，代码重写是解决方案而非调试技术。',
@@ -288,7 +288,7 @@ const softwareImplementationPart1 = [
             { key: 'A', text: '实现是设计的具体化，将抽象的设计模型转换为可执行的代码' },
             { key: 'B', text: '实现完全独立于设计，可以忽略设计文档' },
             { key: 'C', text: '实现是设计的替代，可以边实现边设计' },
-            { key: 'D', text: '实现主要关注用户界面，设计关注业务逻辑（干扰项）' }
+            { key: 'D', text: '实现主要关注用户界面，设计关注业务逻辑' }
         ],
         correctAnswer: 'A',
         explanation: '软件实现是设计的具体化过程，需要严格按照设计文档进行编码实现。',
@@ -305,7 +305,7 @@ const softwareImplementationPart1 = [
             { key: 'A', text: '将开发完成的软件安装到目标环境中，使其能够正常运行' },
             { key: 'B', text: '对软件进行最终的功能测试' },
             { key: 'C', text: '编写软件的用户使用文档' },
-            { key: 'D', text: '制定软件的市场推广策略（干扰项）' }
+            { key: 'D', text: '制定软件的市场推广策略' }
         ],
         correctAnswer: 'A',
         explanation: '软件部署是实现阶段的最后环节，确保软件在目标环境中正确运行。',
@@ -413,7 +413,7 @@ const softwareImplementationPart2 = [
             { key: 'C', text: '异常处理机制' },
             { key: 'D', text: '性能优化考虑' },
             { key: 'E', text: '单元测试编写' },
-            { key: 'F', text: '方法注释美化（干扰项）' }
+            { key: 'F', text: '方法注释美化' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '方法实现需要考虑接口、逻辑、异常、性能和测试，注释美化不是核心要素。',
@@ -432,7 +432,7 @@ const softwareImplementationPart2 = [
             { key: 'C', text: '选择事件（下拉选择）' },
             { key: 'D', text: '导航事件（页面跳转）' },
             { key: 'E', text: '生命周期事件（页面加载）' },
-            { key: 'F', text: '网络延迟事件（干扰项）' }
+            { key: 'F', text: '网络延迟事件' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '界面事件处理涵盖用户交互和页面生命周期，网络延迟不是界面事件类型。',
@@ -451,7 +451,7 @@ const softwareImplementationPart2 = [
             { key: 'C', text: '数据库约束（完整性）' },
             { key: 'D', text: '业务规则验证（逻辑校验）' },
             { key: 'E', text: '格式验证（数据类型）' },
-            { key: 'F', text: '用户满意度验证（干扰项）' }
+            { key: 'F', text: '用户满意度验证' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '数据验证从多个层面确保数据质量，用户满意度不是数据验证方式。',
@@ -470,7 +470,7 @@ const softwareImplementationPart2 = [
             { key: 'C', text: 'Config（配置中心）' },
             { key: 'D', text: 'Feign（服务调用）' },
             { key: 'E', text: 'Hystrix（熔断器）' },
-            { key: 'F', text: 'MySQL（数据库）（干扰项）' }
+            { key: 'F', text: 'MySQL（数据库）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: 'Spring Cloud提供微服务治理组件，MySQL是数据库而非Spring Cloud组件。',
@@ -487,7 +487,7 @@ const softwareImplementationPart2 = [
             { key: 'A', text: '展示UML设计模型如何转换为JavaEE具体代码实现' },
             { key: 'B', text: '展示类图的绘制技巧和工具使用' },
             { key: 'C', text: '展示面向对象设计的理论知识' },
-            { key: 'D', text: '展示项目管理的进度安排（干扰项）' }
+            { key: 'D', text: '展示项目管理的进度安排' }
         ],
         correctAnswer: 'A',
         explanation: '类图到代码映射展示了设计模型向具体实现的转换过程。',
@@ -504,7 +504,7 @@ const softwareImplementationPart2 = [
             { key: 'A', text: '展示Spring Cloud微服务组件关系，指导分布式系统实现' },
             { key: 'B', text: '展示服务器硬件的配置要求' },
             { key: 'C', text: '展示团队组织架构和人员分工' },
-            { key: 'D', text: '展示软件的商业模式设计（干扰项）' }
+            { key: 'D', text: '展示软件的商业模式设计' }
         ],
         correctAnswer: 'A',
         explanation: '微服务架构图为分布式系统的技术实现提供架构指导。',
@@ -521,7 +521,7 @@ const softwareImplementationPart2 = [
             { key: 'A', text: '展示服务间调用的具体实现逻辑和交互时序' },
             { key: 'B', text: '展示数据库表的设计结构' },
             { key: 'C', text: '展示用户界面的视觉设计' },
-            { key: 'D', text: '展示软件测试的用例设计（干扰项）' }
+            { key: 'D', text: '展示软件测试的用例设计' }
         ],
         correctAnswer: 'A',
         explanation: '顺序图实现示例指导服务间交互的具体编码实现。',
@@ -540,7 +540,7 @@ const softwareImplementationPart2 = [
             { key: 'C', text: '降低维护成本（统一架构）' },
             { key: 'D', text: '促进团队协作（共同标准）' },
             { key: 'E', text: '支持快速部署（容器化）' },
-            { key: 'F', text: '减少服务器成本（干扰项）' }
+            { key: 'F', text: '减少服务器成本' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '框架应用主要提升开发和维护效率，对服务器成本的直接影响有限。',
@@ -559,7 +559,7 @@ const softwareImplementationPart2 = [
             { key: 'C', text: '语言规范性（术语统一）' },
             { key: 'D', text: '格式一致性（标准模板）' },
             { key: 'E', text: '可操作性（易于理解使用）' },
-            { key: 'F', text: '页面美观性（视觉设计）（干扰项）' }
+            { key: 'F', text: '页面美观性（视觉设计）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '实现文档质量关注内容和可用性，页面美观性不是主要质量要求。',
@@ -576,7 +576,7 @@ const softwareImplementationPart2 = [
             { key: 'A', text: '将设计模型转换为可运行的软件系统，确保功能正确性和性能要求' },
             { key: 'B', text: '完成用户需求的收集和分析工作' },
             { key: 'C', text: '制定详细的项目计划和时间安排' },
-            { key: 'D', text: '进行市场调研和竞品分析（干扰项）' }
+            { key: 'D', text: '进行市场调研和竞品分析' }
         ],
         correctAnswer: 'A',
         explanation: '软件实现的核心目标是将设计转化为可执行的软件系统。',

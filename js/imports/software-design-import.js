@@ -88,7 +88,7 @@ const softwareDesignPart1 = [
             { key: 'D', text: '数据结构设计' },
             { key: 'E', text: '数据库设计' },
             { key: 'F', text: '人机交互设计' },
-            { key: 'G', text: '营销策略设计（干扰项）' }
+            { key: 'G', text: '营销策略设计' }
         ],
         correctAnswer: 'A,B,C,D,E,F',
         explanation: '设计核心要素涵盖模块、交互、数据、数据库和人机界面等技术层面，不包括营销策略。',
@@ -106,7 +106,7 @@ const softwareDesignPart1 = [
             { key: 'B', text: '充分性：设计细化到可直接编码' },
             { key: 'C', text: '优化性：具备良好质量属性（可靠性/可维护性等）' },
             { key: 'D', text: '简单性：模块功能单一、关系直观' },
-            { key: 'E', text: '复杂性：功能越复杂越好（干扰项）' }
+            { key: 'E', text: '复杂性：功能越复杂越好' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '高质量设计追求正确、充分、优化和简单，复杂性不是设计质量的标准。',
@@ -167,7 +167,7 @@ const softwareDesignPart1 = [
             { key: 'C', text: '文档规范性' },
             { key: 'D', text: '设计一致性' },
             { key: 'E', text: '可维护性评估' },
-            { key: 'F', text: '市场竞争力分析（干扰项）' }
+            { key: 'F', text: '市场竞争力分析' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '设计评审关注技术和工程层面的检查项，市场竞争力分析属于产品管理范畴。',
@@ -184,7 +184,7 @@ const softwareDesignPart1 = [
             { key: 'A', text: '建模工具：StarUML/Visual Paradigm' },
             { key: 'B', text: '版本管理：Git/GitLab' },
             { key: 'C', text: '文档工具：Microsoft Visio' },
-            { key: 'D', text: '财务软件：Excel预算表（干扰项）' }
+            { key: 'D', text: '财务软件：Excel预算表' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '设计工具包括建模、版本管理和文档工具等技术支持工具，财务软件不属于设计工具。',
@@ -201,7 +201,7 @@ const softwareDesignPart1 = [
             { key: 'A', text: '展示系统的分层体系结构风格，从表示层到数据层的组织方式' },
             { key: 'B', text: '展示项目的时间进度安排' },
             { key: 'C', text: '展示团队的组织架构' },
-            { key: 'D', text: '展示产品的功能列表（干扰项）' }
+            { key: 'D', text: '展示产品的功能列表' }
         ],
         correctAnswer: 'A',
         explanation: '分层架构示意图主要展示系统的技术架构分层，体现了设计的组织方式。',
@@ -218,7 +218,7 @@ const softwareDesignPart1 = [
             { key: 'A', text: '对比不同内聚性和耦合度类型的特点和质量水平' },
             { key: 'B', text: '对比不同编程语言的特性' },
             { key: 'C', text: '对比不同开发工具的功能' },
-            { key: 'D', text: '对比不同项目的成本预算（干扰项）' }
+            { key: 'D', text: '对比不同项目的成本预算' }
         ],
         correctAnswer: 'A',
         explanation: '内聚耦合对比表用于理解和评估模块设计质量的重要参考工具。',
@@ -237,7 +237,7 @@ const softwareDesignPart1 = [
             { key: 'C', text: '信息隐藏（封装实现细节）' },
             { key: 'D', text: '关注点分离（多视角开发）' },
             { key: 'E', text: '分而治之（分解复杂系统）' },
-            { key: 'F', text: '完美主义（追求零缺陷）（干扰项）' }
+            { key: 'F', text: '完美主义（追求零缺陷）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '软件设计的基本原则注重工程方法和实用性，完美主义不是工程原则。',
@@ -256,7 +256,7 @@ const softwareDesignPart1 = [
             { key: 'C', text: '降低系统复杂度' },
             { key: 'D', text: '便于测试和维护' },
             { key: 'E', text: '减少开发成本' },
-            { key: 'F', text: '增加代码行数（干扰项）' }
+            { key: 'F', text: '增加代码行数' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '模块化带来多方面的工程优势，增加代码行数不是优势而是副作用。',
@@ -274,7 +274,7 @@ const softwareDesignPart1 = [
             { key: 'B', text: '详细设计说明书' },
             { key: 'C', text: '接口设计文档' },
             { key: 'D', text: '数据库设计文档' },
-            { key: 'E', text: '用户培训手册（干扰项）' }
+            { key: 'E', text: '用户培训手册' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '设计文档包括各种技术设计说明，用户培训手册属于产品文档而非设计文档。',
@@ -291,7 +291,7 @@ const softwareDesignPart1 = [
             { key: 'A', text: '提高模块内部功能相关性，降低模块间的依赖关系' },
             { key: 'B', text: '增加系统的复杂度和功能数量' },
             { key: 'C', text: '提高代码执行的性能速度' },
-            { key: 'D', text: '减少项目开发的时间成本（干扰项）' }
+            { key: 'D', text: '减少项目开发的时间成本' }
         ],
         correctAnswer: 'A',
         explanation: '高内聚低耦合是模块化设计的核心目标，追求功能聚合和依赖最小化。',
@@ -377,7 +377,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '满足功能需求实现' },
             { key: 'B', text: '保障质量属性（可扩展/可伸缩/易维护等）' },
             { key: 'C', text: '适应开发约束条件' },
-            { key: 'D', text: '降低硬件成本投入（干扰项）' }
+            { key: 'D', text: '降低硬件成本投入' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '体系结构设计关注功能实现、质量保障和约束适应，硬件成本不是主要设计目标。',
@@ -394,7 +394,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '解决全局性技术问题' },
             { key: 'B', text: '多视角设计（逻辑/开发/部署/运行）' },
             { key: 'C', text: '战略层次决策' },
-            { key: 'D', text: '详细代码实现（干扰项）' }
+            { key: 'D', text: '详细代码实现' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '体系结构设计属于高层设计活动，不涉及详细的代码实现。',
@@ -413,7 +413,7 @@ const softwareDesignPart2 = [
             { key: 'C', text: 'MVC/MVP/MVVM（职责分离，组件可复用）' },
             { key: 'D', text: 'SOA风格（服务化构件，支持异构互操作）' },
             { key: 'E', text: '消息总线（统一消息通道）' },
-            { key: 'F', text: '单体应用（所有功能集成在一起）（干扰项）' }
+            { key: 'F', text: '单体应用（所有功能集成在一起）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '这些是经典的架构风格，单体应用是架构类型而非架构风格。',
@@ -430,7 +430,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '编译器系统' },
             { key: 'B', text: '数据处理系统' },
             { key: 'C', text: '图像处理系统' },
-            { key: 'D', text: '用户界面系统（干扰项）' }
+            { key: 'D', text: '用户界面系统' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '管道/过滤器风格适用于数据流处理场景，用户界面系统更适合MVC等风格。',
@@ -447,7 +447,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '云平台系统' },
             { key: 'B', text: '企业集成系统' },
             { key: 'C', text: '异构系统互操作' },
-            { key: 'D', text: '嵌入式实时系统（干扰项）' }
+            { key: 'D', text: '嵌入式实时系统' }
         ],
         correctAnswer: 'A,B,C',
         explanation: 'SOA风格适用于分布式、异构环境，嵌入式实时系统通常使用其他架构风格。',
@@ -465,7 +465,7 @@ const softwareDesignPart2 = [
             { key: 'B', text: 'SourceForge（经典开源仓库）' },
             { key: 'C', text: 'Gitee（国内开源平台）' },
             { key: 'D', text: '讯飞开放平台（AI能力服务）' },
-            { key: 'E', text: '微软Office官网（干扰项）' }
+            { key: 'E', text: '微软Office官网' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '这些是主要的开源和开放平台，微软Office是商业软件平台。',
@@ -484,7 +484,7 @@ const softwareDesignPart2 = [
             { key: 'C', text: '技术约束条件' },
             { key: 'D', text: '团队技能水平' },
             { key: 'E', text: '项目预算规模' },
-            { key: 'F', text: '客户个人喜好（干扰项）' }
+            { key: 'F', text: '客户个人喜好' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: '架构风格选择需要考虑技术和项目因素，客户个人喜好不是技术决策依据。',
@@ -501,7 +501,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '展示软件体系结构设计的完整流程：初步设计→资产重用→结构精化→文档评审' },
             { key: 'B', text: '展示项目管理的时间进度计划' },
             { key: 'C', text: '展示团队成员的角色分工' },
-            { key: 'D', text: '展示用户界面的页面布局（干扰项）' }
+            { key: 'D', text: '展示用户界面的页面布局' }
         ],
         correctAnswer: 'A',
         explanation: '体系结构设计示意图主要展示架构设计的方法流程和各阶段关系。',
@@ -518,7 +518,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '采用分层架构风格，从表示层、业务层到数据层的清晰分层设计' },
             { key: 'B', text: '采用单一模块设计，所有功能集中处理' },
             { key: 'C', text: '采用点对点通信模式，去中心化设计' },
-            { key: 'D', text: '采用批处理模式，定时执行任务（干扰项）' }
+            { key: 'D', text: '采用批处理模式，定时执行任务' }
         ],
         correctAnswer: 'A',
         explanation: '空巢老人系统是分层架构设计的典型案例，体现了分层架构的设计思想。',
@@ -536,7 +536,7 @@ const softwareDesignPart2 = [
             { key: 'B', text: '适用场景分析' },
             { key: 'C', text: '优缺点对比' },
             { key: 'D', text: '实现技术要求' },
-            { key: 'E', text: '市场占有率统计（干扰项）' }
+            { key: 'E', text: '市场占有率统计' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '架构风格对比从技术角度分析各风格的特点、适用性和实现要求，不包括市场数据。',
@@ -554,7 +554,7 @@ const softwareDesignPart2 = [
             { key: 'B', text: '遗留系统集成' },
             { key: 'C', text: '第三方服务调用' },
             { key: 'D', text: '设计模式应用' },
-            { key: 'E', text: '竞争对手代码复制（干扰项）' }
+            { key: 'E', text: '竞争对手代码复制' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '软件资产重用包括合法的开源、遗留系统、第三方服务和设计模式，不包括侵权复制。',
@@ -571,7 +571,7 @@ const softwareDesignPart2 = [
             { key: 'A', text: '提供统一的消息通道，支持异构系统间的消息传递和协调' },
             { key: 'B', text: '将所有数据存储在中央数据库中' },
             { key: 'C', text: '使用客户端-服务器直连模式' },
-            { key: 'D', text: '采用同步调用机制处理所有请求（干扰项）' }
+            { key: 'D', text: '采用同步调用机制处理所有请求' }
         ],
         correctAnswer: 'A',
         explanation: '消息总线的核心是提供统一的消息传递机制，支持系统间的松耦合通信。',
@@ -657,7 +657,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '组件(Component)' },
             { key: 'B', text: '接口(Interface)' },
             { key: 'C', text: '端口(Port)' },
-            { key: 'D', text: '参与者(Actor)（干扰项）' }
+            { key: 'D', text: '参与者(Actor)' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '组件图包含组件、接口和端口三个主要元素，参与者属于用例图的元素。',
@@ -673,7 +673,7 @@ const softwareDesignPart3 = [
         options: [
             { key: 'A', text: '供给接口(Provided Interface)' },
             { key: 'B', text: '需求接口(Required Interface)' },
-            { key: 'C', text: '管理接口(Management Interface)（干扰项）' }
+            { key: 'C', text: '管理接口(Management Interface)' }
         ],
         correctAnswer: 'A,B',
         explanation: '组件接口分为供给接口（组件提供的服务）和需求接口（组件需要的服务），管理接口不是标准分类。',
@@ -691,7 +691,7 @@ const softwareDesignPart3 = [
             { key: 'B', text: '层次结构图（模块调用关系表示）' },
             { key: 'C', text: '变换型数据流映射（传入→变换→传出）' },
             { key: 'D', text: '事务型数据流映射（事务中心+动作分支）' },
-            { key: 'E', text: '用例图（用户交互建模）（干扰项）' }
+            { key: 'E', text: '用例图（用户交互建模）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '这些都是面向过程的结构图类型，用例图属于面向对象的行为建模图。',
@@ -710,7 +710,7 @@ const softwareDesignPart3 = [
             { key: 'C', text: '顺序图：对象间消息传递（行为视角）' },
             { key: 'D', text: '状态图：状态变迁（行为视角）' },
             { key: 'E', text: '部署图：物理环境部署（部署视角）' },
-            { key: 'F', text: '数据流图：数据处理过程（行为视角）（干扰项）' }
+            { key: 'F', text: '数据流图：数据处理过程（行为视角）' }
         ],
         correctAnswer: 'A,B,C,D,E',
         explanation: 'UML图分为结构、行为、部署等视角，数据流图属于结构化方法而非UML。',
@@ -727,7 +727,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '需求覆盖完整性' },
             { key: 'B', text: '接口定义完备性' },
             { key: 'C', text: '变更影响可控性' },
-            { key: 'D', text: '代码实现正确性（干扰项）' }
+            { key: 'D', text: '代码实现正确性' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '架构评审关注高层设计的完整性、完备性和可控性，代码实现属于详细设计和编码阶段。',
@@ -744,7 +744,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '计算组件（处理数据的元素）' },
             { key: 'B', text: '连接件（组件间通信）' },
             { key: 'C', text: '约束（组件组装规则）' },
-            { key: 'D', text: '用户界面样式（干扰项）' }
+            { key: 'D', text: '用户界面样式' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '软件体系结构的设计元素包括计算组件、连接件和约束，用户界面样式属于界面设计层面。',
@@ -761,7 +761,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '包(Package)' },
             { key: 'B', text: '构成关系(Composition)' },
             { key: 'C', text: '依赖关系(Dependency)' },
-            { key: 'D', text: '继承关系(Inheritance)（干扰项）' }
+            { key: 'D', text: '继承关系(Inheritance)' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '包图包含包、构成关系和依赖关系，继承关系主要出现在类图中。',
@@ -778,7 +778,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '展示分层架构中各层的包组织和依赖关系' },
             { key: 'B', text: '展示数据库表之间的关系' },
             { key: 'C', text: '展示用户操作的业务流程' },
-            { key: 'D', text: '展示系统的网络拓扑结构（干扰项）' }
+            { key: 'D', text: '展示系统的网络拓扑结构' }
         ],
         correctAnswer: 'A',
         explanation: '包图示例主要展示分层架构中包的组织方式和层间依赖关系。',
@@ -795,7 +795,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '展示系统中各组件的接口定义和依赖关系，评估变更影响范围' },
             { key: 'B', text: '展示数据流在系统中的传递路径' },
             { key: 'C', text: '展示用户的操作权限分配' },
-            { key: 'D', text: '展示系统的性能监控指标（干扰项）' }
+            { key: 'D', text: '展示系统的性能监控指标' }
         ],
         correctAnswer: 'A',
         explanation: '组件图的核心作用是展示组件间的依赖关系，帮助评估变更影响和制定设计规约。',
@@ -812,7 +812,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '变换型和事务型数据流到程序结构的映射关系' },
             { key: 'B', text: '对象之间的继承关系' },
             { key: 'C', text: '用户界面的页面跳转流程' },
-            { key: 'D', text: '数据库的备份恢复策略（干扰项）' }
+            { key: 'D', text: '数据库的备份恢复策略' }
         ],
         correctAnswer: 'A',
         explanation: '数据流映射图展示如何将数据流图中的数据流转换为程序的模块结构。',
@@ -829,7 +829,7 @@ const softwareDesignPart3 = [
             { key: 'A', text: '建模方法（对象模型 vs 功能模型）' },
             { key: 'B', text: '抽象机制（封装继承多态 vs 功能分解）' },
             { key: 'C', text: '设计原则（高内聚低耦合的实现方式）' },
-            { key: 'D', text: '开发工具（IDE vs 文本编辑器）（干扰项）' }
+            { key: 'D', text: '开发工具（IDE vs 文本编辑器）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '两种方法的对比主要在建模方法、抽象机制和设计原则等方法论层面，开发工具不是本质区别。',
@@ -916,7 +916,7 @@ const softwareDesignPart4 = [
             { key: 'B', text: '可替换（层次可独立替换）' },
             { key: 'C', text: '可复用（层次可跨系统重用）' },
             { key: 'D', text: '标准化（支持接口标准化）' },
-            { key: 'E', text: '高性能（减少系统响应时间）（干扰项）' }
+            { key: 'E', text: '高性能（减少系统响应时间）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '分层模式的特点在于架构组织的优势，高性能不是分层模式的直接特点。',
@@ -933,7 +933,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '入口点（Controller vs View）' },
             { key: 'B', text: '视图-模型关系（直接访问 vs 中介 vs 双向绑定）' },
             { key: 'C', text: '典型应用（SmallTalk vs WPF vs AngularJS）' },
-            { key: 'D', text: '开发成本（项目预算对比）（干扰项）' }
+            { key: 'D', text: '开发成本（项目预算对比）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '架构模式对比关注技术特征和应用场景，开发成本不是架构模式的核心对比维度。',
@@ -950,7 +950,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '过滤器（处理步骤封装）' },
             { key: 'B', text: '管道（数据流动通道）' },
             { key: 'C', text: '数据源/数据汇（起点/终点）' },
-            { key: 'D', text: '控制器（流程控制）（干扰项）' }
+            { key: 'D', text: '控制器（流程控制）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '管道过滤器模式包含过滤器、管道和数据源汇，控制器不是此模式的标准组件。',
@@ -966,7 +966,7 @@ const softwareDesignPart4 = [
         options: [
             { key: 'A', text: '主动过滤器（主动拉取数据）' },
             { key: 'B', text: '被动过滤器（等待数据推送）' },
-            { key: 'C', text: '智能过滤器（AI驱动过滤）（干扰项）' }
+            { key: 'C', text: '智能过滤器（AI驱动过滤）' }
         ],
         correctAnswer: 'A,B',
         explanation: '过滤器按工作方式分为主动和被动两种类型，智能过滤器不是标准分类。',
@@ -983,7 +983,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '业务逻辑位置（Service层 vs Domain层）' },
             { key: 'B', text: '设计优点（易于理解 vs 高内聚）' },
             { key: 'C', text: '开发复杂度（简单 vs 复杂）' },
-            { key: 'D', text: '运行性能（高性能 vs 低性能）（干扰项）' }
+            { key: 'D', text: '运行性能（高性能 vs 低性能）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '领域模型对比关注设计特征和开发特点，运行性能不是两种模型的主要区别。',
@@ -1000,7 +1000,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '网络协议的分层结构，从物理层到应用层的标准化组织' },
             { key: 'B', text: '软件开发的生命周期阶段' },
             { key: 'C', text: '数据库的存储层次结构' },
-            { key: 'D', text: '用户界面的设计层次（干扰项）' }
+            { key: 'D', text: '用户界面的设计层次' }
         ],
         correctAnswer: 'A',
         explanation: 'OSI七层模型是网络协议分层架构的经典案例，展示了分层设计的思想。',
@@ -1017,7 +1017,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: 'SaaS（软件即服务）、PaaS（平台即服务）、IaaS（基础设施即服务）' },
             { key: 'B', text: '表示层、业务层、数据层' },
             { key: 'C', text: '用户层、应用层、系统层' },
-            { key: 'D', text: '前端、中间件、后端（干扰项）' }
+            { key: 'D', text: '前端、中间件、后端' }
         ],
         correctAnswer: 'A',
         explanation: '云计算三层架构是SaaS、PaaS、IaaS的服务化分层模式。',
@@ -1034,7 +1034,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '用户输入→Controller处理→Model更新→View显示的数据流向' },
             { key: 'B', text: '需求分析→设计→编码→测试的开发流程' },
             { key: 'C', text: '数据采集→处理→存储→分析的数据流程' },
-            { key: 'D', text: '登录→验证→授权→访问的安全流程（干扰项）' }
+            { key: 'D', text: '登录→验证→授权→访问的安全流程' }
         ],
         correctAnswer: 'A',
         explanation: 'MVC交互流程图展示了Model-View-Controller之间的数据流和控制流。',
@@ -1051,7 +1051,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '企业服务总线作为中心枢纽，连接各个异构系统和服务' },
             { key: 'B', text: '数据库集群的负载均衡架构' },
             { key: 'C', text: '用户界面的组件化设计' },
-            { key: 'D', text: '云存储的分布式架构（干扰项）' }
+            { key: 'D', text: '云存储的分布式架构' }
         ],
         correctAnswer: 'A',
         explanation: 'ESB架构图展示了企业服务总线在异构系统集成中的中心枢纽作用。',
@@ -1068,7 +1068,7 @@ const softwareDesignPart4 = [
             { key: 'A', text: '粒度层次（系统级 vs 类级）' },
             { key: 'B', text: '应用范围（特定领域 vs 通用问题）' },
             { key: 'C', text: '抽象程度（架构组织 vs 实现细节）' },
-            { key: 'D', text: '开发工具（不同IDE支持）（干扰项）' }
+            { key: 'D', text: '开发工具（不同IDE支持）' }
         ],
         correctAnswer: 'A,B,C',
         explanation: '架构风格与设计模式在粒度、范围、抽象程度等方面有本质区别，开发工具支持不是核心区别。',
@@ -1086,7 +1086,7 @@ const softwareDesignPart4 = [
             { key: 'B', text: '质量属性（性能、可靠性等）' },
             { key: 'C', text: '技术风险（实现难度和风险）' },
             { key: 'D', text: '经济效益（成本收益分析）' },
-            { key: 'E', text: '团队满意度（开发人员喜好）（干扰项）' }
+            { key: 'E', text: '团队满意度（开发人员喜好）' }
         ],
         correctAnswer: 'A,B,C,D',
         explanation: '架构评估关注技术和商业层面的客观指标，团队满意度不是架构评估的主要关注点。',
