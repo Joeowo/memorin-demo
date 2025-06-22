@@ -1,0 +1,633 @@
+// 军理合集完整知识点导入脚本 - 包含所有章节内容
+const militaryKnowledgeComplete = {
+    id: 'military_theory',
+    name: '军事理论知识库',
+    description: '军事理论课程完整知识体系',
+    areas: [
+        {
+            id: 'area_defense',
+            name: '第一章 国防概述',
+            description: '国防基础理论、法规制度、武装力量建设等核心内容',
+            color: '#667eea',
+            knowledgePoints: [
+                {
+                    id: 'mil_0001',
+                    question: '什么是国防？',
+                    answer: '国防是指国家为防备和抵抗侵略，制止武装颠覆，保卫国家的主权、统一、领土完整和安全所进行的军事及与军事有关的政治、经济、外交、科技、文化、教育等方面的活动。',
+                    explanation: '国防是国家安全的基石，涉及多个领域的综合活动。',
+                    tags: ['国防', '基本概念'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0002',
+                    question: '国防的行为主体是什么？',
+                    answer: '国防的行为主体是国家。',
+                    explanation: '国防是国家层面的行为，由国家统一组织和实施。',
+                    tags: ['国防', '行为主体'],
+                    difficulty: 1
+                },
+                {
+                    id: 'mil_0003',
+                    question: '国防的基本内容包括哪两个方面？',
+                    answer: '国防的基本内容包括国防建设和国防斗争两个方面。',
+                    explanation: '国防建设是平时的准备工作，国防斗争是战时的实际行动。',
+                    tags: ['国防', '基本内容'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0004',
+                    question: '国防的地位作用有哪三个方面？',
+                    answer: '1. 国防是国家生存与发展的安全保障。\n2. 国防是国家独立自主的前提。\n3. 国防是国家繁荣富强的重要条件。',
+                    explanation: '国防在国家发展中具有基础性、保障性作用。',
+                    tags: ['国防', '地位作用'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0005',
+                    question: '国防的类型可以分为哪两种？',
+                    answer: '分为扩张型和自卫型。',
+                    explanation: '扩张型以对外扩张为目标，自卫型以防御为主。',
+                    tags: ['国防', '类型'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0006',
+                    question: '中国古代最早的国防始于哪个朝代？',
+                    answer: '中国古代最早的国防始于夏朝。',
+                    explanation: '夏朝是中国历史上第一个奴隶制国家。',
+                    tags: ['中国国防', '历史'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0007',
+                    question: '中国现代国防具有哪四个特性？',
+                    answer: '中国现代国防具有政治性、防御性、人民性和自主性。',
+                    explanation: '这四个特性体现了中国国防的社会主义性质。',
+                    tags: ['中国国防', '特性'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0008',
+                    question: '中国国防历史给我们什么启示？',
+                    answer: '1. 政治昌明是国防巩固的根本。\n2. 经济发展是国防强大的基础。\n3. 国家统一和民族团结是国防强大的前提。',
+                    explanation: '这些启示总结了中国历史上国防建设的经验教训。',
+                    tags: ['中国国防', '历史启示'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0009',
+                    question: '现代国防的新变化体现在哪四个方面？',
+                    answer: '1. 一是范围拓展，生存安全问题和发展安全问题、传统安全问题和非传统安全问题相互交织，发展中的安全问题日益突出，维护国家统一、维护领土完整、维护发展利益任务艰巨繁重。\n2. 二是目标拓展，从打赢战争到遏制战争，从争取和平到维护和平，维护国家和平发展、维护世界和平成为国防的基本目标。\n3. 三是任务拓展，实现巩固内部安全与防范外来威胁的统一，应对传统安全威胁和新型安全挑战的统一，提高军队应对各种安全威胁、完成多样化军事任务的能力。\n4. 四是手段拓展，在立足打赢信息化局部战争的基础上，增强军事手段运用的积极性和主动性，密切配合政治、经济、外交、文化、法律等手段，实现国家的综合安全。',
+                    explanation: '现代国防面临的安全环境更加复杂，涉及领域更加广泛。',
+                    tags: ['现代国防', '新变化'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_0010',
+                    question: '什么是国防法规？',
+                    answer: '国防法规是指调整国防领域社会关系的各类法律规范的统称。',
+                    explanation: '国防法规为国防建设和国防活动提供法律依据。',
+                    tags: ['国防法规', '基本概念'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0011',
+                    question: '主要的国防法规有哪些？',
+                    answer: '1. 《中华人民共和国国防法》\n2. 《中华人民共和国兵役法》\n3. 《中华人民共和国国防教育法》\n4. 《中华人民共和国国防动员法》\n5. 《中华人民共和国人民防空法》\n6. 《中华人民共和国军事设施保护法》\n7. 《中国人民解放军文职人员条例》',
+                    explanation: '这些法规构成了中国国防法律体系的主要框架。',
+                    tags: ['国防法规', '主要法规'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0012',
+                    question: '公民的国防义务包括哪些？',
+                    answer: '兵役义务、接受国防教育的义务、保护国防设施的义务、保守国防秘密的义务、协助国防活动的义务。',
+                    explanation: '这些义务体现了全民国防的理念。',
+                    tags: ['公民义务', '国防义务'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0013',
+                    question: '《国防教育法》第15条的内容是什么？',
+                    answer: '高等学校、高级中学和相当于高级中学的学校应当将课堂教学与军事训练相结合，对学生进行国防教育。',
+                    explanation: '这条法规明确了高等院校和高中阶段学校进行国防教育的法律责任。',
+                    tags: ['国防教育法', '军事训练'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0014',
+                    question: '公民的国防权利包括哪些？',
+                    answer: '对国防建设提出建议的权利、对危害国防行为进行制止或检举的权利、获得经济损失补偿的权利。',
+                    explanation: '公民在履行国防义务的同时，也享有相应的国防权利。',
+                    tags: ['公民权利', '国防权利'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0015',
+                    question: '国防义务和国防权利是什么关系？',
+                    answer: '国防义务和国防权利是对立统一的关系。',
+                    explanation: '权利和义务相互依存，公民在享有国防权利的同时必须履行国防义务。',
+                    tags: ['权利义务', '辩证关系'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0016',
+                    question: '国防动员的决定权和发布权分别属于谁？',
+                    answer: '依照宪法和有关法律，全国人大常委会决定全国总动员或者局部动员。国家主席根据全国人大常委会的决定，发布动员令。',
+                    explanation: '这体现了国防动员决策的严肃性和权威性。',
+                    tags: ['国防动员', '权力机关'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0017',
+                    question: '什么是国防战略？其意义是什么？',
+                    answer: '国防战略是指筹划和指导国防建设与斗争全局的方略，是国家战略的组成部分。其任务是决定国防力量的建设和发展，指导国防斗争的实施，维护国家安全利益。',
+                    explanation: '国防战略是国家战略的重要组成部分，为国防建设提供总体指导。',
+                    tags: ['国防战略', '战略意义'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_0018',
+                    question: '什么是国防政策？中国实行什么样的国防政策？',
+                    answer: '国防政策是国家制定的一定时期内指导国防活动的基本行动准则。由国家依据其军事、政治、经济、科技、文化、地理及国际环境等条件制定，是国家内外政策在国防安全领域的集中体现。\n中国的社会主义国家性质，走和平发展道路的战略抉择，独立自主的和平外交政策，"和为贵"的中华文化传统，决定了中国始终不渝奉行防御性国防政策。',
+                    explanation: '中国的防御性国防政策体现了和平发展的战略选择和中华民族的文化传统。',
+                    tags: ['国防政策', '防御性'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0019',
+                    question: '中国国防政策的主要内容有哪些？',
+                    answer: '1. 坚决捍卫国家主权、安全、发展利益\n2. 坚持永不称霸、永不扩张、永不谋求势力范围\n3. 贯彻落实新时代军事战略方针\n4. 坚持走中国特色强军之路\n5. 服务构建人类命运共同体',
+                    explanation: '这些内容体现了中国国防政策的和平性、防御性特点。',
+                    tags: ['国防政策', '主要内容'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_0020',
+                    question: '新时代军事战略方针的主要内容是什么？',
+                    answer: '新时代军事战略方针坚持防御、自卫、后发制人原则，实行积极防御，坚持"人不犯我、我不犯人，人若犯我、我必犯人"，强调遏制战争与打赢战争相统一，强调战略上防御与战役战斗上进攻相统一。',
+                    explanation: '这一方针体现了中国军事战略的防御性质和灵活性。',
+                    tags: ['军事战略', '积极防御'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_0021',
+                    question: '什么是武装力量？',
+                    answer: '武装力量是指国家或政治集团所拥有的各种武装组织的总称。一般以军队为主体，由军队和其他正规与非正规的武装组织构成，是国防力量的主体。',
+                    explanation: '武装力量是国防力量的核心组成部分。',
+                    tags: ['武装力量', '基本概念'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0022',
+                    question: '中国武装力量的性质和宗旨是什么？',
+                    answer: '中国共产党是无产阶级的政党，是中国工人阶级、中国人民和中华民族的先锋队，是中国特色社会主义事业的领导核心，是各族人民根本利益的忠实代表。人民解放军全心全意为人民服务的宗旨。',
+                    explanation: '这体现了中国武装力量的人民性质和为人民服务的根本宗旨。',
+                    tags: ['武装力量', '性质宗旨'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0023',
+                    question: '中国武装力量的使命任务有哪些？',
+                    answer: '1. 维护国家领土主权和海洋权益\n2. 保持常备不懈的战备状态\n3. 开展实战化军事训练\n4. 维护重大安全领域利益\n5. 遂行反恐维稳\n6. 维护海外利益\n7. 参加抢险救灾',
+                    explanation: '这些使命任务体现了新时代武装力量职能的多样化特点。',
+                    tags: ['武装力量', '使命任务'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_0024',
+                    question: '中国武装力量由哪些部分构成？',
+                    answer: '中国人民解放军，中国人民武装警察部队，中国民兵。',
+                    explanation: '这三个部分构成了中国武装力量的完整体系。',
+                    tags: ['武装力量', '组成结构'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0025',
+                    question: '什么是中国民兵？',
+                    answer: '中国民兵是不脱离生产的群众武装组织，是中华人民共和国武装力量的组成部分，是中国人民解放军的助手和后备力量。',
+                    explanation: '民兵体现了全民皆兵的思想，是人民战争的重要力量。',
+                    tags: ['民兵', '群众武装'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_0026',
+                    question: '什么是国防动员？如何分类？',
+                    answer: '国防动员是指国家为应对战争或其他安全威胁，使社会诸领域的全部或部分由平时状态转入战时状态或紧急状态的活动。根据国防动员的规模，一般分为总动员和局部动员。',
+                    explanation: '国防动员是战争准备的重要内容。',
+                    tags: ['国防动员', '分类'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_0027',
+                    question: '国防动员的主要内容包括哪些？',
+                    answer: '国防动员的主要内容包括武装力量动员、国民经济动员、人民防空动员、交通战备动员和政治动员。',
+                    explanation: '这五个方面构成了国防动员的完整体系。',
+                    tags: ['国防动员', '主要内容'],
+                    difficulty: 3
+                }
+            ]
+        },
+        {
+            id: 'area_security',
+            name: '第二章 国家安全',
+            description: '总体国家安全观、新兴安全领域、国际战略形势分析',
+            color: '#764ba2',
+            knowledgePoints: [
+                {
+                    id: 'mil_1001',
+                    question: '总体国家安全观"十个坚持"的内容是什么？',
+                    answer: '（1）坚持党对国家安全工作的绝对领导\n（2）坚持中国特色国家安全道路\n（3）坚持以人民安全为宗旨\n（4）坚持统筹发展和安全\n（5）坚持把政治安全放在首要位置\n（6）坚持统筹推进各领域安全\n（7）坚持把防范化解国家安全风险摆在突出位置\n（8）坚持推进国际共同安全\n（9）坚持推进国家安全体系和能力现代化\n（10）坚持加强国家安全干部队伍建设',
+                    explanation: '这十个坚持构成了总体国家安全观的完整体系。',
+                    tags: ['总体国家安全观', '十个坚持'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_1002',
+                    question: '新兴领域的国家安全包括哪些？',
+                    answer: '1. 网络空间安全\n2. 外层空间安全\n3. 国际海底领域安全\n4. 极地安全\n5. 生物安全',
+                    explanation: '随着科技发展和全球化进程，国家安全的内涵不断扩展。',
+                    tags: ['新兴领域', '国家安全'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_1003',
+                    question: '国际战略形势的总体表现是什么？',
+                    answer: '世界多极化进程加快，经济全球化进程出现波折，大国战略博弈更加激烈，全球性问题和挑战空前增多。',
+                    explanation: '当前国际形势复杂多变，各种因素相互交织。',
+                    tags: ['国际战略', '形势判断'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_1004',
+                    question: '当今国际战略格局演变的特点是什么？',
+                    answer: '当今国际战略格局演变呈现西方与新兴大国消长竞合。',
+                    explanation: '国际力量对比发生深刻变化。',
+                    tags: ['国际格局', '大国关系'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_1005',
+                    question: '全球性问题和挑战主要体现在哪四个方面？',
+                    answer: '第一，恐怖主义威胁不减，呈现组织形态国家化、传播方式网络化、实施方式"独狼化"分散化趋势\n第二，网络成为犯罪分子和恐怖组织活动平台，黑客攻击频发\n第三，愈演愈烈的难民问题\n第四，大国在战略军备与军控领域博弈加剧',
+                    explanation: '这些全球性挑战相互关联，需要国际社会共同应对。',
+                    tags: ['全球性问题', '安全挑战'],
+                    difficulty: 4
+                }
+            ]
+        },
+        {
+            id: 'area_thought',
+            name: '第三章 军事思想',
+            description: '古代军事思想、毛泽东军事思想、习近平强军思想',
+            color: '#52c41a',
+            knowledgePoints: [
+                {
+                    id: 'mil_2001',
+                    question: '军事思想的基本特征有哪些？',
+                    answer: '政治性、实践性、时代性、民族性、继承性、创造性',
+                    explanation: '这六个特征体现了军事思想的本质属性和发展规律。',
+                    tags: ['军事思想', '基本特征'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_2002',
+                    question: '中国古代军事思想代表作《孙子兵法》的主要思想有哪些？',
+                    answer: '1. 重战、慎战、备战思想\n2. "知彼知己，百战不殆"的战争指导思想\n3. 以谋略制胜为核心的用兵思想\n4. "文武兼施，恩威并用"的治军思想\n5. 朴素唯物论和原始辩证法思想',
+                    explanation: '《孙子兵法》是世界军事思想史上的经典之作。',
+                    tags: ['孙子兵法', '古代军事思想'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_2003',
+                    question: '毛泽东军事思想的主要内容包括哪些？',
+                    answer: '1. 战争观和军事方法论\n2. 人民军队思想\n3. 人民战争思想\n4. 人民战争的战略战术思想\n5. 国防建设思想',
+                    explanation: '毛泽东军事思想是马克思主义军事理论中国化的重要成果。',
+                    tags: ['毛泽东军事思想', '主要内容'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_2004',
+                    question: '毛泽东国防建设思想的核心是什么？',
+                    answer: '实行积极防御的战略方针。',
+                    explanation: '积极防御体现了在战略上防御、战术上进攻的思想。',
+                    tags: ['国防建设', '积极防御'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_2005',
+                    question: '习近平强军思想的主要内容（十一个明确）是什么？',
+                    answer: '明确党对人民军队的绝对领导是人民军队建军之本、强军之魂，必须全面加强军队党的领导和党的建设，贯彻党领导军队的一系列根本原则和制度，确保部队绝对忠诚、绝对纯洁、绝对可靠。\n明确强国必须强军，巩固国防和强大人民军队是新时代坚持和发展中国特色社会主义、实现中华民族伟大复兴的战略支撑，人民军队必须有效履行新时代使命任务。\n明确党在新时代的强军目标是建设一支听党指挥、能打胜仗、作风优良的人民军队，到2027年实现建军一百年奋斗目标，到2035年基本实现国防和军队现代化，到本世纪中叶把人民军队建成世界一流军队。\n明确军队是要准备打仗的，必须聚焦能打仗、打胜仗，扭住强敌对手，创新军事战略指导，发展人民战争战略战术，全面加强练兵备战，坚定灵活开展军事斗争，有效塑造态势、管控危机、遏制战争、打赢战争。\n明确推进强军事业必须坚持政治建军、改革强军、科技强军、人才强军、依法治军，坚持边斗争、边备战、边建设，更加注重聚焦实战、创新驱动、体系建设、集约高效、军民融合，加强军事治理，推动高质量发展，全面提高革命化现代化正规化水平。\n明确改革是强军的必由之路，必须推进军队组织形态现代化，构建中国特色现代军事力量体系，完善中国特色社会主义军事制度。\n明确科技是核心战斗力，必须坚持自主创新战略基点，推进高水平科技自立自强，统筹推进军事理论、技术、组织、管理、文化等各方面创新，建设创新型人民军队。\n明确强军之道要在得人，必须贯彻新时代军事教育方针，推动军事人员能力素质、结构布局、开发管理全面转型升级，锻造德才兼备的高素质、专业化新型军事人才。\n明确依法治军是我们党建军治军基本方式，必须构建中国特色军事法治体系，推动治军方式根本性转变，提高国防和军队建设法治化水平。\n明确军民融合发展是兴国之举、强军之策，必须巩固提高一体化国家战略体系和能力。\n明确作风优良是我军鲜明特色和政治优势，必须全面从严治党、全面从严治军，全面锻造过硬基层，坚定不移正风肃纪反腐，大力弘扬我党我军光荣传统和优良作风，永葆人民军队性质、宗旨、本色。',
+                    explanation: '习近平强军思想是新时代国防和军队建设的科学指南，体现了强军事业的全面部署。',
+                    tags: ['习近平强军思想', '十一个明确'],
+                    difficulty: 5
+                }
+            ]
+        },
+        {
+            id: 'area_war',
+            name: '第四章 现代战争',
+            description: '战争本质特点、新军事革命、信息化战争理论',
+            color: '#fa8c16',
+            knowledgePoints: [
+                {
+                    id: 'mil_3001',
+                    question: '战争的本质可以从哪几个层面来认识？',
+                    answer: '可以从政治、经济、军事等不同层面去考察和认识。\n政治层面：战争是政治的继续，是社会政治矛盾极端尖锐化而爆发的暴力斗争\n经济层面：政治是经济的集中体现，战争与经济基础和条件密切联系\n军事层面：战争的本质都是保存自己消灭敌人',
+                    explanation: '毛泽东在《论持久战》中指出："保存自己消灭敌人这个战争的目的，就是战争的本质。"',
+                    tags: ['战争本质', '政治经济军事'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_3002',
+                    question: '战争的基本特点有哪些？',
+                    answer: '1. 激烈的暴力对抗\n2. 快速的流动变化\n3. 充满盖然性或偶然性',
+                    explanation: '这三个特点体现了战争作为武装冲突的基本属性。',
+                    tags: ['战争特点', '基本属性'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_3003',
+                    question: '什么是新军事革命？其主要标志是什么？',
+                    answer: '新军事革命是20世纪末期以来在世界范围内发生的一场以信息化为核心的全面而深刻的军事革命，是人类社会由工业化社会向信息化社会演变过程中发生的根本性变革。\n主要标志：信息化武器系统逐渐主宰战场，出现知识密集型的信息化军队，一体化联合作战成为基本作战形式，军事理论及其体系彻底革新，信息化战争最终取代机械化战争。',
+                    explanation: '新军事革命是迄今为止人类历史上影响最深刻、最广泛的一场军事革命。',
+                    tags: ['新军事革命', '信息化'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_3004',
+                    question: '中国特色军事变革的主要方面有哪些？',
+                    answer: '1. 发展方向是信息化\n2. 基本目标是建设信息化军队\n3. 基本途径是机械化与信息化的复合发展\n4. 发展步骤与国家发展战略相适应\n5. 根本动力是改革创新\n6. 根本保证是坚持中国共产党的绝对领导',
+                    explanation: '中国特色军事变革体现了中国国情和军队建设的实际需要。',
+                    tags: ['中国特色', '军事变革'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_3005',
+                    question: '机械化战争的基本特征有哪些？',
+                    answer: '1. 机动速度快\n2. 火力毁伤重\n3. 战场范围广\n4. 战争消耗大',
+                    explanation: '机械化战争以机械化武器装备为主导。',
+                    tags: ['机械化战争', '基本特征'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_3006',
+                    question: '信息化战争的定义是什么？',
+                    answer: '依托网络化信息系统，使用信息化武器装备及相应作战方法，在陆、海、空、天和网络电磁等空间及认知领域进行的以体系对抗为主要形式的战争。是信息时代战争的基本形态。',
+                    explanation: '这个定义来自《中国人民解放军军语》。',
+                    tags: ['信息化战争', '定义'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_3007',
+                    question: '信息化战争的基本特征有哪些？',
+                    answer: '1. 信息化武器装备系统成为战场主导\n2. 信息成为战斗力的倍增器\n3. 战场网络化、一体化\n4. 一体化联合作战成为基本作战形式\n5. 制信息权成为争夺的制高点',
+                    explanation: '这些特征体现了信息化战争相对于传统战争的革命性变化。',
+                    tags: ['信息化战争', '基本特征'],
+                    difficulty: 4
+                }
+            ]
+        },
+        {
+            id: 'area_equipment',
+            name: '第五章 信息化装备',
+            description: '信息化武器装备分类、作战平台、指挥系统、新概念武器',
+            color: '#722ed1',
+            knowledgePoints: [
+                {
+                    id: 'mil_4001',
+                    question: '信息化装备如何分类？',
+                    answer: '按功能可分为信息化主战武器系统和信息系统两大类。从作战体系的角度，可进一步细分为：信息化作战平台、指挥信息系统和信息化杀伤武器。',
+                    explanation: '这种分类方法体现了信息化装备在现代作战体系中的不同作用。',
+                    tags: ['信息化装备', '分类'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_4002',
+                    question: '什么是信息化作战平台？',
+                    answer: '信息化作战平台是以信息化武器控制系统为核心，具有运载、投送和管理控制功能并可作为武器依托的载体部分。',
+                    explanation: '信息化作战平台是现代武器系统的重要组成部分。',
+                    tags: ['作战平台', '定义'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_4003',
+                    question: '什么是指挥信息系统？',
+                    answer: '指挥信息系统是综合运用以计算机为核心的技术装备，实现对作战信息的获取传输、处理，保障各级指挥机构对所属部队和武器实施科学高效指挥控制的各类信息系统的统称。',
+                    explanation: '指挥信息系统是现代军队指挥控制的神经中枢。',
+                    tags: ['指挥信息系统', '定义'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_4004',
+                    question: '信息化杀伤武器主要包括哪些？',
+                    answer: '主要包括新概念武器、精确制导武器、核生化武器。',
+                    explanation: '这些武器代表了现代军事技术的最高水平。',
+                    tags: ['杀伤武器', '分类'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_4005',
+                    question: '信息化作战平台分为哪几类？',
+                    answer: '1. 陆战武器平台\n2. 空战武器平台\n3. 海战武器平台',
+                    explanation: '这种分类对应了陆海空三维战场的不同作战环境。',
+                    tags: ['作战平台', '分类'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_4006',
+                    question: '空战武器平台主要由哪些组成？',
+                    answer: '1. 战斗机\n2. 轰炸机\n3. 电子战飞机\n4. 运输机',
+                    explanation: '这些平台构成了现代空军的主要作战力量。',
+                    tags: ['空战平台', '组成'],
+                    difficulty: 2
+                },
+                {
+                    id: 'mil_4007',
+                    question: '指挥信息系统的完整定义是什么？',
+                    answer: '以计算机网络为核心，由指挥控制、情报、通信、信息对抗、综合保障等分系统组成，可对作战信息进行实时获取、传输、处理，用于保障各级指挥机构对所属部队和武器实施科学高效指挥控制的军事信息系统。',
+                    explanation: '这个定义更加完整地描述了指挥信息系统的构成和功能。',
+                    tags: ['指挥信息系统', '完整定义'],
+                    difficulty: 4
+                },
+                {
+                    id: 'mil_4008',
+                    question: '指挥信息系统的分系统类型有哪些？',
+                    answer: '1. 指挥控制系统\n2. 情报系统\n3. 通信系统\n4. 导航定位系统',
+                    explanation: '这些分系统相互配合，构成了完整的指挥信息系统。',
+                    tags: ['分系统', '类型'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_4009',
+                    question: '新概念武器主要有哪些类型？',
+                    answer: '新概念武器主要有定向能武器、动能武器、军用机器人和非致命武器等。',
+                    explanation: '新概念武器代表了未来武器发展的方向。',
+                    tags: ['新概念武器', '类型'],
+                    difficulty: 3
+                },
+                {
+                    id: 'mil_4010',
+                    question: '新概念武器的具体种类有哪些？',
+                    answer: '1. 激光技术和激光武器\n2. 微波武器\n3. 粒子束武器\n4. 动能武器\n5. 非致命武器',
+                    explanation: '这些武器利用新的物理原理和技术手段。',
+                    tags: ['新概念武器', '具体种类'],
+                    difficulty: 4
+                }
+            ]
+        }
+    ]
+};
+
+// 导入所有军理知识点的函数
+function importAllMilitaryKnowledge() {
+    try {
+        console.log('开始导入军理知识库...');
+        
+        // 检查是否已存在军理知识库
+        const existingBases = window.storageManager.getAllKnowledgeBases();
+        const existingBase = existingBases.find(base => base.id === 'military_theory_base');
+        
+        if (existingBase) {
+            const existingKnowledge = window.storageManager.getKnowledgeByBaseId('military_theory_base');
+            const confirmMessage = `⚠️ 军理知识库已存在！\n\n当前数据：\n• 知识库：${existingBase.name}\n• 知识点数量：${existingKnowledge.length}个\n\n是否要重新导入？\n（重新导入将覆盖现有数据）`;
+            
+            if (!confirm(confirmMessage)) {
+                if (window.app && window.app.showNotification) {
+                    window.app.showNotification('取消导入军理知识库', 'info');
+                } else {
+                    alert('取消导入军理知识库');
+                }
+                return;
+            }
+            
+            console.log('用户确认重新导入，将覆盖现有军理知识库数据');
+        }
+        
+        // 构建完整的知识库结构
+        const completeKnowledgeBase = {
+            ...militaryKnowledgeComplete,
+            id: 'military_theory_base',  // 设置固定的知识库ID
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+        
+        console.log('知识库结构:', completeKnowledgeBase);
+        
+        // 将知识点扁平化用于复习系统
+        const allKnowledge = completeKnowledgeBase.areas.reduce((acc, area) => {
+            return acc.concat(area.knowledgePoints.map(item => ({
+                ...item,
+                category: area.name,
+                areaId: area.id,
+                knowledgeBaseId: completeKnowledgeBase.id,  // 添加知识库ID
+                reviewCount: 0,
+                correctCount: 0,
+                nextReview: new Date().toISOString(),
+                interval: 1,
+                easeFactor: 2.5,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            })));
+        }, []);
+        
+        console.log(`准备导入 ${allKnowledge.length} 个知识点`);
+        
+        // 如果已存在，先删除旧数据
+        if (existingBase) {
+            window.storageManager.deleteKnowledgeBase('military_theory_base');
+            console.log('已删除原有军理知识库数据');
+        }
+        
+        // 使用存储管理器添加知识库
+        const result = window.storageManager.addKnowledgeBase(completeKnowledgeBase);
+        
+        if (!result) {
+            throw new Error('添加军理知识库失败');
+        }
+        
+        console.log('知识库添加成功:', result);
+        
+        // 获取现有数据并添加知识点
+        const data = window.storageManager.getData();
+        
+        // 过滤掉原有的军理知识点（如果存在）
+        const existingKnowledge = data.knowledge.filter(k => k.knowledgeBaseId !== completeKnowledgeBase.id);
+        
+        // 添加新的军理知识点
+        data.knowledge = [...existingKnowledge, ...allKnowledge];
+        
+        // 清空相关的错题和复习历史
+        data.mistakes = data.mistakes.filter(m => {
+            const knowledge = data.knowledge.find(k => k.id === m.knowledgeId);
+            return knowledge && knowledge.knowledgeBaseId !== completeKnowledgeBase.id;
+        });
+        
+        data.reviewHistory = data.reviewHistory.filter(r => {
+            const knowledge = data.knowledge.find(k => k.id === r.knowledgeId);
+            return knowledge && knowledge.knowledgeBaseId !== completeKnowledgeBase.id;
+        });
+        
+        // 更新统计数据
+        if (!data.statistics) {
+            data.statistics = {
+                totalReviews: 0,
+                correctAnswers: 0,
+                studyTime: 0,
+                streakDays: 0,
+                lastStudyDate: null
+            };
+        }
+        
+        // 保存更新后的数据
+        const success = window.storageManager.setData(data);
+        
+        if (!success) {
+            throw new Error('保存数据失败');
+        }
+        
+        console.log(`成功导入${allKnowledge.length}个军理知识点！`);
+        
+        // 显示成功消息
+        const successMessage = `✅ 军理知识库${existingBase ? '重新' : ''}导入成功！\n\n包含${allKnowledge.length}个知识点：\n- 第一章：国防概述 (27个)\n- 第二章：国家安全 (5个)\n- 第三章：军事思想 (5个)\n- 第四章：现代战争 (7个)\n- 第五章：信息化装备 (10个)`;
+        
+        if (window.app && window.app.showNotification) {
+            window.app.showNotification(successMessage, 'success');
+        } else {
+            alert(successMessage);
+        }
+        
+        // 如果知识管理器存在，立即刷新知识库列表
+        if (window.knowledgeManager) {
+            console.log('刷新知识管理器...');
+            window.knowledgeManager.refresh();
+        }
+        
+        // 如果当前在知识管理页面，切换到知识管理页面以显示新导入的知识库
+        if (window.app && window.app.currentSection !== 'knowledge') {
+            window.app.switchSection('knowledge');
+        } else if (window.app && window.app.currentSection === 'knowledge') {
+            // 如果已经在知识管理页面，强制刷新
+            window.app.loadSectionData('knowledge');
+        }
+        
+        // 更新仪表板统计
+        if (window.app && window.app.loadDashboard) {
+            window.app.loadDashboard();
+        }
+        
+    } catch (error) {
+        console.error('导入军理知识点失败：', error);
+        if (window.app && window.app.showNotification) {
+            window.app.showNotification('导入失败：' + error.message, 'error');
+        } else {
+            alert('导入失败：' + error.message);
+        }
+    }
+}
+
+// 如果在浏览器环境中，提供全局函数
+if (typeof window !== 'undefined') {
+    window.importAllMilitaryKnowledge = importAllMilitaryKnowledge;
+    window.militaryKnowledgeComplete = militaryKnowledgeComplete;
+} 

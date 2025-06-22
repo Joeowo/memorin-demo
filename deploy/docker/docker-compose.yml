@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  memorin-web:
+    build:
+      context: ../../
+      dockerfile: deploy/docker/Dockerfile
+    container_name: memorin-app
+    ports:
+      - "8080:80"
+    volumes:
+      - ../../dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    networks:
+      - memorin-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.memorin.rule=Host(`memorin.localhost`)"
+      - "traefik.http.services.memorin.loadbalancer.server.port=80"
+
+  # 可选：添加反向代理
+  traefik:
+    image: traefik:v2.10
+    container_name: memorin-proxy
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8081:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - memorin-network
+    profiles:
+      - proxy
+
+networks:
+  memorin-network:
+    driver: bridge 

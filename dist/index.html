@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorin - 本地知识复习系统</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Memorin</h1>
+                    <span class="subtitle">知识复习系统</span>
+                </div>
+                <nav class="main-nav">
+                    <ul class="nav-list">
+                        <li><a href="#" data-section="dashboard" class="nav-link active">仪表板</a></li>
+                        <li><a href="#" data-section="knowledge" class="nav-link">知识管理</a></li>
+                        <li><a href="#" data-section="review" class="nav-link">开始复习</a></li>
+                        <li><a href="#" data-section="mistakes" class="nav-link">错题本</a></li>
+                        <li><a href="#" data-section="statistics" class="nav-link">统计分析</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="main">
+        <div class="container">
+            <!-- 仪表板页面 -->
+            <section id="dashboard" class="content-section active">
+                <div class="dashboard-header">
+                    <h2>学习概览</h2>
+                    <p class="welcome-text">欢迎回到Memorin，继续您的学习之旅！</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-content">
+                            <h3 id="total-knowledge">0</h3>
+                            <p>总知识点</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <h3 id="today-review">0</h3>
+                            <p>今日待复习</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3 id="mastered-count">0</h3>
+                            <p>已掌握</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">❌</div>
+                        <div class="stat-content">
+                            <h3 id="mistakes-count">0</h3>
+                            <p>错题数量</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>快速操作</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" data-action="start-review">开始复习</button>
+                        <button class="btn btn-secondary" data-action="add-knowledge">添加知识点</button>
+                        <button class="btn btn-secondary" data-action="review-mistakes">复习错题</button>
+                        <button class="btn btn-success" onclick="importAllMilitaryKnowledge()">导入军理知识库</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 知识管理页面 -->
+            <section id="knowledge" class="content-section">
+                <!-- 知识库选择视图 -->
+                <div id="knowledge-base-view" class="knowledge-view active">
+                    <div class="section-header">
+                        <h2>📚 知识库管理</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" id="add-knowledge-base-btn">创建知识库</button>
+                            <button class="btn btn-secondary" id="import-btn">导入数据</button>
+                            <button class="btn btn-secondary" id="export-btn">导出数据</button>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-base-grid" id="knowledge-base-grid">
+                        <!-- 知识库卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 知识区选择视图 -->
+                <div id="knowledge-area-view" class="knowledge-view">
+                    <div class="section-header">
+                        <button class="btn btn-ghost back-btn" id="back-to-base">
+                            <span>← 返回知识库</span>
+                        </button>
+                        <h2 id="current-base-title">知识库名称</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" id="add-knowledge-area-btn">添加知识区</button>
+                            <button class="btn btn-secondary" id="review-all-base-btn">复习整个知识库</button>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-area-grid" id="knowledge-area-grid">
+                        <!-- 知识区卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 知识点列表视图 -->
+                <div id="knowledge-points-view" class="knowledge-view">
+                    <div class="section-header">
+                        <button class="btn btn-ghost back-btn" id="back-to-area">
+                            <span>← 返回知识区</span>
+                        </button>
+                        <h2 id="current-area-title">知识区名称</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" id="add-knowledge-point-btn">添加知识点</button>
+                            <button class="btn btn-success" id="review-area-btn">开始复习本知识区</button>
+                            <button class="btn btn-secondary" id="expand-all-btn">全部展开</button>
+                            <button class="btn btn-secondary" id="collapse-all-btn" style="display: none;">全部收起</button>
+                        </div>
+                    </div>
+                    
+                    <div class="knowledge-controls">
+                        <div class="search-box">
+                            <input type="text" id="search-input" placeholder="搜索知识点...">
+                        </div>
+                        <div class="filter-controls">
+                            <select id="tag-filter" aria-label="按标签筛选">
+                                <option value="">所有标签</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-points-list" id="knowledge-points-list">
+                        <!-- 知识点列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 复习页面 -->
+            <section id="review" class="content-section">
+                <div class="review-container">
+                    <div class="review-header">
+                        <h2>复习模式</h2>
+                        <div class="review-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="review-progress"></div>
+                            </div>
+                            <span class="progress-text" id="progress-text">0/0</span>
+                        </div>
+                    </div>
+
+                    <div class="review-modes" id="review-modes">
+                        <h3>选择复习模式</h3>
+                        <div class="mode-buttons">
+                            <button class="btn btn-primary mode-btn" data-mode="scheduled">顺序复习</button>
+                            <button class="btn btn-secondary mode-btn" data-mode="random">随机复习</button>
+                            <button class="btn btn-secondary mode-btn" data-mode="category" id="category-mode-btn">分类复习</button>
+                        </div>
+                    </div>
+
+                    <div class="review-card" id="review-card" style="display: none;">
+                        <!-- 左侧导航按钮 -->
+                        <button class="btn btn-outline nav-btn nav-btn-left" id="prev-question-btn" title="上一题 (快捷键: ←)" disabled>
+                            <span>←</span>
+                        </button>
+                        
+                        <!-- 右侧导航按钮 -->
+                        <button class="btn btn-outline nav-btn nav-btn-right" id="next-question-btn" title="下一题 (快捷键: →)" disabled>
+                            <span>→</span>
+                        </button>
+                        
+                        <div class="card-content">
+                            <div class="question-section">
+                                <h3>题目</h3>
+                                <div class="question-text" id="question-text"></div>
+                            </div>
+                            
+                            <div class="user-answer-section">
+                                <h3>我的答案</h3>
+                                <textarea class="user-answer-input" id="user-answer-input" 
+                                         placeholder="请在此输入您的答案..."></textarea>
+                            </div>
+                            
+                            <!-- 笔记区域 -->
+                            <div class="note-section" id="note-section">
+                                <div class="note-header">
+                                    <h3>📄 笔记</h3>
+                                    <button class="btn btn-sm btn-outline" id="toggle-note-btn" onclick="window.reviewManager.toggleNote()">展开</button>
+                                </div>
+                                <div class="note-content collapsed" id="note-content">
+                                    <textarea class="note-textarea" id="review-note-input" 
+                                             placeholder="在此添加您的笔记..."
+                                             onblur="window.reviewManager.updateCurrentNote(this.value)"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="answer-section" id="answer-section" style="display: none;">
+                                <h3>标准答案</h3>
+                                <div class="answer-text" id="answer-text"></div>
+                                <div class="explanation-text" id="explanation-text"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <!-- 底部：显示答案和自评功能 -->
+                            <div class="answer-section-controls">
+                                <div class="show-answer-container">
+                                    <button class="btn btn-secondary" id="show-answer-btn" title="快捷键: Ctrl+Enter">显示答案</button>
+                                </div>
+                                
+                                <div class="rating-section" id="rating-buttons" style="display: none;">
+                                    <div class="rating-buttons">
+                                        <span class="rating-label">自评：</span>
+                                        <button class="btn btn-danger" data-rating="1">错误</button>
+                                        <button class="btn btn-warning" data-rating="2">模糊</button>
+                                        <button class="btn btn-success" data-rating="3">正确</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 评分输入区域 -->
+                                <div class="score-section" id="score-section" style="display: none;">
+                                    <div class="score-input-container">
+                                        <label for="score-input">评分 (1-5分)：</label>
+                                        <input type="number" id="score-input" min="1" max="5" step="1" 
+                                               placeholder="1-5" onchange="window.reviewManager.updateCurrentScore(this.value)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 错题本页面 -->
+            <section id="mistakes" class="content-section">
+                <div class="section-header">
+                    <h2>错题本</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="review-all-mistakes">复习所有错题</button>
+                        <button class="btn btn-secondary" id="clear-resolved-mistakes">清除已掌握</button>
+                    </div>
+                </div>
+                
+                <!-- 错题统计概览 -->
+                <div class="mistakes-overview" id="mistakes-overview">
+                    <!-- 统计信息将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 知识区分类标签 -->
+                <div class="mistakes-filter">
+                    <div class="filter-tabs" id="mistakes-filter-tabs">
+                        <button class="filter-tab active" data-area="all">全部错题</button>
+                        <!-- 知识区标签将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 错题列表容器 -->
+                <div class="mistakes-container">
+                    <!-- 所有错题视图 -->
+                    <div class="mistakes-view active" id="mistakes-view-all">
+                        <div class="mistakes-list" id="mistakes-list-all">
+                            <!-- 所有错题列表 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 按知识区分类的错题视图 -->
+                    <div class="mistakes-areas" id="mistakes-areas">
+                        <!-- 知识区错题列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 统计分析页面 -->
+            <section id="statistics" class="content-section">
+                <div class="section-header">
+                    <h2>统计分析</h2>
+                    <button class="btn btn-secondary" onclick="window.statisticsManager.exportReport()">导出报告</button>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="chart-container">
+                        <h3>学习进度</h3>
+                        <canvas id="progress-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>正确率趋势</h3>
+                        <canvas id="accuracy-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="detailed-stats" id="detailed-stats">
+                    <!-- 详细统计将通过JavaScript生成 -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 模态框 -->
+    <div class="modal" id="knowledge-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">添加知识点</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="knowledge-form">
+                    <div class="form-group">
+                        <label for="question-input">题目</label>
+                        <textarea id="question-input" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="answer-input">答案</label>
+                        <textarea id="answer-input" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="explanation-input">解析</label>
+                        <textarea id="explanation-input"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="note-input">笔记</label>
+                        <textarea id="note-input" placeholder="添加您的个人笔记..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category-input">分类</label>
+                            <input type="text" id="category-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="difficulty-input">难度</label>
+                            <select id="difficulty-input">
+                                <option value="1">简单</option>
+                                <option value="2">较易</option>
+                                <option value="3" selected>中等</option>
+                                <option value="4">较难</option>
+                                <option value="5">困难</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags-input">标签（用逗号分隔）</label>
+                        <input type="text" id="tags-input">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-btn">取消</button>
+                <button type="submit" class="btn btn-primary" id="save-btn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/question-list-generator.js"></script>
+    <script src="js/knowledge.js"></script>
+    <script src="js/review.js"></script>
+    <script src="js/statistics.js"></script>
+    <script src="js/military-import-complete.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
