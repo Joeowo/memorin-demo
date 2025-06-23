@@ -1325,4 +1325,120 @@ function importSoftwareProcessManagement() {
 // 将新导入函数添加到全局作用域
 window.importSoftwareProcessManagement = importSoftwareProcessManagement;
 
-console.log('软件过程与项目管理导入功能已加载'); 
+console.log('软件过程与项目管理导入功能已加载');
+
+// 统一的软件工程知识库导入函数
+async function importAllSoftwareEngineeringKnowledge() {
+    try {
+        console.log('开始统一导入软件工程知识库...');
+        
+        // 显示确认对话框
+        const confirmMessage = `🚀 即将导入完整的软件工程知识库\n\n包含以下模块：\n• 软件工程基础知识库\n• 软件工程概要\n• 软件过程与项目管理\n• 需求分析\n• 软件概要设计\n• 软件详细设计\n• 软件实现\n• 软件部署运维\n\n此操作可能需要几分钟时间，是否继续？`;
+        
+        if (!confirm(confirmMessage)) {
+            if (window.app && window.app.showNotification) {
+                window.app.showNotification('取消导入软件工程知识库', 'info');
+            } else {
+                alert('取消导入软件工程知识库');
+            }
+            return;
+        }
+        
+        let successCount = 0;
+        let failCount = 0;
+        const errors = [];
+        
+        // 显示进度通知
+        if (window.app && window.app.showNotification) {
+            window.app.showNotification('正在导入软件工程知识库，请稍候...', 'info');
+        }
+        
+        // 依次调用各个导入函数
+        const importFunctions = [
+            { name: '软件工程基础知识库', func: () => importSoftwareEngineeringKnowledge() },
+            { name: '软件工程概要', func: () => importSoftwareEngineeringOverview() },
+            { name: '软件过程与项目管理', func: () => importSoftwareProcessManagement() },
+            { name: '需求分析', func: () => importRequirementsAnalysis() },
+            { name: '软件概要设计', func: () => importSoftwareDesign() },
+            { name: '软件详细设计', func: () => importDetailedDesign() },
+            { name: '软件实现', func: () => importSoftwareImplementation() },
+            { name: '软件部署运维', func: () => importSoftwareDeployment() }
+        ];
+        
+        for (const item of importFunctions) {
+            try {
+                console.log(`正在导入：${item.name}...`);
+                
+                // 检查函数是否存在
+                if (typeof item.func === 'function') {
+                    // 对于原本有confirm的函数，我们需要暂时禁用确认对话框
+                    const originalConfirm = window.confirm;
+                    window.confirm = () => true; // 临时设置为总是返回true
+                    
+                    await item.func();
+                    
+                    // 恢复原始confirm函数
+                    window.confirm = originalConfirm;
+                    
+                    successCount++;
+                    console.log(`✅ ${item.name} 导入成功`);
+                } else {
+                    console.warn(`⚠️ ${item.name} 导入函数不存在，跳过`);
+                    failCount++;
+                    errors.push(`${item.name}: 导入函数不存在`);
+                }
+                
+                // 添加小延迟，避免操作过快
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+            } catch (error) {
+                console.error(`❌ ${item.name} 导入失败:`, error);
+                failCount++;
+                errors.push(`${item.name}: ${error.message}`);
+            }
+        }
+        
+        // 显示最终结果
+        const totalCount = successCount + failCount;
+        let resultMessage = `🎉 软件工程知识库导入完成！\n\n统计信息：\n• 成功导入：${successCount}个模块\n• 失败：${failCount}个模块\n• 总计：${totalCount}个模块`;
+        
+        if (errors.length > 0) {
+            resultMessage += `\n\n失败详情：\n${errors.map(err => `• ${err}`).join('\n')}`;
+        }
+        
+        if (window.app && window.app.showNotification) {
+            window.app.showNotification(resultMessage, successCount > 0 ? 'success' : 'error');
+        } else {
+            alert(resultMessage);
+        }
+        
+        // 刷新相关组件
+        if (window.knowledgeManager) {
+            window.knowledgeManager.refresh();
+        }
+        
+        if (window.app && window.app.currentSection === 'knowledge') {
+            window.app.loadSectionData('knowledge');
+        }
+        
+        if (window.app && window.app.loadDashboard) {
+            window.app.loadDashboard();
+        }
+        
+        console.log('软件工程知识库统一导入完成');
+        
+    } catch (error) {
+        console.error('统一导入软件工程知识库失败:', error);
+        const errorMessage = '❌ 统一导入软件工程知识库失败：' + error.message;
+        if (window.app && window.app.showNotification) {
+            window.app.showNotification(errorMessage, 'error');
+        } else {
+            alert(errorMessage);
+        }
+    }
+}
+
+// 将统一导入函数添加到全局作用域
+window.importAllSoftwareEngineeringKnowledge = importAllSoftwareEngineeringKnowledge;
+
+console.log('软件工程知识库统一导入功能已加载'); 
