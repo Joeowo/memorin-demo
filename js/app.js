@@ -122,8 +122,25 @@ class MemoryApp {
                 break;
             case 'review':
                 if (window.reviewManager) {
-                    // 只有在不是知识区模式时才初始化复习页面
-                    if (!window.reviewManager.reviewMode || !window.reviewManager.reviewMode.startsWith('area-')) {
+                    // 检查是否已有活跃的复习会话
+                    const hasActiveSession = window.reviewManager.currentReviewList && 
+                                           window.reviewManager.currentReviewList.length > 0 &&
+                                           window.reviewManager.reviewMode;
+                    
+                    console.log('复习页面加载检查:', {
+                        hasActiveSession: hasActiveSession,
+                        reviewMode: window.reviewManager.reviewMode,
+                        currentReviewListLength: window.reviewManager.currentReviewList?.length || 0
+                    });
+                    
+                    if (hasActiveSession) {
+                        // 如果有活跃的复习会话，直接显示复习卡片
+                        console.log('检测到活跃复习会话，继续现有会话');
+                        window.reviewManager.showReviewCard();
+                        window.reviewManager.loadCurrentKnowledge();
+                    } else {
+                        // 没有活跃会话时才初始化复习页面
+                        console.log('没有活跃会话，初始化复习页面');
                         window.reviewManager.initReview();
                     }
                 }

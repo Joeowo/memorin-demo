@@ -165,8 +165,8 @@ class QuestionListGenerator {
      * 最终处理
      */
     async applyFinalProcessing(questions, config) {
-        // 添加元数据
-        return questions.map((question, index) => ({
+        // 1. 添加元数据
+        let processedQuestions = questions.map((question, index) => ({
             ...question,
             _meta: {
                 index: index,
@@ -175,6 +175,26 @@ class QuestionListGenerator {
                 totalCount: questions.length
             }
         }));
+        
+        // 2. 应用选择题打乱处理（方案A：批量处理）
+        if (window.ChoiceProcessor && ChoiceProcessor.config.enabled) {
+            console.log('[题目列表生成] 开始应用选择题打乱处理...');
+            
+            const beforeStats = ChoiceProcessor.getChoiceStatistics(processedQuestions);
+            console.log('[题目列表生成] 打乱前统计:', beforeStats);
+            
+            processedQuestions = ChoiceProcessor.batchShuffleChoiceQuestions(processedQuestions, {
+                enabled: true,
+                logSummary: true
+            });
+            
+            const afterStats = ChoiceProcessor.getChoiceStatistics(processedQuestions);
+            console.log('[题目列表生成] 打乱后统计:', afterStats);
+        } else {
+            console.log('[题目列表生成] 选择题打乱功能未启用或模块未加载');
+        }
+        
+        return processedQuestions;
     }
 
     // ======================== 默认策略注册 ========================
@@ -194,7 +214,7 @@ class QuestionListGenerator {
             if (!baseId) throw new Error('knowledge-base策略需要baseId参数');
             
             const allKnowledge = window.storageManager.getAllKnowledge();
-            return allKnowledge.filter(k => k.baseId === baseId);
+            return allKnowledge.filter(k => k.knowledgeBaseId === baseId);
         });
 
         // 知识区
@@ -226,7 +246,7 @@ class QuestionListGenerator {
             
             return activeMistakes
                 .map(mistake => window.storageManager.getKnowledgeById(mistake.knowledgeId))
-                .filter(k => k && k.baseId === baseId);
+                .filter(k => k && k.knowledgeBaseId === baseId);
         });
 
         // 错题 - 按知识区
@@ -483,7 +503,10 @@ class QuestionListTemplates {
             },
             filters: options.onlyDue ? [{ type: 'due-for-review' }] : [],
             sorter: {
-                type: options.random ? 'random' : 'by-review-time'
+                // random=true: 随机复习（题目随机排列）
+                // random=false: 顺序复习（题目按创建时间排列）
+                // 注意：无论哪种模式，选择题都会调用打乱功能
+                type: options.random ? 'random' : 'by-created-time'
             },
             limiter: options.limit ? {
                 type: 'fixed-count',

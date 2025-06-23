@@ -90,6 +90,9 @@
                         <button class="btn btn-info" onclick="importSoftwareImplementation()">⚙️ 导入软件实现</button>
                         <button class="btn btn-info" onclick="importSoftwareTesting()">🧪 导入软件测试</button>
                         <button class="btn btn-info" onclick="importSoftwareDeployment()">🚀 导入软件部署运维</button>
+                        <button class="btn btn-warning" onclick="executeDataRestructure()">🔧 执行数据重构</button>
+                        <button class="btn btn-secondary" onclick="testDataRestructure()">🧪 测试数据一致性</button>
+                        <button class="btn btn-secondary" onclick="quickFixMappings()">⚡ 快速修复映射</button>
                         <button class="btn btn-warning" onclick="clearAllDataWithConfirm()">🗑️ 清空所有数据</button>
                     </div>
                     <div class="data-info">
@@ -344,8 +347,8 @@
                     <div class="review-modes" id="review-modes">
                         <h3>选择复习模式</h3>
                         <div class="mode-buttons">
-                            <button class="btn btn-primary mode-btn" data-mode="scheduled">顺序复习</button>
-                            <button class="btn btn-secondary mode-btn" data-mode="random">随机复习</button>
+                            <button class="btn btn-primary mode-btn" data-mode="scheduled" title="题目按原始顺序排列，选择题答案自动打乱">顺序复习</button>
+                            <button class="btn btn-secondary mode-btn" data-mode="random" title="题目随机排列，选择题答案自动打乱">随机复习</button>
                             <button class="btn btn-secondary mode-btn" data-mode="category" id="category-mode-btn">分类复习</button>
                         </div>
                     </div>
@@ -379,7 +382,7 @@
                                                       placeholder="请输入您的答案..." 
                                                       rows="3"></textarea>
                                             <div class="input-hint">
-                                                <span>💡 提示：按 Ctrl+Enter 快速显示答案</span>
+                                                <span>💡 提示：按 Ctrl+Enter 快速显示/隐藏答案</span>
                                             </div>
                                         </div>
                                     </div>
@@ -427,7 +430,7 @@
                             <!-- 底部：显示答案和自评功能 -->
                             <div class="answer-section-controls">
                                 <div class="show-answer-container">
-                                    <button class="btn btn-secondary" id="show-answer-btn" title="快捷键: Ctrl+Enter">显示答案</button>
+                                    <button class="btn btn-secondary" id="show-answer-btn" title="快捷键: Ctrl+Enter 显示/隐藏答案">显示答案</button>
                                 </div>
                                 
                                 <div class="rating-section" id="rating-buttons" style="display: none;">
@@ -575,7 +578,9 @@
     <!-- JavaScript文件 -->
     <script src="js/utils.js?v=1.0.1"></script>
     <script src="js/storage.js?v=1.0.1"></script>
+    <script src="js/choice-processor.js?v=1.0.1"></script>
     <script src="js/question-list-generator.js?v=1.0.1"></script>
+    <script src="js/data-migration.js?v=1.0.1"></script>
     <script src="js/knowledge.js?v=1.0.1"></script>
     <script src="js/review.js?v=1.0.1"></script>
     <script src="js/statistics.js?v=1.0.1"></script>
@@ -587,6 +592,10 @@
     <script src="js/imports/software-implementation-import.js"></script>
     <script src="js/imports/software-testing-import.js"></script>
     <script src="js/imports/software-deployment-import.js"></script>
+    <script src="fix_knowledge_base_ids.js"></script>
+    <script src="test_restructure.js"></script>
+    <script src="test_knowledge_base_review.js"></script>
+    <script src="test_choice_shuffle.js"></script>
     <script src="js/app.js?v=1.0.1"></script>
     
     <!-- 清空数据功能 - 确保立即可用 -->

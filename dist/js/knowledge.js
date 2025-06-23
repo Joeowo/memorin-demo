@@ -289,26 +289,72 @@ class KnowledgeManager {
     }
 
     // 开始知识区复习
-    startAreaReview(areaId = null) {
-        const targetAreaId = areaId || this.currentArea?.id;
-        if (!targetAreaId) {
-            console.error('startAreaReview: 无法确定知识区ID');
-            return;
-        }
+    async startAreaReview(areaId = null) {
+        try {
+            const targetAreaId = areaId || this.currentArea?.id;
+            if (!targetAreaId) {
+                console.error('startAreaReview: 无法确定知识区ID');
+                window.app.showNotification('请先选择要复习的知识区', 'warning');
+                return;
+            }
 
-        // 获取该知识区的所有知识点
-        const allKnowledge = window.storageManager.getAllKnowledge();
-        const areaPoints = allKnowledge.filter(point => point.areaId === targetAreaId);
-        
-        if (areaPoints.length === 0) {
-            window.app.showNotification('该知识区暂无知识点', 'warning');
-            return;
-        }
+            console.log(`=== 开始知识区复习 ===`);
+            console.log(`目标知识区ID: ${targetAreaId}`);
 
-        // 设置知识区复习模式选择并切换到复习页面
-        window.reviewManager.setAreaReviewMode(areaPoints);
-        window.app.showSection('review');
-        window.app.showNotification(`准备复习：${this.currentArea?.name || '选定知识区'}（${areaPoints.length}个知识点）`, 'success');
+            // 获取当前知识库ID
+            const currentBaseId = this.currentBase?.id || window.storageManager.getCurrentKnowledgeBase()?.id;
+            if (!currentBaseId) {
+                console.error('无法确定当前知识库ID');
+                window.app.showNotification('请先选择知识库', 'warning');
+                return;
+            }
+
+            console.log(`当前知识库ID: ${currentBaseId}`);
+
+            // 获取知识区信息（传递知识库ID和知识区ID两个参数）
+            const area = window.storageManager.getKnowledgeAreaById(currentBaseId, targetAreaId);
+            if (!area) {
+                console.error(`知识区 ${targetAreaId} 在知识库 ${currentBaseId} 中不存在`);
+                window.app.showNotification('知识区不存在', 'error');
+                return;
+            }
+
+            console.log(`知识区: ${area.name}`);
+
+            // 预检查知识区中的知识点数量
+            const allKnowledge = window.storageManager.getAllKnowledge();
+            const areaPoints = allKnowledge.filter(point => point.areaId === targetAreaId);
+            
+            console.log(`知识区 "${area.name}" 中有 ${areaPoints.length} 个知识点`);
+
+            if (areaPoints.length === 0) {
+                const message = `知识区 "${area.name}" 中没有知识点，无法开始复习`;
+                console.warn(message);
+                window.app.showNotification(message, 'warning');
+                return;
+            }
+
+            // 使用统一的复习管理器启动知识区复习
+            const reviewOptions = {
+                random: false,  // 默认顺序复习，用户可以在界面中选择
+                limit: null     // 不限制题目数量，复习所有知识点
+            };
+
+            console.log('🚀 启动知识区复习管理器，配置:', reviewOptions);
+            await window.reviewManager.reviewKnowledgeArea(targetAreaId, reviewOptions);
+            
+            // 切换到复习页面
+            window.app.showSection('review');
+            
+            // 显示成功通知
+            const message = `准备复习知识区：${area.name}（${areaPoints.length}个知识点）`;
+            console.log('✅ ' + message);
+            window.app.showNotification(message, 'success');
+
+        } catch (error) {
+            console.error('❌ 开始知识区复习失败:', error);
+            window.app.showNotification('开始复习失败：' + error.message, 'error');
+        }
     }
 
     // 开始知识库复习
@@ -320,8 +366,8 @@ class KnowledgeManager {
 
         try {
             // 使用新的题目列表生成器复习整个知识库
-            // 使用固定的知识库ID，因为当前只有一个军理知识库
-            const baseId = 'military_theory_base';
+            // 使用当前选择的知识库ID
+            const baseId = this.currentBase.id;
             
             await window.reviewManager.reviewKnowledgeBase(baseId, {
                 onlyDue: false,  // 复习全部题目，不只是到期的

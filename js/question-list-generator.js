@@ -165,8 +165,8 @@ class QuestionListGenerator {
      * 最终处理
      */
     async applyFinalProcessing(questions, config) {
-        // 添加元数据
-        return questions.map((question, index) => ({
+        // 1. 添加元数据
+        let processedQuestions = questions.map((question, index) => ({
             ...question,
             _meta: {
                 index: index,
@@ -175,6 +175,26 @@ class QuestionListGenerator {
                 totalCount: questions.length
             }
         }));
+        
+        // 2. 应用选择题打乱处理（方案A：批量处理）
+        if (window.ChoiceProcessor && ChoiceProcessor.config.enabled) {
+            console.log('[题目列表生成] 开始应用选择题打乱处理...');
+            
+            const beforeStats = ChoiceProcessor.getChoiceStatistics(processedQuestions);
+            console.log('[题目列表生成] 打乱前统计:', beforeStats);
+            
+            processedQuestions = ChoiceProcessor.batchShuffleChoiceQuestions(processedQuestions, {
+                enabled: true,
+                logSummary: true
+            });
+            
+            const afterStats = ChoiceProcessor.getChoiceStatistics(processedQuestions);
+            console.log('[题目列表生成] 打乱后统计:', afterStats);
+        } else {
+            console.log('[题目列表生成] 选择题打乱功能未启用或模块未加载');
+        }
+        
+        return processedQuestions;
     }
 
     // ======================== 默认策略注册 ========================
@@ -193,8 +213,27 @@ class QuestionListGenerator {
             const { baseId } = params;
             if (!baseId) throw new Error('knowledge-base策略需要baseId参数');
             
-            const allKnowledge = window.storageManager.getAllKnowledge();
-            return allKnowledge.filter(k => k.baseId === baseId);
+            console.log(`题目列表生成器: 获取知识库 ${baseId} 的知识点`);
+            
+            // 使用增强的存储管理器方法获取知识点，包含数据修复功能
+            const baseKnowledge = window.storageManager.getKnowledgeByBaseId(baseId);
+            
+            console.log(`题目列表生成器: 知识库 ${baseId} 获取到 ${baseKnowledge.length} 个知识点`);
+            
+            // 验证每个知识点是否正确归属于该知识库
+            const validKnowledge = baseKnowledge.filter(k => {
+                if (k.knowledgeBaseId !== baseId) {
+                    console.warn(`知识点 ${k.id} 的 knowledgeBaseId (${k.knowledgeBaseId}) 与目标知识库ID (${baseId}) 不匹配`);
+                    return false;
+                }
+                return true;
+            });
+            
+            if (validKnowledge.length !== baseKnowledge.length) {
+                console.warn(`过滤后保留 ${validKnowledge.length} 个有效知识点`);
+            }
+            
+            return validKnowledge;
         });
 
         // 知识区
@@ -226,7 +265,7 @@ class QuestionListGenerator {
             
             return activeMistakes
                 .map(mistake => window.storageManager.getKnowledgeById(mistake.knowledgeId))
-                .filter(k => k && k.baseId === baseId);
+                .filter(k => k && k.knowledgeBaseId === baseId);
         });
 
         // 错题 - 按知识区
@@ -483,7 +522,10 @@ class QuestionListTemplates {
             },
             filters: options.onlyDue ? [{ type: 'due-for-review' }] : [],
             sorter: {
-                type: options.random ? 'random' : 'by-review-time'
+                // random=true: 随机复习（题目随机排列）
+                // random=false: 顺序复习（题目按创建时间排列）
+                // 注意：无论哪种模式，选择题都会调用打乱功能
+                type: options.random ? 'random' : 'by-created-time'
             },
             limiter: options.limit ? {
                 type: 'fixed-count',

@@ -812,16 +812,302 @@ class StorageManager {
         return areas.find(area => area.id === areaId);
     }
 
-    // 获取指定知识库的知识点
-    getKnowledgeByBaseId(knowledgeBaseId) {
-        const knowledge = this.getAllKnowledge();
-        return knowledge.filter(k => k.knowledgeBaseId === knowledgeBaseId);
+    /**
+     * 增强的按知识库ID获取知识点方法
+     * 包含数据一致性检查和自动修复
+     */
+    getKnowledgeByBaseId(baseId) {
+        try {
+            if (!baseId) {
+                console.warn('getKnowledgeByBaseId: baseId参数为空');
+                return [];
+            }
+
+            const data = this.getData();
+            if (!data || !Array.isArray(data.knowledge)) {
+                console.warn('getKnowledgeByBaseId: 知识点数据无效');
+                return [];
+            }
+
+            // 验证知识库是否存在
+            const knowledgeBase = this.getKnowledgeBaseById(baseId);
+            if (!knowledgeBase) {
+                console.warn(`getKnowledgeByBaseId: 知识库 ${baseId} 不存在`);
+                return [];
+            }
+
+            // 获取匹配的知识点，包含自动修复逻辑
+            const matchedKnowledge = [];
+            let fixedCount = 0;
+
+            data.knowledge.forEach((k, index) => {
+                let shouldInclude = false;
+                let wasFixed = false;
+
+                // 主要匹配条件：knowledgeBaseId
+                if (k.knowledgeBaseId === baseId) {
+                    shouldInclude = true;
+                } else if (!k.knowledgeBaseId) {
+                    // 如果知识点没有knowledgeBaseId，尝试自动推断
+                    const inferredBaseId = this.inferKnowledgeBaseId(k);
+                    if (inferredBaseId === baseId) {
+                        k.knowledgeBaseId = inferredBaseId;
+                        shouldInclude = true;
+                        wasFixed = true;
+                        fixedCount++;
+                        console.log(`自动修复知识点 ${k.id} 的 knowledgeBaseId: ${inferredBaseId}`);
+                    }
+                } else if (k.knowledgeBaseId !== baseId) {
+                    // 验证现有的knowledgeBaseId是否有效
+                    const currentBase = this.getKnowledgeBaseById(k.knowledgeBaseId);
+                    if (!currentBase) {
+                        // 如果知识点的knowledgeBaseId指向不存在的知识库，重新推断
+                        const inferredBaseId = this.inferKnowledgeBaseId(k);
+                        if (inferredBaseId === baseId) {
+                            k.knowledgeBaseId = inferredBaseId;
+                            shouldInclude = true;
+                            wasFixed = true;
+                            fixedCount++;
+                            console.log(`修复无效的 knowledgeBaseId: ${k.id} -> ${inferredBaseId}`);
+                        }
+                    }
+                }
+
+                if (shouldInclude) {
+                    matchedKnowledge.push(k);
+                }
+
+                // 如果数据被修复，更新到存储中
+                if (wasFixed) {
+                    data.knowledge[index] = k;
+                }
+            });
+
+            // 如果有数据修复，保存到存储
+            if (fixedCount > 0) {
+                this.setData(data);
+                console.log(`getKnowledgeByBaseId: 自动修复了 ${fixedCount} 个知识点的映射关系`);
+            }
+
+            console.log(`getKnowledgeByBaseId(${baseId}): 返回 ${matchedKnowledge.length} 个知识点 (修复了 ${fixedCount} 个)`);
+            return matchedKnowledge;
+
+        } catch (error) {
+            console.error('getKnowledgeByBaseId失败:', error);
+            return [];
+        }
     }
 
-    // 获取指定知识区的知识点
+    /**
+     * 推断知识点的知识库ID
+     * 基于多种策略的智能映射算法
+     */
+    inferKnowledgeBaseId(knowledge) {
+        const data = this.getData();
+        const knowledgeBases = data.knowledgeBases || [];
+        
+        if (knowledgeBases.length === 0) {
+            return 'default_base';
+        }
+
+        // 策略1: 基于ID前缀的精确匹配
+        if (knowledge.id) {
+            if (knowledge.id.startsWith('mil_')) {
+                const militaryBase = knowledgeBases.find(kb => kb.id === 'military_theory_base');
+                if (militaryBase) return militaryBase.id;
+            }
+            if (knowledge.id.startsWith('se_')) {
+                const softwareBase = knowledgeBases.find(kb => kb.id === 'software_engineering_base');
+                if (softwareBase) return softwareBase.id;
+            }
+        }
+
+        // 策略2: 基于分类的模糊匹配
+        if (knowledge.category) {
+            const category = knowledge.category.toLowerCase();
+            
+            // 定义分类关键词映射
+            const categoryMappings = {
+                'military_theory_base': ['军事', '国防', '战争', '安全', '装备', '战略', '战术'],
+                'software_engineering_base': ['软件', '需求', '设计', '测试', '部署', '实现', '编程', '开发', '系统']
+            };
+
+            for (const [baseId, keywords] of Object.entries(categoryMappings)) {
+                if (keywords.some(keyword => category.includes(keyword))) {
+                    const targetBase = knowledgeBases.find(kb => kb.id === baseId);
+                    if (targetBase) return targetBase.id;
+                }
+            }
+        }
+
+        // 策略3: 基于标签的匹配
+        if (knowledge.tags && Array.isArray(knowledge.tags)) {
+            const allTags = knowledge.tags.join(' ').toLowerCase();
+            
+            if (allTags.includes('军事') || allTags.includes('国防')) {
+                const militaryBase = knowledgeBases.find(kb => kb.id === 'military_theory_base');
+                if (militaryBase) return militaryBase.id;
+            }
+            
+            if (allTags.includes('软件') || allTags.includes('编程') || allTags.includes('开发')) {
+                const softwareBase = knowledgeBases.find(kb => kb.id === 'software_engineering_base');
+                if (softwareBase) return softwareBase.id;
+            }
+        }
+
+        // 策略4: 基于题目内容的智能匹配
+        if (knowledge.question) {
+            const question = knowledge.question.toLowerCase();
+            
+            // 军事理论相关关键词
+            const militaryKeywords = ['军队', '武器', '作战', '指挥', '战斗', '防务', '军官', '士兵'];
+            if (militaryKeywords.some(keyword => question.includes(keyword))) {
+                const militaryBase = knowledgeBases.find(kb => kb.id === 'military_theory_base');
+                if (militaryBase) return militaryBase.id;
+            }
+            
+            // 软件工程相关关键词
+            const softwareKeywords = ['代码', '程序', '算法', '数据库', '接口', '模块', '类', '对象'];
+            if (softwareKeywords.some(keyword => question.includes(keyword))) {
+                const softwareBase = knowledgeBases.find(kb => kb.id === 'software_engineering_base');
+                if (softwareBase) return softwareBase.id;
+            }
+        }
+
+        // 策略5: 默认策略 - 返回第一个知识库
+        return knowledgeBases[0].id;
+    }
+
+    /**
+     * 验证和修复所有知识点的映射关系
+     */
+    validateAndFixKnowledgeMappings() {
+        try {
+            const data = this.getData();
+            if (!data || !Array.isArray(data.knowledge)) {
+                console.log('validateAndFixKnowledgeMappings: 没有知识点数据需要修复');
+                return { success: true, fixedCount: 0 };
+            }
+
+            let fixedCount = 0;
+            const knowledgeBaseIds = new Set((data.knowledgeBases || []).map(kb => kb.id));
+
+            data.knowledge = data.knowledge.map(k => {
+                let wasFixed = false;
+
+                // 修复knowledgeBaseId
+                if (!k.knowledgeBaseId || !knowledgeBaseIds.has(k.knowledgeBaseId)) {
+                    const inferredBaseId = this.inferKnowledgeBaseId(k);
+                    k.knowledgeBaseId = inferredBaseId;
+                    wasFixed = true;
+                }
+
+                // 修复areaId
+                if (!k.areaId) {
+                    const inferredAreaId = this.inferAreaId(k, data.knowledgeBases);
+                    if (inferredAreaId) {
+                        k.areaId = inferredAreaId;
+                        wasFixed = true;
+                    }
+                }
+
+                // 确保必要字段存在
+                if (!k.id) {
+                    k.id = this.generateId();
+                    wasFixed = true;
+                }
+
+                if (wasFixed) {
+                    fixedCount++;
+                }
+
+                return k;
+            });
+
+            // 保存修复后的数据
+            if (fixedCount > 0) {
+                this.setData(data);
+                console.log(`validateAndFixKnowledgeMappings: 修复了 ${fixedCount} 个知识点的映射关系`);
+            }
+
+            return { success: true, fixedCount };
+
+        } catch (error) {
+            console.error('validateAndFixKnowledgeMappings失败:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * 推断知识点的知识区ID
+     */
+    inferAreaId(knowledge, knowledgeBases) {
+        const knowledgeBase = knowledgeBases.find(kb => kb.id === knowledge.knowledgeBaseId);
+        if (!knowledgeBase || !knowledgeBase.areas) {
+            return null;
+        }
+
+        // 根据category精确匹配
+        if (knowledge.category) {
+            const exactMatch = knowledgeBase.areas.find(area => area.name === knowledge.category);
+            if (exactMatch) {
+                return exactMatch.id;
+            }
+
+            // 模糊匹配
+            const fuzzyMatch = knowledgeBase.areas.find(area => 
+                area.name.includes(knowledge.category) || 
+                knowledge.category.includes(area.name)
+            );
+            if (fuzzyMatch) {
+                return fuzzyMatch.id;
+            }
+        }
+
+        // 返回第一个知识区作为默认
+        return knowledgeBase.areas.length > 0 ? knowledgeBase.areas[0].id : null;
+    }
+
+    /**
+     * 增强的按知识区ID获取知识点方法
+     * 包含数据一致性检查
+     */
     getKnowledgeByAreaId(areaId) {
-        const knowledge = this.getAllKnowledge();
-        return knowledge.filter(k => k.areaId === areaId);
+        try {
+            if (!areaId) {
+                console.warn('getKnowledgeByAreaId: areaId参数为空');
+                return [];
+            }
+
+            const data = this.getData();
+            if (!data || !Array.isArray(data.knowledge)) {
+                console.warn('getKnowledgeByAreaId: 知识点数据无效');
+                return [];
+            }
+
+            // 查找包含该知识区的知识库
+            const targetKnowledgeBase = data.knowledgeBases?.find(kb => 
+                kb.areas?.some(area => area.id === areaId)
+            );
+
+            if (!targetKnowledgeBase) {
+                console.warn(`getKnowledgeByAreaId: 知识区 ${areaId} 不存在`);
+                return [];
+            }
+
+            // 获取匹配的知识点
+            const matchedKnowledge = data.knowledge.filter(k => {
+                // 主要匹配条件：areaId和knowledgeBaseId都匹配
+                return k.areaId === areaId && k.knowledgeBaseId === targetKnowledgeBase.id;
+            });
+
+            console.log(`getKnowledgeByAreaId(${areaId}): 返回 ${matchedKnowledge.length} 个知识点`);
+            return matchedKnowledge;
+
+        } catch (error) {
+            console.error('getKnowledgeByAreaId失败:', error);
+            return [];
+        }
     }
 
     // 初始化数据结构

@@ -103,7 +103,7 @@ class ReviewManager {
                 this.userAnswerKeydownHandler = (e) => {
                     if (e.ctrlKey && e.key === 'Enter') {
                         e.preventDefault();
-                        this.showAnswer();
+                        this.toggleAnswer();
                     }
                     
                     // 在输入框内时，阻止左右键事件冒泡
@@ -281,8 +281,57 @@ class ReviewManager {
      * @param {Object} options 选项
      */
     async reviewKnowledgeArea(areaId, options = {}) {
-        const config = window.QuestionListTemplates.knowledgeAreaReview(areaId, options);
-        await this.startReviewWithConfig(config, `knowledge-area-${areaId}`);
+        console.log(`=== 复习知识区 ===`);
+        console.log(`知识区ID: ${areaId}`);
+        console.log('复习选项:', options);
+        
+        // 查找知识区及其所属的知识库
+        const allBases = window.storageManager.getAllKnowledgeBases();
+        let area = null;
+        let foundBaseId = null;
+        
+        for (const base of allBases) {
+            if (base.areas) {
+                const foundArea = base.areas.find(a => a.id === areaId);
+                if (foundArea) {
+                    area = foundArea;
+                    foundBaseId = base.id;
+                    break;
+                }
+            }
+        }
+        
+        // 验证知识区是否存在
+        if (!area || !foundBaseId) {
+            const error = `知识区 ${areaId} 不存在`;
+            console.error(error);
+            throw new Error(error);
+        }
+        
+        console.log(`目标知识区: ${area.name} (属于知识库: ${foundBaseId})`);
+        
+        // 预检查知识区中的知识点数量
+        const allKnowledge = window.storageManager.getAllKnowledge();
+        const areaPoints = allKnowledge.filter(point => point.areaId === areaId);
+        console.log(`预检查知识区 ${area.name} 中有 ${areaPoints.length} 个知识点`);
+        
+        if (areaPoints.length === 0) {
+            const message = `知识区 "${area.name}" 中没有知识点，无法开始复习`;
+            console.warn(message);
+            window.app.showNotification(message, 'warning');
+            return;
+        }
+
+        // 设置知识区复习准备状态，等待用户选择模式
+        this.reviewMode = 'area-mode-select';
+        this.currentAreaId = areaId;
+        this.currentAreaOptions = options;
+        this.startTime = Date.now();
+        
+        // 显示知识区复习模式选择界面
+        this.showAreaReviewModes();
+        
+        console.log(`知识区复习准备完成，等待用户选择复习模式`);
     }
 
     /**
@@ -1275,6 +1324,7 @@ class ReviewManager {
     }
 
     // 设置知识区复习模式（用于知识区内的模式切换）
+    // @deprecated 此方法已被弃用，请使用 reviewKnowledgeArea() 方法
     setAreaReviewMode(knowledgeList) {
         if (!knowledgeList || knowledgeList.length === 0) {
             window.app.showNotification('没有可复习的知识点', 'warning');
@@ -1322,36 +1372,42 @@ class ReviewManager {
         
         // 重新绑定事件
         document.querySelectorAll('.mode-btn:not(#category-mode-btn)').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', async (e) => {
                 const mode = e.target.getAttribute('data-mode');
-                this.startAreaReview(mode);
+                await this.startAreaReviewWithMode(mode);
             });
         });
     }
 
-    // 开始知识区复习
-    startAreaReview(mode) {
-        if (!this.currentReviewList || this.currentReviewList.length === 0) {
-            window.app.showNotification('没有可复习的知识点', 'warning');
+    // 开始知识区复习（使用统一的复习机制）
+    async startAreaReviewWithMode(mode) {
+        if (!this.currentAreaId) {
+            window.app.showNotification('无法确定知识区，请重新选择', 'error');
             return;
         }
 
-        // 根据模式处理列表
-        let reviewList = [...this.currentReviewList];
-        
-        if (mode === 'random') {
-            reviewList = Utils.shuffleArray(reviewList);
-        } else if (mode === 'scheduled') {
-            // 顺序复习：按照添加时间或ID排序
-            reviewList.sort((a, b) => (a.id || '').localeCompare(b.id || ''));
-        }
+        try {
+            console.log(`开始知识区复习，模式: ${mode}`);
+            
+            // 根据模式设置复习选项
+            const reviewOptions = {
+                ...this.currentAreaOptions,
+                random: mode === 'random',
+                limit: null  // 不限制题目数量
+            };
 
-        this.reviewMode = 'area-' + mode;
-        this.currentReviewList = reviewList;
-        this.currentIndex = 0;
-        this.startTime = Date.now();
-        this.showReviewCard();
-        this.loadCurrentKnowledge();
+            console.log('最终复习选项:', reviewOptions);
+
+            // 使用统一的题目列表生成器启动复习
+            const config = window.QuestionListTemplates.knowledgeAreaReview(this.currentAreaId, reviewOptions);
+            console.log('生成的复习配置:', config);
+            
+            await this.startReviewWithConfig(config, `knowledge-area-${this.currentAreaId}-${mode}`);
+            
+        } catch (error) {
+            console.error('启动知识区复习失败:', error);
+            window.app.showNotification(`启动复习失败: ${error.message}`, 'error');
+        }
     }
 
     // 更新导航按钮状态
