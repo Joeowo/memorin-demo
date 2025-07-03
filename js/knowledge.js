@@ -496,14 +496,12 @@ class KnowledgeManager {
             // 获取当前知识库ID
             const currentBaseId = this.currentBase?.id || window.storageManager.getCurrentKnowledgeBase()?.id;
             if (!currentBaseId) {
-                console.error('无法确定当前知识库ID');
+                console.error('startAreaReview: 无法确定当前知识库ID');
                 window.app.showNotification('请先选择知识库', 'warning');
                 return;
             }
 
-            console.log(`当前知识库ID: ${currentBaseId}`);
-
-            // 获取知识区信息（传递知识库ID和知识区ID两个参数）
+            // 获取知识区信息 - 使用正确的双参数调用
             const area = window.storageManager.getKnowledgeAreaById(currentBaseId, targetAreaId);
             if (!area) {
                 console.error(`知识区 ${targetAreaId} 在知识库 ${currentBaseId} 中不存在`);

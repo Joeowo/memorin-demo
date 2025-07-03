@@ -78,11 +78,10 @@
                     <h3>快速操作</h3>
                     <div class="action-buttons">
                         <button class="btn btn-primary" data-action="start-review">开始复习</button>
-                        <button class="btn btn-secondary" data-action="add-knowledge">添加知识点</button>
                         <button class="btn btn-secondary" data-action="review-mistakes">复习错题</button>
                         <button class="btn btn-success" onclick="importAllMilitaryKnowledge()">导入军理知识库</button>
                         <button class="btn btn-info" onclick="importAllSoftwareEngineeringKnowledge()">💻 导入软件工程知识库</button>
-                        <button class="btn btn-secondary" onclick="testDataRestructure()">🧪 测试数据一致性</button>
+                        <button class="btn btn-secondary" onclick="quickFixAllData()">🔧 快速修复数据</button>
                         <button class="btn btn-warning" onclick="clearAllDataWithConfirm()">🗑️ 清空所有数据</button>
                     </div>
                     <div class="data-info">
@@ -337,8 +336,8 @@
                     <div class="review-modes" id="review-modes">
                         <h3>选择复习模式</h3>
                         <div class="mode-buttons">
-                            <button class="btn btn-primary mode-btn" data-mode="scheduled" title="题目按原始顺序排列，选择题答案自动打乱">顺序复习</button>
-                            <button class="btn btn-secondary mode-btn" data-mode="random" title="题目随机排列，选择题答案自动打乱">随机复习</button>
+                            <button class="btn btn-primary mode-btn" data-mode="scheduled">顺序复习</button>
+                            <button class="btn btn-secondary mode-btn" data-mode="random">随机复习</button>
                             <button class="btn btn-secondary mode-btn" data-mode="category" id="category-mode-btn">分类复习</button>
                         </div>
                     </div>
@@ -566,15 +565,15 @@
     </div>
 
     <!-- JavaScript文件 -->
-    <script src="js/utils.js?v=1.0.1"></script>
-    <script src="js/storage.js?v=1.0.1"></script>
-    <script src="js/choice-processor.js?v=1.0.1"></script>
-    <script src="js/question-list-generator.js?v=1.0.1"></script>
-    <script src="js/data-migration.js?v=1.0.1"></script>
-    <script src="js/knowledge.js?v=1.0.1"></script>
-    <script src="js/review.js?v=1.0.1"></script>
-    <script src="js/statistics.js?v=1.0.1"></script>
-    <script src="js/imports/military-import-complete.js?v=1.0.1"></script>
+    <script src="js/utils.js?v=1.0.2"></script>
+    <script src="js/storage.js?v=1.0.2"></script>
+    <script src="js/choice-processor.js?v=1.0.2"></script>
+    <script src="js/question-list-generator.js?v=1.0.2"></script>
+    <script src="js/data-migration.js?v=1.0.2"></script>
+    <script src="js/knowledge.js?v=1.0.2"></script>
+    <script src="js/review.js?v=1.0.2"></script>
+    <script src="js/statistics.js?v=1.0.2"></script>
+    <script src="js/imports/military-import-complete.js?v=1.0.2"></script>
     <script src="js/imports/software-engineering-import.js"></script>
     <script src="js/imports/requirements-analysis-import.js"></script>
     <script src="js/imports/software-design-import.js"></script>
@@ -586,7 +585,7 @@
     <script src="test_restructure.js"></script>
     <script src="test_knowledge_base_review.js"></script>
     <script src="test_choice_shuffle.js"></script>
-    <script src="js/app.js?v=1.0.1"></script>
+    <script src="js/app.js?v=1.0.2"></script>
     
     <!-- 清空数据功能 - 确保立即可用 -->
     <script>
@@ -659,6 +658,203 @@
             } catch (error) {
                 console.error('清空数据失败:', error);
                 alert('❌ 清空数据失败：' + error.message);
+            }
+        };
+        
+        // 整合的软件工程知识库导入函数
+        window.importAllSoftwareEngineeringKnowledge = async function() {
+            try {
+                // 检查系统是否已加载
+                if (typeof window.storageManager === 'undefined') {
+                    alert('❌ 系统未完全加载，请刷新页面后重试');
+                    return;
+                }
+                
+                // 显示确认对话框
+                const confirmMessage = '📚 即将导入完整的软件工程知识库\n\n包含以下模块：\n' +
+                    '• 软件工程概述\n' +
+                    '• 软件过程与项目管理\n' +
+                    '• 需求分析\n' +
+                    '• 软件概要设计\n' +
+                    '• 软件详细设计\n' +
+                    '• 软件实现\n' +
+                    '• 软件测试\n' +
+                    '• 软件部署运维\n\n' +
+                    '确定要继续吗？';
+                
+                if (!confirm(confirmMessage)) {
+                    return;
+                }
+                
+                let successCount = 0;
+                let totalCount = 8;
+                let errors = [];
+                
+                console.log('开始导入软件工程知识库...');
+                
+                // 依次调用各个导入函数
+                const importFunctions = [
+                    { name: '软件工程概述', func: 'importSoftwareEngineeringOverview' },
+                    { name: '软件过程与项目管理', func: 'importSoftwareProcessManagement' },
+                    { name: '需求分析', func: 'importRequirementsAnalysis' },
+                    { name: '软件概要设计', func: 'importSoftwareDesign' },
+                    { name: '软件详细设计', func: 'importDetailedDesign' },
+                    { name: '软件实现', func: 'importSoftwareImplementation' },
+                    { name: '软件测试', func: 'importSoftwareTesting' },
+                    { name: '软件部署运维', func: 'importSoftwareDeployment' }
+                ];
+                
+                for (const item of importFunctions) {
+                    try {
+                        console.log(`正在导入: ${item.name}`);
+                        
+                        // 检查函数是否存在
+                        if (typeof window[item.func] === 'function') {
+                            await window[item.func]();
+                            successCount++;
+                            console.log(`✅ ${item.name} 导入成功`);
+                        } else {
+                            console.warn(`⚠️ 函数 ${item.func} 不存在，跳过 ${item.name}`);
+                            errors.push(`${item.name}: 导入函数不存在`);
+                        }
+                        
+                        // 添加延迟避免操作过快
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        
+                    } catch (error) {
+                        console.error(`❌ ${item.name} 导入失败:`, error);
+                        errors.push(`${item.name}: ${error.message}`);
+                    }
+                }
+                
+                // 显示导入结果
+                let resultMessage = `🎉 软件工程知识库导入完成！\n\n`;
+                resultMessage += `✅ 成功导入: ${successCount}/${totalCount} 个模块\n`;
+                
+                if (errors.length > 0) {
+                    resultMessage += `\n⚠️ 导入失败的模块：\n`;
+                    errors.forEach(error => {
+                        resultMessage += `• ${error}\n`;
+                    });
+                }
+                
+                alert(resultMessage);
+                
+                // 刷新界面
+                if (window.app && typeof window.app.loadDashboard === 'function') {
+                    window.app.loadDashboard();
+                }
+                
+                // 刷新知识管理器
+                if (window.knowledgeManager && typeof window.knowledgeManager.refresh === 'function') {
+                    window.knowledgeManager.refresh();
+                }
+                
+            } catch (error) {
+                console.error('整合导入失败:', error);
+                alert('❌ 导入过程中发生错误：' + error.message);
+            }
+        };
+        
+        // 整合的数据修复函数
+        window.quickFixAllData = async function() {
+            try {
+                // 检查系统是否已加载
+                if (typeof window.storageManager === 'undefined') {
+                    alert('❌ 系统未完全加载，请刷新页面后重试');
+                    return;
+                }
+                
+                // 显示确认对话框
+                const confirmMessage = '🔧 快速修复数据功能\n\n将执行以下操作：\n' +
+                    '• 测试数据一致性\n' +
+                    '• 快速修复映射关系\n' +
+                    '• 执行数据重构（如需要）\n\n' +
+                    '此操作是安全的，不会删除您的数据。\n确定要继续吗？';
+                
+                if (!confirm(confirmMessage)) {
+                    return;
+                }
+                
+                let results = [];
+                console.log('开始快速修复数据...');
+                
+                // 1. 测试数据一致性
+                try {
+                    console.log('正在测试数据一致性...');
+                    if (typeof window.testDataRestructure === 'function') {
+                        await window.testDataRestructure();
+                        results.push('✅ 数据一致性测试完成');
+                    } else {
+                        results.push('⚠️ 数据一致性测试函数不存在');
+                    }
+                } catch (error) {
+                    console.error('数据一致性测试失败:', error);
+                    results.push(`❌ 数据一致性测试失败: ${error.message}`);
+                }
+                
+                // 添加延迟
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 2. 快速修复映射关系
+                try {
+                    console.log('正在修复映射关系...');
+                    if (typeof window.quickFixMappings === 'function') {
+                        await window.quickFixMappings();
+                        results.push('✅ 映射关系修复完成');
+                    } else {
+                        results.push('⚠️ 映射关系修复函数不存在');
+                    }
+                } catch (error) {
+                    console.error('映射关系修复失败:', error);
+                    results.push(`❌ 映射关系修复失败: ${error.message}`);
+                }
+                
+                // 添加延迟
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 3. 执行数据重构（如果需要）
+                try {
+                    console.log('检查是否需要数据重构...');
+                    if (typeof window.executeDataRestructure === 'function') {
+                        // 先检查是否需要重构
+                        const knowledgeBases = window.storageManager.getAllKnowledgeBases();
+                        if (knowledgeBases.length === 0) {
+                            console.log('检测到可能需要数据重构，执行重构...');
+                            await window.executeDataRestructure();
+                            results.push('✅ 数据重构执行完成');
+                        } else {
+                            results.push('ℹ️ 数据结构正常，无需重构');
+                        }
+                    } else {
+                        results.push('⚠️ 数据重构函数不存在');
+                    }
+                } catch (error) {
+                    console.error('数据重构失败:', error);
+                    results.push(`❌ 数据重构失败: ${error.message}`);
+                }
+                
+                // 显示修复结果
+                let resultMessage = '🔧 数据修复完成！\n\n执行结果：\n';
+                results.forEach(result => {
+                    resultMessage += `${result}\n`;
+                });
+                
+                alert(resultMessage);
+                
+                // 刷新界面
+                if (window.app && typeof window.app.loadDashboard === 'function') {
+                    window.app.loadDashboard();
+                }
+                
+                // 刷新知识管理器
+                if (window.knowledgeManager && typeof window.knowledgeManager.refresh === 'function') {
+                    window.knowledgeManager.refresh();
+                }
+                
+            } catch (error) {
+                console.error('快速修复失败:', error);
+                alert('❌ 修复过程中发生错误：' + error.message);
             }
         };
     </script>

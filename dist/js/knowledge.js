@@ -291,9 +291,9 @@ class KnowledgeManager {
     // 开始知识区复习
     async startAreaReview(areaId = null) {
         try {
-            const targetAreaId = areaId || this.currentArea?.id;
-            if (!targetAreaId) {
-                console.error('startAreaReview: 无法确定知识区ID');
+        const targetAreaId = areaId || this.currentArea?.id;
+        if (!targetAreaId) {
+            console.error('startAreaReview: 无法确定知识区ID');
                 window.app.showNotification('请先选择要复习的知识区', 'warning');
                 return;
             }
@@ -304,35 +304,33 @@ class KnowledgeManager {
             // 获取当前知识库ID
             const currentBaseId = this.currentBase?.id || window.storageManager.getCurrentKnowledgeBase()?.id;
             if (!currentBaseId) {
-                console.error('无法确定当前知识库ID');
+                console.error('startAreaReview: 无法确定当前知识库ID');
                 window.app.showNotification('请先选择知识库', 'warning');
                 return;
             }
 
-            console.log(`当前知识库ID: ${currentBaseId}`);
-
-            // 获取知识区信息（传递知识库ID和知识区ID两个参数）
+            // 获取知识区信息 - 使用正确的双参数调用
             const area = window.storageManager.getKnowledgeAreaById(currentBaseId, targetAreaId);
             if (!area) {
                 console.error(`知识区 ${targetAreaId} 在知识库 ${currentBaseId} 中不存在`);
                 window.app.showNotification('知识区不存在', 'error');
-                return;
-            }
+            return;
+        }
 
             console.log(`知识区: ${area.name}`);
 
             // 预检查知识区中的知识点数量
-            const allKnowledge = window.storageManager.getAllKnowledge();
-            const areaPoints = allKnowledge.filter(point => point.areaId === targetAreaId);
+        const allKnowledge = window.storageManager.getAllKnowledge();
+        const areaPoints = allKnowledge.filter(point => point.areaId === targetAreaId);
             
             console.log(`知识区 "${area.name}" 中有 ${areaPoints.length} 个知识点`);
-
-            if (areaPoints.length === 0) {
+        
+        if (areaPoints.length === 0) {
                 const message = `知识区 "${area.name}" 中没有知识点，无法开始复习`;
                 console.warn(message);
                 window.app.showNotification(message, 'warning');
-                return;
-            }
+            return;
+        }
 
             // 使用统一的复习管理器启动知识区复习
             const reviewOptions = {
@@ -344,7 +342,7 @@ class KnowledgeManager {
             await window.reviewManager.reviewKnowledgeArea(targetAreaId, reviewOptions);
             
             // 切换到复习页面
-            window.app.showSection('review');
+        window.app.showSection('review');
             
             // 显示成功通知
             const message = `准备复习知识区：${area.name}（${areaPoints.length}个知识点）`;

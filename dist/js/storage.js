@@ -589,6 +589,78 @@ class StorageManager {
         const requiredFields = ['knowledge', 'mistakes', 'reviewHistory', 'settings', 'statistics'];
         return requiredFields.every(field => data.hasOwnProperty(field));
     }
+
+    // 知识库管理相关操作
+
+    // 获取所有知识库
+    getAllKnowledgeBases() {
+        const data = this.getData();
+        return data ? data.knowledgeBases || [] : [];
+    }
+
+    // 根据ID获取知识库
+    getKnowledgeBaseById(id) {
+        const knowledgeBases = this.getAllKnowledgeBases();
+        return knowledgeBases.find(kb => kb.id === id);
+    }
+
+    // 获取当前选中的知识库
+    getCurrentKnowledgeBase() {
+        const data = this.getData();
+        if (!data || !data.currentKnowledgeBaseId) return null;
+        return this.getKnowledgeBaseById(data.currentKnowledgeBaseId);
+    }
+
+    // 设置当前知识库
+    setCurrentKnowledgeBase(knowledgeBaseId) {
+        const data = this.getData();
+        if (!data) return false;
+        
+        data.currentKnowledgeBaseId = knowledgeBaseId;
+        return this.setData(data);
+    }
+
+    // 根据知识库ID获取知识区列表
+    getKnowledgeAreasByBaseId(knowledgeBaseId) {
+        const knowledgeBase = this.getKnowledgeBaseById(knowledgeBaseId);
+        return knowledgeBase ? knowledgeBase.areas : [];
+    }
+
+    // 根据知识区ID获取知识区信息
+    getKnowledgeAreaById(knowledgeBaseId, areaId) {
+        const areas = this.getKnowledgeAreasByBaseId(knowledgeBaseId);
+        return areas.find(area => area.id === areaId);
+    }
+
+    /**
+     * 通过知识区ID查找知识区信息（遍历所有知识库）
+     * @param {string} areaId 知识区ID
+     * @returns {Object|null} 返回包含知识区信息和所属知识库信息的对象
+     */
+    findKnowledgeAreaById(areaId) {
+        const knowledgeBases = this.getAllKnowledgeBases();
+        
+        for (const knowledgeBase of knowledgeBases) {
+            if (knowledgeBase.areas) {
+                const area = knowledgeBase.areas.find(area => area.id === areaId);
+                if (area) {
+                    return {
+                        area: area,
+                        knowledgeBase: knowledgeBase,
+                        knowledgeBaseId: knowledgeBase.id
+                    };
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    // 根据知识库ID获取知识点
+    getKnowledgeByBaseId(baseId) {
+        const allKnowledge = this.getAllKnowledge();
+        return allKnowledge.filter(k => k.knowledgeBaseId === baseId);
+    }
 }
 
 // 初始化存储管理器

@@ -1187,6 +1187,30 @@ class StorageManager {
 
         return true;
     }
+
+    /**
+     * 通过知识区ID查找知识区信息（遍历所有知识库）
+     * @param {string} areaId 知识区ID
+     * @returns {Object|null} 返回包含知识区信息和所属知识库信息的对象
+     */
+    findKnowledgeAreaById(areaId) {
+        const knowledgeBases = this.getAllKnowledgeBases();
+        
+        for (const knowledgeBase of knowledgeBases) {
+            if (knowledgeBase.areas) {
+                const area = knowledgeBase.areas.find(area => area.id === areaId);
+                if (area) {
+                    return {
+                        area: area,
+                        knowledgeBase: knowledgeBase,
+                        knowledgeBaseId: knowledgeBase.id
+                    };
+                }
+            }
+        }
+        
+        return null;
+    }
 }
 
 // 初始化存储管理器

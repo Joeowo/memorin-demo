@@ -122,10 +122,18 @@ class MemoryApp {
                 break;
             case 'review':
                 if (window.reviewManager) {
-                    // 检查是否已有活跃的复习会话
+                    // 检查是否是知识区模式选择状态
+                    if (window.reviewManager.reviewMode === 'area-mode-select') {
+                        // 知识区模式选择状态，不需要initReview，直接返回
+                        console.log('知识区模式选择状态，跳过初始化');
+                        return;
+                    }
+                    
+                    // 检查是否有活跃的复习会话（排除area-mode-select状态）
                     const hasActiveSession = window.reviewManager.currentReviewList && 
                                            window.reviewManager.currentReviewList.length > 0 &&
-                                           window.reviewManager.reviewMode;
+                                           window.reviewManager.reviewMode &&
+                                           window.reviewManager.reviewMode !== 'area-mode-select';
                     
                     console.log('复习页面加载检查:', {
                         hasActiveSession: hasActiveSession,

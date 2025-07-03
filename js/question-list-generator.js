@@ -522,10 +522,7 @@ class QuestionListTemplates {
             },
             filters: options.onlyDue ? [{ type: 'due-for-review' }] : [],
             sorter: {
-                // random=true: 随机复习（题目随机排列）
-                // random=false: 顺序复习（题目按创建时间排列）
-                // 注意：无论哪种模式，选择题都会调用打乱功能
-                type: options.random ? 'random' : 'by-created-time'
+                type: options.random ? 'random' : 'by-review-time'
             },
             limiter: options.limit ? {
                 type: 'fixed-count',

@@ -182,6 +182,28 @@ class ReviewManager {
 
     // 初始化复习页面
     initReview() {
+        // 检查是否有活跃的复习会话（排除area-mode-select状态）
+        const hasActiveSession = this.currentReviewList && 
+                                this.currentReviewList.length > 0 && 
+                                this.reviewMode &&
+                                this.reviewMode !== 'area-mode-select';
+        
+        if (hasActiveSession) {
+            console.log('检测到活跃复习会话，跳过复习页面初始化');
+            console.log('活跃会话信息:', {
+                reviewMode: this.reviewMode,
+                listLength: this.currentReviewList.length,
+                currentIndex: this.currentIndex
+            });
+            
+            // 直接显示复习卡片而不是模式选择
+            this.showReviewCard();
+            this.loadCurrentKnowledge();
+            return;
+        }
+        
+        console.log('没有活跃会话，执行标准复习页面初始化');
+        
         const reviewModes = document.getElementById('review-modes');
         const reviewCard = document.getElementById('review-card');
         const reviewProgress = document.querySelector('.review-progress');
@@ -285,30 +307,19 @@ class ReviewManager {
         console.log(`知识区ID: ${areaId}`);
         console.log('复习选项:', options);
         
-        // 查找知识区及其所属的知识库
-        const allBases = window.storageManager.getAllKnowledgeBases();
-        let area = null;
-        let foundBaseId = null;
-        
-        for (const base of allBases) {
-            if (base.areas) {
-                const foundArea = base.areas.find(a => a.id === areaId);
-                if (foundArea) {
-                    area = foundArea;
-                    foundBaseId = base.id;
-                    break;
-                }
-            }
-        }
-        
-        // 验证知识区是否存在
-        if (!area || !foundBaseId) {
+        // 使用新的查找方法获取知识区信息
+        const areaInfo = window.storageManager.findKnowledgeAreaById(areaId);
+        if (!areaInfo) {
             const error = `知识区 ${areaId} 不存在`;
             console.error(error);
             throw new Error(error);
         }
         
-        console.log(`目标知识区: ${area.name} (属于知识库: ${foundBaseId})`);
+        const area = areaInfo.area;
+        const knowledgeBase = areaInfo.knowledgeBase;
+        
+        console.log(`目标知识区: ${area.name}`);
+        console.log(`所属知识库: ${knowledgeBase.name}`);
         
         // 预检查知识区中的知识点数量
         const allKnowledge = window.storageManager.getAllKnowledge();
@@ -322,6 +333,12 @@ class ReviewManager {
             return;
         }
 
+        // 🔧 新增：清理旧的复习状态，确保状态转换的完整性
+        console.log('清理旧的复习状态...');
+        this.currentReviewList = [];
+        this.currentIndex = 0;
+        this.currentKnowledge = null;
+        
         // 设置知识区复习准备状态，等待用户选择模式
         this.reviewMode = 'area-mode-select';
         this.currentAreaId = areaId;

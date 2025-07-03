@@ -1325,7 +1325,7 @@ function importSoftwareProcessManagement() {
 // 将新导入函数添加到全局作用域
 window.importSoftwareProcessManagement = importSoftwareProcessManagement;
 
-console.log('软件过程与项目管理导入功能已加载');
+console.log('软件过程与项目管理导入功能已加载'); 
 
 // 统一的软件工程知识库导入函数
 async function importAllSoftwareEngineeringKnowledge() {
