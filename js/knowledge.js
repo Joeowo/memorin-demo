@@ -22,6 +22,7 @@ class KnowledgeManager {
         // 功能按钮事件
         document.getElementById('add-knowledge-base-btn')?.addEventListener('click', () => this.showCreateKnowledgeBaseModal());
         document.getElementById('add-knowledge-area-btn')?.addEventListener('click', () => this.showCreateKnowledgeAreaModal());
+        document.getElementById('add-knowledge-point-btn')?.addEventListener('click', () => this.showAddKnowledgePointModal());
         document.getElementById('expand-all-btn')?.addEventListener('click', () => this.expandAllPoints());
         document.getElementById('collapse-all-btn')?.addEventListener('click', () => this.collapseAllPoints());
         document.getElementById('review-area-btn')?.addEventListener('click', () => this.startAreaReview());
@@ -634,42 +635,28 @@ class KnowledgeManager {
 
     // 编辑知识点
     editKnowledgePoint(pointId) {
-        const knowledge = window.storageManager.getKnowledgeById(pointId);
+        const allKnowledge = window.storageManager.getAllKnowledge();
+        const knowledge = allKnowledge.find(k => k.id === pointId);
+        
         if (!knowledge) {
             window.app.showNotification('未找到知识点', 'error');
             return;
         }
 
-        // 打开编辑模态框
-        this.openEditModal(knowledge);
-    }
-
-    // 打开编辑模态框
-    openEditModal(knowledge) {
+        // 显示模态框
         const modal = document.getElementById('knowledge-modal');
-        const title = document.getElementById('modal-title');
-        const form = document.getElementById('knowledge-form');
-        
-        title.textContent = '编辑知识点';
-        
-        // 填充表单数据
-        document.getElementById('question-input').value = knowledge.question;
-        document.getElementById('answer-input').value = knowledge.answer;
-        document.getElementById('explanation-input').value = knowledge.explanation || '';
-        document.getElementById('note-input').value = knowledge.note || '';
-        document.getElementById('category-input').value = knowledge.category || '';
-        document.getElementById('difficulty-input').value = knowledge.difficulty || 3;
-        document.getElementById('tags-input').value = knowledge.tags.join(', ');
-        
-        modal.classList.add('active');
-        
-        // 存储当前编辑的知识点ID
-        form.setAttribute('data-edit-id', knowledge.id);
-        
-        // 聚焦到第一个输入框
-        setTimeout(() => {
-            document.getElementById('question-input').focus();
-        }, 100);
+        if (modal) {
+            modal.classList.add('active');
+            this.bindKnowledgePointModalEvents();
+            
+            // 设置编辑模式
+            document.getElementById('modal-title').textContent = '编辑知识点';
+            document.getElementById('save-btn').textContent = '保存修改';
+            document.getElementById('knowledge-form').setAttribute('data-edit-id', pointId);
+            
+            // 填充表单数据
+            this.fillKnowledgePointForm(knowledge);
+        }
     }
 
     // 搜索处理
@@ -1274,6 +1261,598 @@ class KnowledgeManager {
                 window.app.showNotification('删除失败，请重试', 'error');
             }
         }
+    }
+
+    // === 添加知识点功能 ===
+
+    // 显示添加知识点模态框
+    showAddKnowledgePointModal() {
+        if (!this.currentArea) {
+            window.app.showNotification('请先选择知识区', 'warning');
+            return;
+        }
+
+        const modal = document.getElementById('knowledge-modal');
+        if (modal) {
+            modal.classList.add('active');
+            this.resetKnowledgePointForm();
+            this.bindKnowledgePointModalEvents();
+            
+            // 设置模态框标题
+            document.getElementById('modal-title').textContent = '添加知识点';
+            document.getElementById('save-btn').textContent = '保存';
+        }
+    }
+
+    // 绑定添加知识点按钮事件
+    bindAddKnowledgePointEvent() {
+        const addBtn = document.getElementById('add-knowledge-point-btn');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => this.showAddKnowledgePointModal());
+        }
+    }
+
+    // 绑定知识点模态框事件
+    bindKnowledgePointModalEvents() {
+        // 关闭按钮事件
+        const closeBtn = document.getElementById('close-modal');
+        const cancelBtn = document.getElementById('cancel-btn');
+        
+        if (closeBtn) {
+            closeBtn.onclick = () => this.closeKnowledgePointModal();
+        }
+        if (cancelBtn) {
+            cancelBtn.onclick = () => this.closeKnowledgePointModal();
+        }
+
+        // 表单提交事件
+        const form = document.getElementById('knowledge-form');
+        if (form) {
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                this.handleSaveKnowledgePoint();
+            };
+        }
+
+        // 添加选项按钮事件
+        const addOptionBtn = document.getElementById('add-option-btn');
+        if (addOptionBtn) {
+            addOptionBtn.onclick = () => this.addChoiceOption();
+        }
+
+        // 删除选项按钮事件
+        const removeOptionBtn = document.getElementById('remove-option-btn');
+        if (removeOptionBtn) {
+            removeOptionBtn.onclick = () => this.removeChoiceOption();
+        }
+
+        // 选择题类型变化事件
+        const choiceTypeSelect = document.getElementById('choice-type');
+        if (choiceTypeSelect) {
+            choiceTypeSelect.onchange = () => this.handleChoiceTypeChange();
+        }
+
+        // 模态框背景点击关闭
+        const modal = document.getElementById('knowledge-modal');
+        if (modal) {
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    this.closeKnowledgePointModal();
+                }
+            };
+        }
+    }
+
+    // 处理题目类型变化
+    handleQuestionTypeChange(type) {
+        const fillSection = document.getElementById('fill-answer-section');
+        const choiceSection = document.getElementById('choice-answer-section');
+        const answerInput = document.getElementById('answer-input');
+
+        if (type === 'choice') {
+            // 显示选择题配置区域
+            fillSection.style.display = 'none';
+            choiceSection.style.display = 'block';
+            
+            // 选择题不需要答案字段
+            if (answerInput) {
+                answerInput.removeAttribute('required');
+            }
+            
+            // 确保至少有4个选项
+            this.ensureMinimumChoiceOptions();
+            
+        } else {
+            // 显示填空题答案区域
+            fillSection.style.display = 'block';
+            choiceSection.style.display = 'none';
+            
+            // 填空题需要答案字段
+            if (answerInput) {
+                answerInput.setAttribute('required', 'required');
+            }
+        }
+    }
+
+    // 确保最少选项数量
+    ensureMinimumChoiceOptions() {
+        const container = document.getElementById('choice-options-container');
+        const existingOptions = container.querySelectorAll('.choice-option-row');
+        
+        // 如果选项少于4个，补充到4个
+        while (existingOptions.length < 4) {
+            this.addChoiceOption();
+        }
+    }
+
+    // 添加选择题选项
+    addChoiceOption() {
+        const container = document.getElementById('choice-options-container');
+        const existingOptions = container.querySelectorAll('.choice-option-row');
+        const nextIndex = existingOptions.length;
+        
+        // 最多支持8个选项
+        if (nextIndex >= 8) {
+            window.app.showNotification('最多支持8个选项', 'warning');
+            return;
+        }
+
+        const optionKey = String.fromCharCode(65 + nextIndex); // A, B, C, D, E, F, G, H
+        
+        const optionRow = document.createElement('div');
+        optionRow.className = 'choice-option-row';
+        optionRow.innerHTML = `
+            <button type="button" class="option-label clickable" data-option="${optionKey}" title="点击设为正确答案">${optionKey}.</button>
+            <input type="text" class="option-text" placeholder="请输入选项${optionKey}的内容..." ${nextIndex < 2 ? 'required' : ''}>
+        `;
+        
+        container.appendChild(optionRow);
+        
+        // 绑定选项标签点击事件
+        const optionLabel = optionRow.querySelector('.option-label');
+        optionLabel.addEventListener('click', () => this.handleOptionLabelClick(optionKey));
+    }
+
+    // 删除选择题选项
+    removeChoiceOption() {
+        const container = document.getElementById('choice-options-container');
+        const options = container.querySelectorAll('.choice-option-row');
+        
+        // 至少保留2个选项
+        if (options.length <= 2) {
+            window.app.showNotification('至少需要2个选项', 'warning');
+            return;
+        }
+        
+        // 删除最后一个选项
+        const lastOption = options[options.length - 1];
+        container.removeChild(lastOption);
+    }
+
+    // 处理选项标签点击（新方法）
+    handleOptionLabelClick(optionKey) {
+        const choiceType = document.getElementById('choice-type').value;
+        const clickedLabel = document.querySelector(`[data-option="${optionKey}"]`);
+        const isCurrentlyCorrect = clickedLabel.classList.contains('correct');
+        
+        if (choiceType === 'single') {
+            // 单选题：清除所有选项的选中状态，然后设置当前选项
+            document.querySelectorAll('.option-label').forEach(label => {
+                label.classList.remove('correct');
+                label.closest('.choice-option-row').classList.remove('correct-row');
+            });
+            
+            if (!isCurrentlyCorrect) {
+                clickedLabel.classList.add('correct');
+                clickedLabel.closest('.choice-option-row').classList.add('correct-row');
+            }
+        } else {
+            // 多选题：切换当前选项的状态
+            if (isCurrentlyCorrect) {
+                clickedLabel.classList.remove('correct');
+                clickedLabel.closest('.choice-option-row').classList.remove('correct-row');
+            } else {
+                clickedLabel.classList.add('correct');
+                clickedLabel.closest('.choice-option-row').classList.add('correct-row');
+            }
+        }
+    }
+
+    // 处理选择题类型变化（单选/多选）
+    handleChoiceTypeChange() {
+        const choiceType = document.getElementById('choice-type').value;
+        
+        if (choiceType === 'single') {
+            // 单选题：只保留第一个正确答案，清除其他
+            const correctLabels = document.querySelectorAll('.option-label.correct');
+            correctLabels.forEach((label, index) => {
+                if (index > 0) {
+                    label.classList.remove('correct');
+                    label.closest('.choice-option-row').classList.remove('correct-row');
+                }
+            });
+        }
+        // 多选题不需要特殊处理，保持现有状态
+    }
+
+    // 重置选择题选项
+    resetChoiceOptions() {
+        const container = document.getElementById('choice-options-container');
+        container.innerHTML = `
+            <!-- 选项A -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="A" title="点击设为正确答案">A.</button>
+                <input type="text" class="option-text" placeholder="请输入选项A的内容..." required>
+            </div>
+            <!-- 选项B -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="B" title="点击设为正确答案">B.</button>
+                <input type="text" class="option-text" placeholder="请输入选项B的内容..." required>
+            </div>
+            <!-- 选项C -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="C" title="点击设为正确答案">C.</button>
+                <input type="text" class="option-text" placeholder="请输入选项C的内容...">
+            </div>
+            <!-- 选项D -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="D" title="点击设为正确答案">D.</button>
+                <input type="text" class="option-text" placeholder="请输入选项D的内容...">
+            </div>
+        `;
+        
+        // 重新绑定选项标签点击事件
+        const optionLabels = container.querySelectorAll('.option-label');
+        optionLabels.forEach(label => {
+            const optionKey = label.getAttribute('data-option');
+            label.addEventListener('click', () => this.handleOptionLabelClick(optionKey));
+        });
+        
+        // 设置单选模式
+        document.getElementById('choice-type').value = 'single';
+        this.handleChoiceTypeChange();
+    }
+
+    // 获取正确答案（更新方法）
+    getCorrectAnswers() {
+        const correctAnswers = [];
+        const correctLabels = document.querySelectorAll('.option-label.correct');
+        
+        correctLabels.forEach(label => {
+            const optionKey = label.getAttribute('data-option');
+            const row = label.closest('.choice-option-row');
+            const text = row.querySelector('.option-text').value.trim();
+            
+            if (text && optionKey) {
+                correctAnswers.push(optionKey);
+            }
+        });
+        
+        return correctAnswers;
+    }
+
+    // 填充选择题选项（更新方法）
+    fillChoiceOptions(options, correctAnswer) {
+        const container = document.getElementById('choice-options-container');
+        container.innerHTML = '';
+        
+        const correctAnswers = correctAnswer.split(',').filter(ans => ans.trim());
+        
+        // 确保至少有2个选项
+        const minOptions = Math.max(options.length, 2);
+        
+        for (let i = 0; i < minOptions; i++) {
+            const option = options[i];
+            const optionKey = String.fromCharCode(65 + i);
+            const isCorrect = correctAnswers.includes(optionKey);
+            
+            const optionRow = document.createElement('div');
+            optionRow.className = `choice-option-row ${isCorrect ? 'correct-row' : ''}`;
+            optionRow.innerHTML = `
+                <button type="button" class="option-label clickable ${isCorrect ? 'correct' : ''}" data-option="${optionKey}" title="点击设为正确答案">${optionKey}.</button>
+                <input type="text" class="option-text" placeholder="请输入选项${optionKey}的内容..." value="${option?.text || ''}" ${i < 2 ? 'required' : ''}>
+            `;
+            
+            container.appendChild(optionRow);
+            
+            // 绑定选项标签点击事件
+            const optionLabel = optionRow.querySelector('.option-label');
+            optionLabel.addEventListener('click', () => this.handleOptionLabelClick(optionKey));
+        }
+        
+        // 处理选择题类型
+        this.handleChoiceTypeChange();
+    }
+
+    // 处理保存知识点
+    async handleSaveKnowledgePoint() {
+        try {
+            // 验证表单
+            const validationResult = this.validateKnowledgePointForm();
+            if (!validationResult.isValid) {
+                window.app.showNotification(validationResult.message, 'error');
+                return;
+            }
+
+            // 收集表单数据
+            const knowledgeData = this.collectKnowledgePointData();
+            
+            // 检查是否为编辑模式
+            const editId = document.getElementById('knowledge-form').getAttribute('data-edit-id');
+            
+            let success;
+            if (editId) {
+                // 编辑模式
+                success = window.storageManager.updateKnowledge(editId, knowledgeData);
+                if (success) {
+                    window.app.showNotification('知识点更新成功！', 'success');
+                }
+            } else {
+                // 添加模式
+                success = window.storageManager.addKnowledge(knowledgeData);
+                if (success) {
+                    window.app.showNotification('知识点添加成功！', 'success');
+                }
+            }
+
+            if (success) {
+                // 关闭模态框
+                this.closeKnowledgePointModal();
+                
+                // 刷新知识点列表
+                this.loadKnowledgePoints();
+                
+                // 刷新仪表盘统计
+                if (window.app && window.app.loadDashboard) {
+                    window.app.loadDashboard();
+                }
+            } else {
+                throw new Error('保存失败');
+            }
+
+        } catch (error) {
+            console.error('保存知识点失败:', error);
+            window.app.showNotification('保存失败：' + error.message, 'error');
+        }
+    }
+
+    // 验证知识点表单
+    validateKnowledgePointForm() {
+        this.clearFormErrors();
+        
+        const question = document.getElementById('question-input').value.trim();
+        const questionType = document.getElementById('question-type').value;
+        
+        // 验证题目
+        if (!question) {
+            this.showFieldError('question-input', '请输入题目内容');
+            return { isValid: false, message: '请输入题目内容' };
+        }
+
+        if (questionType === 'fill') {
+            // 填空题验证
+            const answer = document.getElementById('answer-input').value.trim();
+            if (!answer) {
+                this.showFieldError('answer-input', '请输入答案内容');
+                return { isValid: false, message: '请输入答案内容' };
+            }
+        } else if (questionType === 'choice') {
+            // 选择题验证
+            const options = this.getChoiceOptions();
+            const correctAnswers = this.getCorrectAnswers();
+            
+            // 检查选项数量
+            if (options.length < 2) {
+                return { isValid: false, message: '选择题至少需要2个选项' };
+            }
+            
+            // 检查选项内容
+            const emptyOptions = options.filter(opt => !opt.text.trim());
+            if (emptyOptions.length > 0) {
+                return { isValid: false, message: '请填写所有选项内容' };
+            }
+            
+            // 检查正确答案
+            if (correctAnswers.length === 0) {
+                return { isValid: false, message: '请至少选择一个正确答案' };
+            }
+            
+            // 检查多选题是否有多个正确答案
+            const choiceType = document.getElementById('choice-type').value;
+            if (choiceType === 'multiple' && correctAnswers.length === 1) {
+                if (!confirm('多选题只有一个正确答案，确定要保存吗？')) {
+                    return { isValid: false, message: '用户取消保存' };
+                }
+            }
+        }
+
+        return { isValid: true };
+    }
+
+    // 收集知识点数据
+    collectKnowledgePointData() {
+        const questionType = document.getElementById('question-type').value;
+        const editId = document.getElementById('knowledge-form').getAttribute('data-edit-id');
+        
+        const baseData = {
+            id: editId || this.generateKnowledgeId(), // 编辑模式使用原ID，新增模式生成新ID
+            question: document.getElementById('question-input').value.trim(),
+            type: questionType,
+            explanation: document.getElementById('explanation-input').value.trim(),
+            note: document.getElementById('note-input').value.trim(),
+            category: document.getElementById('category-input').value.trim() || this.currentArea?.name || '',
+            difficulty: parseInt(document.getElementById('difficulty-input').value) || 3,
+            tags: this.parseTags(document.getElementById('tags-input').value),
+            
+            // 关联信息
+            knowledgeBaseId: this.currentBase?.id || '',
+            areaId: this.currentArea?.id || '',
+            
+            // 复习相关字段（编辑时保留原值）
+            reviewCount: 0,
+            correctCount: 0,
+            lastReviewed: null,
+            nextReview: new Date().toISOString(),
+            interval: 1,
+            easeFactor: 2.5,
+            
+            // 时间戳
+            createdAt: editId ? undefined : new Date().toISOString(), // 编辑时不覆盖创建时间
+            updatedAt: new Date().toISOString()
+        };
+
+        // 如果是编辑模式，保留原有的复习数据
+        if (editId) {
+            const originalKnowledge = window.storageManager.getAllKnowledge().find(k => k.id === editId);
+            if (originalKnowledge) {
+                baseData.reviewCount = originalKnowledge.reviewCount || 0;
+                baseData.correctCount = originalKnowledge.correctCount || 0;
+                baseData.lastReviewed = originalKnowledge.lastReviewed;
+                baseData.nextReview = originalKnowledge.nextReview || new Date().toISOString();
+                baseData.interval = originalKnowledge.interval || 1;
+                baseData.easeFactor = originalKnowledge.easeFactor || 2.5;
+                baseData.createdAt = originalKnowledge.createdAt || new Date().toISOString();
+            }
+        }
+
+        if (questionType === 'fill') {
+            // 填空题
+            baseData.answer = document.getElementById('answer-input').value.trim();
+        } else if (questionType === 'choice') {
+            // 选择题
+            baseData.options = this.getChoiceOptions();
+            baseData.correctAnswer = this.getCorrectAnswers().join(',');
+            baseData.choiceType = document.getElementById('choice-type').value;
+            
+            // 分数（选择题特有）
+            const score = document.getElementById('score-input').value;
+            if (score) {
+                baseData.score = parseInt(score);
+            }
+        }
+
+        return baseData;
+    }
+
+    // 生成知识点ID
+    generateKnowledgeId() {
+        return 'knowledge_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // 解析标签
+    parseTags(tagsString) {
+        if (!tagsString) return [];
+        return tagsString.split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0);
+    }
+
+    // 获取选择题选项
+    getChoiceOptions() {
+        const options = [];
+        const optionRows = document.querySelectorAll('.choice-option-row');
+        
+        optionRows.forEach((row, index) => {
+            const text = row.querySelector('.option-text').value.trim();
+            if (text) {
+                options.push({
+                    key: String.fromCharCode(65 + index), // A, B, C, D...
+                    text: text
+                });
+            }
+        });
+        
+        return options;
+    }
+
+    // 显示字段错误
+    showFieldError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            const formGroup = field.closest('.form-group');
+            if (formGroup) {
+                formGroup.classList.add('error');
+                
+                // 添加错误消息
+                let errorDiv = formGroup.querySelector('.form-error');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'form-error';
+                    formGroup.appendChild(errorDiv);
+                }
+                errorDiv.textContent = message;
+            }
+        }
+    }
+
+    // 清除表单错误
+    clearFormErrors() {
+        const errorGroups = document.querySelectorAll('.form-group.error');
+        errorGroups.forEach(group => {
+            group.classList.remove('error');
+            const errorDiv = group.querySelector('.form-error');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        });
+    }
+
+    // 关闭知识点模态框
+    closeKnowledgePointModal() {
+        const modal = document.getElementById('knowledge-modal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+        
+        // 清理表单状态
+        this.resetKnowledgePointForm();
+    }
+
+    // 填充知识点表单数据
+    fillKnowledgePointForm(knowledge) {
+        // 基本信息
+        document.getElementById('question-type').value = knowledge.type || 'fill';
+        document.getElementById('question-input').value = knowledge.question || '';
+        document.getElementById('explanation-input').value = knowledge.explanation || '';
+        document.getElementById('note-input').value = knowledge.note || '';
+        document.getElementById('category-input').value = knowledge.category || '';
+        document.getElementById('difficulty-input').value = knowledge.difficulty || 3;
+        document.getElementById('tags-input').value = Array.isArray(knowledge.tags) ? knowledge.tags.join(', ') : '';
+
+        // 根据类型填充不同的数据
+        if (knowledge.type === 'choice') {
+            // 选择题数据
+            document.getElementById('choice-type').value = knowledge.choiceType || 'single';
+            document.getElementById('score-input').value = knowledge.score || '';
+            
+            // 填充选项
+            this.fillChoiceOptions(knowledge.options || [], knowledge.correctAnswer || '');
+        } else {
+            // 填空题数据
+            document.getElementById('answer-input').value = knowledge.answer || '';
+        }
+
+        // 触发类型变化处理
+        this.handleQuestionTypeChange(knowledge.type || 'fill');
+    }
+
+    // 重置知识点表单
+    resetKnowledgePointForm() {
+        const form = document.getElementById('knowledge-form');
+        if (form) {
+            form.reset();
+            form.removeAttribute('data-edit-id');
+        }
+
+        // 重置为填空题模式
+        document.getElementById('question-type').value = 'fill';
+        this.handleQuestionTypeChange('fill');
+        
+        // 重置选择题选项
+        this.resetChoiceOptions();
+        
+        // 清除错误状态
+        this.clearFormErrors();
     }
 }
 

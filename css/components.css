@@ -2362,3 +2362,291 @@ input:checked + .slider:before {
 }
 
 /* 选择题答题界面样式 */
+.choice-question-container {
+    margin: 20px 0;
+}
+
+/* 添加知识点模态框增强样式 */
+.choice-section {
+    background: rgba(102, 126, 234, 0.05);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.choice-options-container {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 配置提示区域 */
+.choice-config-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    color: #2980b9;
+}
+
+.hint-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.hint-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.choice-option-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.choice-option-row:hover {
+    background: rgba(102, 126, 234, 0.08);
+    border-color: rgba(102, 126, 234, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+/* 可点击的选项标签 */
+.option-label {
+    min-width: 40px;
+    height: 40px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* 悬停效果 */
+.option-label:hover {
+    border-color: rgba(102, 126, 234, 0.6);
+    background: rgba(102, 126, 234, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+/* 选中状态（正确答案） */
+.option-label.correct {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-color: #28a745;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.option-label.correct:hover {
+    background: linear-gradient(135deg, #218838, #1ea372);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* 点击动画效果 */
+.option-label:active {
+    transform: scale(0.95);
+}
+
+.option-label.correct::after {
+    content: '✓';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #fff;
+    color: #28a745;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 优化的输入框样式 */
+.option-text {
+    flex: 1;
+    min-width: 300px;
+    padding: 0.75rem 1rem;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+    line-height: 1.4;
+    font-family: inherit;
+}
+
+.option-text:focus {
+    outline: none;
+    border-color: rgba(102, 126, 234, 0.6);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-1px);
+}
+
+.option-text::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* 当对应的选项被选为正确答案时，输入框也有特殊样式 */
+.choice-option-row.correct-row .option-text {
+    border-color: rgba(40, 167, 69, 0.4);
+    background: rgba(40, 167, 69, 0.05);
+}
+
+.choice-option-row.correct-row .option-text:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+}
+
+.choice-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(102, 126, 234, 0.15);
+}
+
+.choice-actions .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.choice-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 删除旧的复选框样式 */
+.option-correct {
+    display: none !important;
+}
+
+/* 题目类型切换的视觉反馈 */
+#question-type {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+#question-type:focus {
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 分数输入框样式优化 */
+#score-input {
+    max-width: 150px;
+    padding: 0.75rem;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+#score-input:focus {
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 表单验证提示增强 */
+.form-error {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: none;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 0.5rem;
+    border-radius: 6px;
+    border-left: 3px solid #e74c3c;
+}
+
+.form-group.error input,
+.form-group.error textarea,
+.form-group.error select {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
+}
+
+.form-group.error .form-error {
+    display: block;
+    animation: slideInUp 0.3s ease;
+}
+
+/* 响应式设计优化 */
+@media (max-width: 768px) {
+    .choice-option-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+    
+    .option-label {
+        align-self: flex-start;
+        min-width: 50px;
+        height: 35px;
+    }
+    
+    .option-text {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .choice-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .choice-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .choice-config-hint {
+        padding: 1rem;
+    }
+    
+    .hint-text {
+        font-size: 0.85rem;
+    }
+}

@@ -397,7 +397,7 @@ class ReviewManager {
         this.currentReviewList = [];
         this.currentIndex = 0;
         this.currentKnowledge = null;
-        
+
         // 设置知识区复习准备状态，等待用户选择模式
         this.reviewMode = 'area-mode-select';
         this.currentAreaId = areaId;

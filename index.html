@@ -519,26 +519,97 @@
             </div>
             <div class="modal-body">
                 <form id="knowledge-form">
+                    <!-- 题目类型选择 -->
                     <div class="form-group">
-                        <label for="question-input">题目</label>
-                        <textarea id="question-input" required></textarea>
+                        <label for="question-type">题目类型</label>
+                        <select id="question-type" required onchange="window.knowledgeManager.handleQuestionTypeChange(this.value)">
+                            <option value="fill">填空题</option>
+                            <option value="choice">选择题</option>
+                        </select>
                     </div>
+                    
+                    <!-- 题目 -->
                     <div class="form-group">
-                        <label for="answer-input">答案</label>
-                        <textarea id="answer-input" required></textarea>
+                        <label for="question-input">题目 *</label>
+                        <textarea id="question-input" required placeholder="请输入题目内容..."></textarea>
                     </div>
+                    
+                    <!-- 填空题答案区域 -->
+                    <div id="fill-answer-section" class="form-group">
+                        <label for="answer-input">答案 *</label>
+                        <textarea id="answer-input" required placeholder="请输入标准答案..."></textarea>
+                    </div>
+                    
+                    <!-- 选择题配置区域 -->
+                    <div id="choice-answer-section" class="choice-section" style="display: none;">
+                        <!-- 选择题类型 -->
+                        <div class="form-group">
+                            <label for="choice-type">选择题类型</label>
+                            <select id="choice-type">
+                                <option value="single">单选题</option>
+                                <option value="multiple">多选题</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 选项配置 -->
+                        <div class="form-group">
+                            <label>选项配置</label>
+                            <div class="choice-config-hint">
+                                <span class="hint-icon">💡</span>
+                                <span class="hint-text">点击选项标签（如 A. B.）来设置正确答案</span>
+                            </div>
+                            <div id="choice-options-container">
+                                <!-- 选项A -->
+                                <div class="choice-option-row">
+                                    <button type="button" class="option-label clickable" data-option="A" title="点击设为正确答案">A.</button>
+                                    <input type="text" class="option-text" placeholder="请输入选项A的内容..." required>
+                                </div>
+                                <!-- 选项B -->
+                                <div class="choice-option-row">
+                                    <button type="button" class="option-label clickable" data-option="B" title="点击设为正确答案">B.</button>
+                                    <input type="text" class="option-text" placeholder="请输入选项B的内容..." required>
+                                </div>
+                                <!-- 选项C -->
+                                <div class="choice-option-row">
+                                    <button type="button" class="option-label clickable" data-option="C" title="点击设为正确答案">C.</button>
+                                    <input type="text" class="option-text" placeholder="请输入选项C的内容...">
+                                </div>
+                                <!-- 选项D -->
+                                <div class="choice-option-row">
+                                    <button type="button" class="option-label clickable" data-option="D" title="点击设为正确答案">D.</button>
+                                    <input type="text" class="option-text" placeholder="请输入选项D的内容...">
+                                </div>
+                            </div>
+                            <div class="choice-actions">
+                                <button type="button" class="btn btn-sm btn-secondary" id="add-option-btn">➕ 添加选项</button>
+                                <button type="button" class="btn btn-sm btn-secondary" id="remove-option-btn">➖ 删除选项</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 分数设置 -->
+                        <div class="form-group">
+                            <label for="score-input">分数</label>
+                            <input type="number" id="score-input" min="0" max="100" placeholder="题目分数（可选）">
+                        </div>
+                    </div>
+                    
+                    <!-- 解析 -->
                     <div class="form-group">
                         <label for="explanation-input">解析</label>
-                        <textarea id="explanation-input"></textarea>
+                        <textarea id="explanation-input" placeholder="请输入题目解析（可选）..."></textarea>
                     </div>
+                    
+                    <!-- 笔记 -->
                     <div class="form-group">
                         <label for="note-input">笔记</label>
                         <textarea id="note-input" placeholder="添加您的个人笔记..."></textarea>
                     </div>
+                    
+                    <!-- 其他信息 -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="category-input">分类</label>
-                            <input type="text" id="category-input">
+                            <input type="text" id="category-input" placeholder="知识点分类">
                         </div>
                         <div class="form-group">
                             <label for="difficulty-input">难度</label>
@@ -551,9 +622,11 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <!-- 标签 -->
                     <div class="form-group">
                         <label for="tags-input">标签（用逗号分隔）</label>
-                        <input type="text" id="tags-input">
+                        <input type="text" id="tags-input" placeholder="例如：重点,难点,考试">
                     </div>
                 </form>
             </div>

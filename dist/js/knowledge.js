@@ -17,9 +17,12 @@ class KnowledgeManager {
     bindEvents() {
         // 视图切换事件
         document.getElementById('back-to-base')?.addEventListener('click', () => this.showBaseView());
-        document.getElementById('back-to-area')?.addEventListener('click', () => this.showAreaView());
+        document.getElementById('back-to-area')?.addEventListener('click', () => this.showAreaView(this.currentBase?.id));
         
         // 功能按钮事件
+        document.getElementById('add-knowledge-base-btn')?.addEventListener('click', () => this.showCreateKnowledgeBaseModal());
+        document.getElementById('add-knowledge-area-btn')?.addEventListener('click', () => this.showCreateKnowledgeAreaModal());
+        document.getElementById('add-knowledge-point-btn')?.addEventListener('click', () => this.showAddKnowledgePointModal());
         document.getElementById('expand-all-btn')?.addEventListener('click', () => this.expandAllPoints());
         document.getElementById('collapse-all-btn')?.addEventListener('click', () => this.collapseAllPoints());
         document.getElementById('review-area-btn')?.addEventListener('click', () => this.startAreaReview());
@@ -32,6 +35,12 @@ class KnowledgeManager {
         // 导入导出事件
         document.getElementById('import-btn')?.addEventListener('click', () => this.handleImport());
         document.getElementById('export-btn')?.addEventListener('click', () => this.handleExport());
+        
+        // 创建知识库模态框事件
+        this.bindCreateKnowledgeBaseEvents();
+        
+        // 创建知识区模态框事件
+        this.bindCreateKnowledgeAreaEvents();
     }
 
     // 显示知识库视图
@@ -42,29 +51,95 @@ class KnowledgeManager {
         this.renderKnowledgeBases();
     }
 
+    // 刷新当前视图（公共方法）
+    refresh() {
+        console.log('刷新知识管理器视图...');
+        switch(this.currentView) {
+            case 'base':
+                this.renderKnowledgeBases();
+                break;
+            case 'area':
+                this.renderKnowledgeAreas();
+                break;
+            case 'points':
+                this.loadKnowledgePoints();
+                break;
+            default:
+                this.showBaseView();
+        }
+    }
+
     // 显示知识区视图
     showAreaView(baseId = null) {
+        console.log('=== 显示知识区视图 ===');
+        console.log('输入参数 baseId:', baseId);
+        console.log('当前状态:');
+        console.log('- this.currentBase:', this.currentBase);
+        console.log('- 存储管理器中的当前知识库:', window.storageManager.getCurrentKnowledgeBase());
+        
         // 获取知识库数据
-        const data = window.storageManager.getData();
-        if (data?.knowledgeBase) {
-            this.currentBase = data.knowledgeBase;
-        } else {
-            console.error('未找到知识库数据');
+        const knowledgeBase = window.storageManager.getKnowledgeBaseById(baseId);
+        if (!knowledgeBase) {
+            console.error(`❌ 未找到知识库数据: ${baseId}`);
             this.showBaseView();
             return;
         }
         
+        console.log(`📚 成功获取知识库: ${knowledgeBase.name} (ID: ${knowledgeBase.id})`);
+        
+        // 关键：设置当前知识库状态
+        this.currentBase = knowledgeBase;
+        console.log(`✅ 已设置 this.currentBase = ${this.currentBase.name}`);
+        
+        // 同步存储管理器的状态
+        const setResult = window.storageManager.setCurrentKnowledgeBase(baseId);
+        console.log(`📝 存储管理器状态同步结果: ${setResult}`);
+        
+        // 验证状态设置是否成功
+        const verifyCurrentBase = window.storageManager.getCurrentKnowledgeBase();
+        console.log('🔍 验证状态设置:');
+        console.log(`- this.currentBase.id: ${this.currentBase.id}`);
+        console.log(`- 存储管理器当前知识库: ${verifyCurrentBase?.id}`);
+        
+        if (this.currentBase.id !== verifyCurrentBase?.id) {
+            console.warn('⚠️ 状态不一致，尝试修复...');
+            window.storageManager.setCurrentKnowledgeBase(this.currentBase.id);
+        }
+        
+        // 设置视图状态
         this.currentView = 'area';
         this.hideAllViews();
         document.getElementById('knowledge-area-view').classList.add('active');
         document.getElementById('current-base-title').textContent = this.currentBase.name;
+        
+        console.log(`🎯 当前视图: ${this.currentView}`);
+        console.log(`📄 页面标题已设置为: ${this.currentBase.name}`);
+        
+        // 渲染知识区列表
         this.renderKnowledgeAreas();
+        
+        console.log('✅ 知识区视图显示完成');
     }
 
     // 显示知识点视图
     showPointsView(areaId) {
+        console.log('显示知识点视图...', {
+            areaId: areaId,
+            currentBase: this.currentBase,
+            baseAreas: this.currentBase?.areas
+        });
+        
         this.currentArea = this.currentBase?.areas.find(area => area.id === areaId);
-        if (!this.currentArea) return;
+        
+        console.log('查找知识区结果:', {
+            currentArea: this.currentArea,
+            searchAreaId: areaId
+        });
+        
+        if (!this.currentArea) {
+            console.error('未找到知识区:', areaId);
+            return;
+        }
         
         this.currentView = 'points';
         this.hideAllViews();
@@ -83,6 +158,11 @@ class KnowledgeManager {
     loadKnowledgeBase() {
         // 总是先显示知识库选择视图，让用户看到知识库卡片
         this.showBaseView();
+        
+        // 强制刷新知识库列表显示
+        setTimeout(() => {
+            this.renderKnowledgeBases();
+        }, 100);
     }
 
     // 获取知识库
@@ -94,9 +174,11 @@ class KnowledgeManager {
     // 渲染知识库列表
     renderKnowledgeBases() {
         const container = document.getElementById('knowledge-base-grid');
-        const data = window.storageManager.getData();
+        const knowledgeBases = window.storageManager.getAllKnowledgeBases();
         
-        if (!data?.knowledgeBase) {
+        console.log('渲染知识库列表:', knowledgeBases);
+        
+        if (!knowledgeBases || knowledgeBases.length === 0) {
             container.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #6c757d;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
@@ -110,27 +192,49 @@ class KnowledgeManager {
             return;
         }
 
-        const base = data.knowledgeBase;
-        const totalPoints = base.areas.reduce((sum, area) => sum + area.knowledgePoints.length, 0);
-        const totalAreas = base.areas.length;
+        container.innerHTML = knowledgeBases.map(base => {
+            const totalPoints = this.getKnowledgeBaseStats(base.id).totalPoints;
+            const totalAreas = base.areas ? base.areas.length : 0;
 
-        container.innerHTML = `
-            <div class="knowledge-base-card" onclick="window.knowledgeManager.showAreaView('${base.id}')">
-                <div class="knowledge-base-icon">🎯</div>
-                <div class="knowledge-base-title">${base.name}</div>
-                <div class="knowledge-base-description">${base.description}</div>
-                <div class="knowledge-base-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">${totalAreas}</div>
-                        <div class="stat-label">知识区</div>
+            return `
+                <div class="knowledge-base-card" onclick="window.knowledgeManager.showAreaView('${base.id}')">
+                    <div class="knowledge-base-icon">${base.icon || '📚'}</div>
+                    <div class="knowledge-base-title">${base.name}</div>
+                    <div class="knowledge-base-description">${base.description}</div>
+                    <div class="knowledge-base-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">${totalAreas}</div>
+                            <div class="stat-label">知识区</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">${totalPoints}</div>
+                            <div class="stat-label">知识点</div>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">${totalPoints}</div>
-                        <div class="stat-label">知识点</div>
+                    <div class="knowledge-base-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); window.knowledgeManager.editKnowledgeBase('${base.id}')" title="编辑知识库">
+                            ✏️
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); window.knowledgeManager.deleteKnowledgeBase('${base.id}')" title="删除知识库">
+                            🗑️
+                        </button>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
+        }).join('');
+        
+        console.log('知识库列表渲染完成');
+    }
+
+    // 获取知识库统计信息
+    getKnowledgeBaseStats(knowledgeBaseId) {
+        const knowledge = window.storageManager.getKnowledgeByBaseId(knowledgeBaseId);
+        return {
+            totalPoints: knowledge.length,
+            masteredCount: knowledge.filter(k => k.reviewCount > 0 && k.correctCount / k.reviewCount >= 0.8).length,
+            reviewingCount: knowledge.filter(k => k.reviewCount > 0 && k.correctCount / k.reviewCount < 0.8).length,
+            newCount: knowledge.filter(k => k.reviewCount === 0).length
+        };
     }
 
     // 渲染知识区列表
@@ -148,7 +252,7 @@ class KnowledgeManager {
         }
 
         container.innerHTML = this.currentBase.areas.map(area => {
-            const pointsCount = area.knowledgePoints.length;
+            const pointsCount = window.storageManager.getKnowledgeByAreaId(area.id).length;
             const masteredCount = this.getMasteredCount(area.id);
             const progress = pointsCount > 0 ? (masteredCount / pointsCount * 100) : 0;
             
@@ -158,6 +262,12 @@ class KnowledgeManager {
                     <div class="area-header">
                         <div class="area-icon">📖</div>
                         <div class="area-actions">
+                            <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); window.knowledgeManager.editKnowledgeArea('${area.id}')" title="编辑知识区">
+                                ✏️
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); window.knowledgeManager.deleteKnowledgeArea('${area.id}')" title="删除知识区">
+                                🗑️
+                            </button>
                             <button class="btn btn-sm btn-success" onclick="event.stopPropagation(); window.knowledgeManager.startAreaReview('${area.id}')" title="复习本知识区">
                                 🎯
                             </button>
@@ -184,11 +294,61 @@ class KnowledgeManager {
 
     // 加载知识点列表
     loadKnowledgePoints() {
+        console.log('开始加载知识点...', {
+            currentArea: this.currentArea,
+            areaId: this.currentArea?.id
+        });
+        
         const allKnowledge = window.storageManager.getAllKnowledge();
-        this.currentPoints = allKnowledge.filter(point => point.areaId === this.currentArea.id);
+        console.log('所有知识点数量:', allKnowledge.length);
+        
+        // 筛选当前知识区的知识点
+        this.currentPoints = allKnowledge.filter(point => {
+            const matches = point.areaId === this.currentArea.id;
+            if (!matches) {
+                console.log('知识点不匹配:', {
+                    pointId: point.id,
+                    pointAreaId: point.areaId,
+                    currentAreaId: this.currentArea.id,
+                    question: point.question?.substring(0, 50)
+                });
+            }
+            return matches;
+        });
+        
+        console.log('筛选后的知识点数量:', this.currentPoints.length);
+        
+        // 如果没有找到知识点，尝试其他可能的匹配方式
+        if (this.currentPoints.length === 0) {
+            console.log('尝试其他匹配方式...');
+            
+            // 尝试按知识库ID和分类匹配
+            const alternativePoints = allKnowledge.filter(point => 
+                point.knowledgeBaseId === this.currentBase?.id && 
+                (point.category === this.currentArea.name || point.area === this.currentArea.name)
+            );
+            
+            console.log('按分类匹配的知识点数量:', alternativePoints.length);
+            
+            if (alternativePoints.length > 0) {
+                this.currentPoints = alternativePoints;
+                
+                // 更新这些知识点的areaId
+                alternativePoints.forEach(point => {
+                    window.storageManager.updateKnowledge(point.id, {
+                        areaId: this.currentArea.id
+                    });
+                });
+                
+                console.log('已更新知识点的areaId');
+            }
+        }
+        
         this.filteredPoints = [...this.currentPoints];
         this.updateTagFilter();
         this.renderKnowledgePoints();
+        
+        console.log('知识点加载完成，最终数量:', this.filteredPoints.length);
     }
 
     // 渲染知识点列表
@@ -209,11 +369,44 @@ class KnowledgeManager {
             const isExpanded = this.expandedPoints.has(point.id);
             const reviewStatus = this.getReviewStatus(point);
             
+            // 根据题目类型生成答案显示内容
+            let answerContent = '';
+            if (point.type === 'choice') {
+                // 选择题：显示所有选项和正确答案
+                const optionsHtml = point.options.map(option => 
+                    `<div class="choice-option-display ${point.correctAnswer.includes(option.key) ? 'correct-answer' : ''}">
+                        ${option.key}. ${option.text}
+                    </div>`
+                ).join('');
+                answerContent = `
+                    <div class="choice-display">
+                        <div class="choice-type-indicator">
+                            <span class="choice-type-badge ${point.choiceType === 'multiple' ? 'multiple' : 'single'}">
+                                ${point.choiceType === 'multiple' ? '多选题' : '单选题'}
+                            </span>
+                            ${point.score ? `<span class="score-badge">${point.score}分</span>` : ''}
+                        </div>
+                        <div class="choice-options-display">
+                            ${optionsHtml}
+                        </div>
+                        <div class="correct-answer-display">
+                            <strong>正确答案：${point.correctAnswer}</strong>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // 填空题：显示标准答案
+                answerContent = `<div class="fill-answer-display">${point.answer}</div>`;
+            }
+            
             return `
                 <div class="knowledge-point-card ${isExpanded ? 'expanded' : ''}" 
                      style="--area-color: ${this.currentArea.color}">
                     <div class="point-header" onclick="window.knowledgeManager.togglePoint('${point.id}')">
-                        <div class="point-question">${point.question}</div>
+                        <div class="point-question">
+                            ${point.question}
+                            ${point.type === 'choice' ? `<span class="question-type-badge">${point.choiceType === 'multiple' ? '多选' : '单选'}</span>` : ''}
+                        </div>
                         <div class="point-actions">
                             <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); window.knowledgeManager.editKnowledgePoint('${point.id}')" title="编辑">
                                 ✏️
@@ -235,7 +428,7 @@ class KnowledgeManager {
                     <div class="point-content ${isExpanded ? 'expanded' : ''}">
                         <div class="answer-section">
                             <div class="answer-label">💡 答案</div>
-                            <div class="answer-text">${point.answer}</div>
+                            <div class="answer-text">${answerContent}</div>
                         </div>
                         ${point.explanation ? `
                             <div class="explanation-section">
@@ -291,9 +484,9 @@ class KnowledgeManager {
     // 开始知识区复习
     async startAreaReview(areaId = null) {
         try {
-        const targetAreaId = areaId || this.currentArea?.id;
-        if (!targetAreaId) {
-            console.error('startAreaReview: 无法确定知识区ID');
+            const targetAreaId = areaId || this.currentArea?.id;
+            if (!targetAreaId) {
+                console.error('startAreaReview: 无法确定知识区ID');
                 window.app.showNotification('请先选择要复习的知识区', 'warning');
                 return;
             }
@@ -314,23 +507,23 @@ class KnowledgeManager {
             if (!area) {
                 console.error(`知识区 ${targetAreaId} 在知识库 ${currentBaseId} 中不存在`);
                 window.app.showNotification('知识区不存在', 'error');
-            return;
-        }
+                return;
+            }
 
             console.log(`知识区: ${area.name}`);
 
             // 预检查知识区中的知识点数量
-        const allKnowledge = window.storageManager.getAllKnowledge();
-        const areaPoints = allKnowledge.filter(point => point.areaId === targetAreaId);
+            const allKnowledge = window.storageManager.getAllKnowledge();
+            const areaPoints = allKnowledge.filter(point => point.areaId === targetAreaId);
             
             console.log(`知识区 "${area.name}" 中有 ${areaPoints.length} 个知识点`);
-        
-        if (areaPoints.length === 0) {
+
+            if (areaPoints.length === 0) {
                 const message = `知识区 "${area.name}" 中没有知识点，无法开始复习`;
                 console.warn(message);
                 window.app.showNotification(message, 'warning');
-            return;
-        }
+                return;
+            }
 
             // 使用统一的复习管理器启动知识区复习
             const reviewOptions = {
@@ -342,7 +535,7 @@ class KnowledgeManager {
             await window.reviewManager.reviewKnowledgeArea(targetAreaId, reviewOptions);
             
             // 切换到复习页面
-        window.app.showSection('review');
+            window.app.showSection('review');
             
             // 显示成功通知
             const message = `准备复习知识区：${area.name}（${areaPoints.length}个知识点）`;
@@ -357,69 +550,113 @@ class KnowledgeManager {
 
     // 开始知识库复习
     async startBaseReview() {
-        if (!this.currentBase) {
-            window.app.showNotification('请先选择要复习的知识库', 'warning');
-            return;
-        }
-
         try {
-            // 使用新的题目列表生成器复习整个知识库
-            // 使用当前选择的知识库ID
-            const baseId = this.currentBase.id;
+            console.log('=== 开始知识库复习 ===');
+            console.log('当前状态检查:');
+            console.log('- this.currentBase:', this.currentBase);
+            console.log('- 存储管理器中的当前知识库:', window.storageManager.getCurrentKnowledgeBase());
             
-            await window.reviewManager.reviewKnowledgeBase(baseId, {
+            // 首先验证 this.currentBase 是否正确设置
+            if (!this.currentBase) {
+                console.error('❌ this.currentBase 为空，无法启动复习');
+                window.app.showNotification('请先选择要复习的知识库', 'warning');
+                return;
+            }
+
+            const baseId = this.currentBase.id;
+            console.log(`📚 目标知识库: ${this.currentBase.name} (ID: ${baseId})`);
+
+            // 双重验证：检查知识库是否存在
+            const verifyBase = window.storageManager.getKnowledgeBaseById(baseId);
+            if (!verifyBase) {
+                console.error(`❌ 知识库验证失败: ID ${baseId} 不存在`);
+                window.app.showNotification(`知识库不存在：${baseId}`, 'error');
+                return;
+            }
+
+            // 确保存储管理器的当前知识库状态同步
+            window.storageManager.setCurrentKnowledgeBase(baseId);
+            console.log(`✅ 已同步存储管理器状态到知识库: ${baseId}`);
+
+            // 获取当前知识库的知识点，使用增强的存储管理器方法
+            const baseKnowledge = window.storageManager.getKnowledgeByBaseId(baseId);
+            console.log(`📊 知识库 "${this.currentBase.name}" 的知识点数量: ${baseKnowledge.length}`);
+
+            if (baseKnowledge.length === 0) {
+                const message = `知识库 "${this.currentBase.name}" 中没有知识点`;
+                console.warn('⚠️ ' + message);
+                window.app.showNotification(message, 'info');
+                return;
+            }
+
+            // 验证知识点归属的正确性
+            console.log('🔍 验证知识点归属:');
+            const correctKnowledge = baseKnowledge.filter(k => k.knowledgeBaseId === baseId);
+            const incorrectKnowledge = baseKnowledge.filter(k => k.knowledgeBaseId !== baseId);
+            
+            console.log(`- 正确归属: ${correctKnowledge.length} 个`);
+            if (incorrectKnowledge.length > 0) {
+                console.warn(`- 错误归属: ${incorrectKnowledge.length} 个`);
+                incorrectKnowledge.forEach(k => {
+                    console.warn(`  * ${k.question.substring(0, 30)}... (实际BaseID: ${k.knowledgeBaseId})`);
+                });
+            }
+
+            // 日志记录前5个知识点的归属信息
+            console.log('📝 知识点样本检查:');
+            baseKnowledge.slice(0, 5).forEach((k, index) => {
+                const status = k.knowledgeBaseId === baseId ? '✅' : '❌';
+                console.log(`${index + 1}. ${status} ${k.question.substring(0, 40)}... (ID: ${k.id}, BaseID: ${k.knowledgeBaseId})`);
+            });
+
+            // 使用新的复习管理器开始复习
+            const reviewOptions = {
                 onlyDue: false,  // 复习全部题目，不只是到期的
                 random: true,    // 随机顺序
                 limit: 50        // 最多50题，避免太长
-            });
+            };
+
+            console.log('🚀 启动复习管理器，配置:', reviewOptions);
+            await window.reviewManager.reviewKnowledgeBase(baseId, reviewOptions);
             
             // 切换到复习页面
             window.app.showSection('review');
-            window.app.showNotification(`开始复习：${this.currentBase.name}`, 'success');
+            
+            // 显示成功通知
+            const message = `开始复习知识库：${this.currentBase.name}（${baseKnowledge.length}个知识点）`;
+            console.log('✅ ' + message);
+            window.app.showNotification(message, 'success');
+
         } catch (error) {
-            console.error('开始知识库复习失败:', error);
-            window.app.showNotification('开始复习失败，请重试', 'error');
+            console.error('❌ 开始知识库复习失败:', error);
+            window.app.showNotification('开始复习失败：' + error.message, 'error');
         }
     }
 
     // 编辑知识点
     editKnowledgePoint(pointId) {
-        const knowledge = window.storageManager.getKnowledgeById(pointId);
+        const allKnowledge = window.storageManager.getAllKnowledge();
+        const knowledge = allKnowledge.find(k => k.id === pointId);
+        
         if (!knowledge) {
             window.app.showNotification('未找到知识点', 'error');
             return;
         }
 
-        // 打开编辑模态框
-        this.openEditModal(knowledge);
-    }
-
-    // 打开编辑模态框
-    openEditModal(knowledge) {
+        // 显示模态框
         const modal = document.getElementById('knowledge-modal');
-        const title = document.getElementById('modal-title');
-        const form = document.getElementById('knowledge-form');
-        
-        title.textContent = '编辑知识点';
-        
-        // 填充表单数据
-        document.getElementById('question-input').value = knowledge.question;
-        document.getElementById('answer-input').value = knowledge.answer;
-        document.getElementById('explanation-input').value = knowledge.explanation || '';
-        document.getElementById('note-input').value = knowledge.note || '';
-        document.getElementById('category-input').value = knowledge.category || '';
-        document.getElementById('difficulty-input').value = knowledge.difficulty || 3;
-        document.getElementById('tags-input').value = knowledge.tags.join(', ');
-        
-        modal.classList.add('active');
-        
-        // 存储当前编辑的知识点ID
-        form.setAttribute('data-edit-id', knowledge.id);
-        
-        // 聚焦到第一个输入框
-        setTimeout(() => {
-            document.getElementById('question-input').focus();
-        }, 100);
+        if (modal) {
+            modal.classList.add('active');
+            this.bindKnowledgePointModalEvents();
+            
+            // 设置编辑模式
+            document.getElementById('modal-title').textContent = '编辑知识点';
+            document.getElementById('save-btn').textContent = '保存修改';
+            document.getElementById('knowledge-form').setAttribute('data-edit-id', pointId);
+            
+            // 填充表单数据
+            this.fillKnowledgePointForm(knowledge);
+        }
     }
 
     // 搜索处理
@@ -547,17 +784,1075 @@ class KnowledgeManager {
 
     // 更新知识点笔记
     updateNote(pointId, note) {
-        const success = window.storageManager.updateKnowledgeNote(pointId, note);
-        if (success) {
-            // 更新本地数据
-            const point = this.currentPoints.find(p => p.id === pointId);
-            if (point) {
-                point.note = note;
-            }
-            window.app.showNotification('笔记已保存', 'success', 1000);
-        } else {
-            window.app.showNotification('笔记保存失败', 'error');
+        const allKnowledge = window.storageManager.getAllKnowledge();
+        const point = allKnowledge.find(k => k.id === pointId);
+        if (point) {
+            point.note = note;
+            window.storageManager.updateKnowledge(point);
         }
+    }
+
+    // 显示创建知识库模态框
+    showCreateKnowledgeBaseModal() {
+        const modal = document.getElementById('create-knowledge-base-modal');
+        if (modal) {
+            modal.classList.add('active');
+            this.resetCreateKnowledgeBaseForm();
+        }
+    }
+
+    // 绑定创建知识库模态框事件
+    bindCreateKnowledgeBaseEvents() {
+        // 图标选择事件
+        document.querySelectorAll('.icon-option').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById('kb-icon').value = button.dataset.icon;
+                this.updatePreview();
+            });
+        });
+
+        // 颜色选择事件
+        document.querySelectorAll('.color-option').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById('kb-color').value = button.dataset.color;
+                this.updatePreview();
+            });
+        });
+
+        // 表单输入事件
+        document.getElementById('kb-name')?.addEventListener('input', () => this.updatePreview());
+        document.getElementById('kb-description')?.addEventListener('input', () => this.updatePreview());
+
+        // 表单提交事件
+        document.getElementById('create-knowledge-base-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleCreateKnowledgeBase();
+        });
+
+        // 模态框关闭事件
+        document.querySelectorAll('[data-modal="create-knowledge-base-modal"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('create-knowledge-base-modal').classList.remove('active');
+            });
+        });
+
+        // 点击模态框背景关闭
+        document.getElementById('create-knowledge-base-modal')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+    }
+
+    // 重置创建知识库表单
+    resetCreateKnowledgeBaseForm() {
+        const form = document.getElementById('create-knowledge-base-form');
+        form.reset();
+        form.removeAttribute('data-edit-id'); // 清除编辑ID
+        
+        document.getElementById('kb-icon').value = '📚';
+        document.getElementById('kb-color').value = '#667eea';
+        document.getElementById('create-sample-areas').checked = true;
+        
+        // 重置选择状态
+        document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.icon-option[data-icon="📚"]').classList.add('active');
+        
+        document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.color-option[data-color="#667eea"]').classList.add('active');
+        
+        // 重置模态框标题和按钮文本
+        document.querySelector('#create-knowledge-base-modal .modal-header h3').textContent = '📚 创建新知识库';
+        document.querySelector('#create-knowledge-base-modal .modal-footer .btn-primary').textContent = '创建知识库';
+        
+        this.updatePreview();
+    }
+
+    // 更新预览
+    updatePreview() {
+        const name = document.getElementById('kb-name').value || '知识库名称';
+        const description = document.getElementById('kb-description').value || '知识库描述';
+        const icon = document.getElementById('kb-icon').value;
+        const color = document.getElementById('kb-color').value;
+
+        document.querySelector('.preview-icon').textContent = icon;
+        document.querySelector('.preview-title').textContent = name;
+        document.querySelector('.preview-description').textContent = description;
+        
+        // 更新预览卡片的颜色
+        const previewCard = document.querySelector('.preview-card');
+        if (previewCard) {
+            previewCard.style.setProperty('--preview-color', color);
+            previewCard.style.borderLeftColor = color;
+        }
+    }
+
+    // 处理创建知识库
+    async handleCreateKnowledgeBase() {
+        const formData = new FormData(document.getElementById('create-knowledge-base-form'));
+        const name = formData.get('name').trim();
+        const description = formData.get('description').trim();
+        const icon = formData.get('icon');
+        const color = formData.get('color');
+        const createSampleAreas = document.getElementById('create-sample-areas').checked;
+        const editId = document.getElementById('create-knowledge-base-form').getAttribute('data-edit-id');
+
+        // 验证必填字段
+        if (!name) {
+            window.app.showNotification('请输入知识库名称', 'error');
+            return;
+        }
+
+        try {
+            if (editId) {
+                // 编辑模式
+                console.log('编辑知识库:', { editId, name, description, icon, color });
+                
+                const updates = {
+                    name: name,
+                    description: description || '',
+                    icon: icon || '📚',
+                    color: color || '#667eea'
+                };
+
+                const success = window.storageManager.updateKnowledgeBase(editId, updates);
+                
+                if (!success) {
+                    throw new Error('知识库更新失败');
+                }
+
+                console.log('知识库更新成功');
+                window.app.showNotification(`知识库"${name}"更新成功！`, 'success');
+            } else {
+                // 创建模式
+                console.log('开始创建知识库:', { name, description, icon, color, createSampleAreas });
+                
+                // 创建知识库数据结构
+                const knowledgeBase = {
+                    id: 'kb_' + Date.now(),
+                    name: name,
+                    description: description || '',
+                    icon: icon || '📚',
+                    color: color || '#667eea',
+                    areas: []
+                };
+
+                // 如果选择创建示例知识区
+                if (createSampleAreas) {
+                    knowledgeBase.areas = this.createSampleAreas();
+                    console.log('创建了示例知识区:', knowledgeBase.areas);
+                }
+
+                // 使用新的存储方法添加知识库
+                const result = window.storageManager.addKnowledgeBase(knowledgeBase);
+                
+                if (!result) {
+                    throw new Error('知识库添加失败');
+                }
+
+                console.log('知识库创建成功:', result);
+                window.app.showNotification(`知识库"${name}"创建成功！`, 'success');
+            }
+
+            // 关闭模态框
+            document.getElementById('create-knowledge-base-modal').classList.remove('active');
+
+            // 重置表单状态
+            this.resetCreateKnowledgeBaseForm();
+
+            // 刷新知识库视图
+            this.showBaseView();
+
+        } catch (error) {
+            console.error('操作失败:', error);
+            window.app.showNotification('操作失败：' + error.message, 'error');
+        }
+    }
+
+    // 创建示例知识区
+    createSampleAreas() {
+        return [
+            {
+                id: 'area_' + Date.now() + '_1',
+                name: '基础概念',
+                description: '基本概念和定义',
+                color: '#667eea',
+                knowledgePoints: []
+            },
+            {
+                id: 'area_' + Date.now() + '_2',
+                name: '重点难点',
+                description: '重要和困难的知识点',
+                color: '#f093fb',
+                knowledgePoints: []
+            },
+            {
+                id: 'area_' + Date.now() + '_3', 
+                name: '实践应用',
+                description: '实际应用和案例',
+                color: '#43e97b',
+                knowledgePoints: []
+            }
+        ];
+    }
+
+    // 编辑知识库
+    editKnowledgeBase(knowledgeBaseId) {
+        const knowledgeBase = window.storageManager.getKnowledgeBaseById(knowledgeBaseId);
+        if (!knowledgeBase) {
+            window.app.showNotification('未找到知识库', 'error');
+            return;
+        }
+
+        // 填充表单数据
+        document.getElementById('kb-name').value = knowledgeBase.name;
+        document.getElementById('kb-description').value = knowledgeBase.description || '';
+        document.getElementById('kb-icon').value = knowledgeBase.icon || '📚';
+        document.getElementById('kb-color').value = knowledgeBase.color || '#667eea';
+        document.getElementById('create-sample-areas').checked = false; // 编辑时不创建示例区
+
+        // 更新选择状态
+        document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.icon-option[data-icon="${knowledgeBase.icon}"]`)?.classList.add('active');
+        
+        document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.color-option[data-color="${knowledgeBase.color}"]`)?.classList.add('active');
+
+        // 更新预览
+        this.updatePreview();
+
+        // 更改模态框标题
+        document.querySelector('#create-knowledge-base-modal .modal-header h3').textContent = '📚 编辑知识库';
+        document.querySelector('#create-knowledge-base-modal .modal-footer .btn-primary').textContent = '保存修改';
+
+        // 存储编辑ID
+        document.getElementById('create-knowledge-base-form').setAttribute('data-edit-id', knowledgeBaseId);
+
+        // 显示模态框
+        document.getElementById('create-knowledge-base-modal').classList.add('active');
+    }
+
+    // 删除知识库
+    deleteKnowledgeBase(knowledgeBaseId) {
+        const knowledgeBase = window.storageManager.getKnowledgeBaseById(knowledgeBaseId);
+        if (!knowledgeBase) {
+            window.app.showNotification('未找到知识库', 'error');
+            return;
+        }
+
+        const stats = this.getKnowledgeBaseStats(knowledgeBaseId);
+        
+        if (confirm(`确定要删除知识库"${knowledgeBase.name}"吗？\n\n这将同时删除：\n- ${stats.totalPoints} 个知识点\n- ${knowledgeBase.areas.length} 个知识区\n\n此操作不可恢复！`)) {
+            const success = window.storageManager.deleteKnowledgeBase(knowledgeBaseId);
+            
+            if (success) {
+                window.app.showNotification(`知识库"${knowledgeBase.name}"已删除`, 'success');
+                this.showBaseView(); // 刷新视图
+            } else {
+                window.app.showNotification('删除失败，请重试', 'error');
+            }
+        }
+    }
+
+    // 显示创建知识区模态框
+    showCreateKnowledgeAreaModal() {
+        const modal = document.getElementById('create-knowledge-area-modal');
+        if (modal) {
+            modal.classList.add('active');
+            this.resetCreateKnowledgeAreaForm();
+        }
+    }
+
+    // 绑定创建知识区模态框事件
+    bindCreateKnowledgeAreaEvents() {
+        // 颜色选择事件
+        document.querySelectorAll('#create-knowledge-area-modal .color-option').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('#create-knowledge-area-modal .color-option').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById('area-color').value = button.dataset.color;
+                this.updateAreaPreview();
+            });
+        });
+
+        // 表单输入事件
+        document.getElementById('area-name')?.addEventListener('input', () => this.updateAreaPreview());
+        document.getElementById('area-description')?.addEventListener('input', () => this.updateAreaPreview());
+
+        // 表单提交事件
+        document.getElementById('create-knowledge-area-form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleCreateKnowledgeArea();
+        });
+
+        // 模态框关闭事件
+        document.querySelectorAll('[data-modal="create-knowledge-area-modal"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('create-knowledge-area-modal').classList.remove('active');
+            });
+        });
+
+        // 点击模态框背景关闭
+        document.getElementById('create-knowledge-area-modal')?.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+    }
+
+    // 重置创建知识区表单
+    resetCreateKnowledgeAreaForm() {
+        const form = document.getElementById('create-knowledge-area-form');
+        form.reset();
+        form.removeAttribute('data-edit-id');
+        
+        document.getElementById('area-color').value = '#667eea';
+        
+        // 重置选择状态
+        document.querySelectorAll('#create-knowledge-area-modal .color-option').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('#create-knowledge-area-modal .color-option[data-color="#667eea"]').classList.add('active');
+        
+        // 重置模态框标题和按钮文本
+        document.querySelector('#create-knowledge-area-modal .modal-header h3').textContent = '📖 创建新知识区';
+        document.querySelector('#create-knowledge-area-modal .modal-footer .btn-primary').textContent = '创建知识区';
+        
+        this.updateAreaPreview();
+    }
+
+    // 更新知识区预览
+    updateAreaPreview() {
+        const name = document.getElementById('area-name').value || '知识区名称';
+        const description = document.getElementById('area-description').value || '知识区描述';
+        const color = document.getElementById('area-color').value;
+
+        document.querySelector('#create-knowledge-area-modal .preview-title').textContent = name;
+        document.querySelector('#create-knowledge-area-modal .preview-description').textContent = description;
+        
+        // 更新预览卡片的颜色
+        const previewCard = document.querySelector('#create-knowledge-area-modal .preview-card');
+        if (previewCard) {
+            previewCard.style.setProperty('--preview-color', color);
+            previewCard.style.borderLeftColor = color;
+        }
+    }
+
+    // 处理创建知识区
+    async handleCreateKnowledgeArea() {
+        const formData = new FormData(document.getElementById('create-knowledge-area-form'));
+        const name = formData.get('name').trim();
+        const description = formData.get('description').trim();
+        const color = formData.get('color');
+        const editId = document.getElementById('create-knowledge-area-form').getAttribute('data-edit-id');
+
+        // 验证必填字段
+        if (!name) {
+            window.app.showNotification('请输入知识区名称', 'error');
+            return;
+        }
+
+        if (!this.currentBase) {
+            window.app.showNotification('请先选择知识库', 'error');
+            return;
+        }
+
+        try {
+            if (editId) {
+                // 编辑模式
+                const updates = {
+                    name: name,
+                    description: description || '',
+                    color: color || '#667eea'
+                };
+
+                const success = window.storageManager.updateKnowledgeArea(this.currentBase.id, editId, updates);
+                
+                if (!success) {
+                    throw new Error('知识区更新失败');
+                }
+
+                window.app.showNotification(`知识区"${name}"更新成功！`, 'success');
+            } else {
+                // 创建模式
+                const areaData = {
+                    name: name,
+                    description: description || '',
+                    color: color || '#667eea'
+                };
+
+                const result = window.storageManager.addKnowledgeArea(this.currentBase.id, areaData);
+                
+                if (!result) {
+                    throw new Error('知识区创建失败');
+                }
+
+                window.app.showNotification(`知识区"${name}"创建成功！`, 'success');
+            }
+
+            // 关闭模态框
+            document.getElementById('create-knowledge-area-modal').classList.remove('active');
+
+            // 重置表单状态
+            this.resetCreateKnowledgeAreaForm();
+
+            // 刷新知识区视图
+            this.showAreaView(this.currentBase.id);
+
+        } catch (error) {
+            console.error('操作失败:', error);
+            window.app.showNotification('操作失败：' + error.message, 'error');
+        }
+    }
+
+    // 编辑知识区
+    editKnowledgeArea(areaId) {
+        const area = this.currentBase?.areas.find(a => a.id === areaId);
+        if (!area) {
+            window.app.showNotification('未找到知识区', 'error');
+            return;
+        }
+
+        // 填充表单数据
+        document.getElementById('area-name').value = area.name;
+        document.getElementById('area-description').value = area.description || '';
+        document.getElementById('area-color').value = area.color || '#667eea';
+
+        // 更新选择状态
+        document.querySelectorAll('#create-knowledge-area-modal .color-option').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`#create-knowledge-area-modal .color-option[data-color="${area.color}"]`)?.classList.add('active');
+
+        // 更新预览
+        this.updateAreaPreview();
+
+        // 更改模态框标题
+        document.querySelector('#create-knowledge-area-modal .modal-header h3').textContent = '📖 编辑知识区';
+        document.querySelector('#create-knowledge-area-modal .modal-footer .btn-primary').textContent = '保存修改';
+
+        // 存储编辑ID
+        document.getElementById('create-knowledge-area-form').setAttribute('data-edit-id', areaId);
+
+        // 显示模态框
+        document.getElementById('create-knowledge-area-modal').classList.add('active');
+    }
+
+    // 删除知识区
+    deleteKnowledgeArea(areaId) {
+        const area = this.currentBase?.areas.find(a => a.id === areaId);
+        if (!area) {
+            window.app.showNotification('未找到知识区', 'error');
+            return;
+        }
+
+        const knowledgeCount = window.storageManager.getKnowledgeByAreaId(areaId).length;
+        
+        if (confirm(`确定要删除知识区"${area.name}"吗？\n\n这将同时删除该知识区下的 ${knowledgeCount} 个知识点。\n\n此操作不可恢复！`)) {
+            const success = window.storageManager.deleteKnowledgeArea(this.currentBase.id, areaId);
+            
+            if (success) {
+                window.app.showNotification(`知识区"${area.name}"已删除`, 'success');
+                this.showAreaView(this.currentBase.id); // 刷新视图
+            } else {
+                window.app.showNotification('删除失败，请重试', 'error');
+            }
+        }
+    }
+
+    // === 添加知识点功能 ===
+
+    // 显示添加知识点模态框
+    showAddKnowledgePointModal() {
+        if (!this.currentArea) {
+            window.app.showNotification('请先选择知识区', 'warning');
+            return;
+        }
+
+        const modal = document.getElementById('knowledge-modal');
+        if (modal) {
+            modal.classList.add('active');
+            this.resetKnowledgePointForm();
+            this.bindKnowledgePointModalEvents();
+            
+            // 设置模态框标题
+            document.getElementById('modal-title').textContent = '添加知识点';
+            document.getElementById('save-btn').textContent = '保存';
+        }
+    }
+
+    // 绑定添加知识点按钮事件
+    bindAddKnowledgePointEvent() {
+        const addBtn = document.getElementById('add-knowledge-point-btn');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => this.showAddKnowledgePointModal());
+        }
+    }
+
+    // 绑定知识点模态框事件
+    bindKnowledgePointModalEvents() {
+        // 关闭按钮事件
+        const closeBtn = document.getElementById('close-modal');
+        const cancelBtn = document.getElementById('cancel-btn');
+        
+        if (closeBtn) {
+            closeBtn.onclick = () => this.closeKnowledgePointModal();
+        }
+        if (cancelBtn) {
+            cancelBtn.onclick = () => this.closeKnowledgePointModal();
+        }
+
+        // 表单提交事件
+        const form = document.getElementById('knowledge-form');
+        if (form) {
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                this.handleSaveKnowledgePoint();
+            };
+        }
+
+        // 添加选项按钮事件
+        const addOptionBtn = document.getElementById('add-option-btn');
+        if (addOptionBtn) {
+            addOptionBtn.onclick = () => this.addChoiceOption();
+        }
+
+        // 删除选项按钮事件
+        const removeOptionBtn = document.getElementById('remove-option-btn');
+        if (removeOptionBtn) {
+            removeOptionBtn.onclick = () => this.removeChoiceOption();
+        }
+
+        // 选择题类型变化事件
+        const choiceTypeSelect = document.getElementById('choice-type');
+        if (choiceTypeSelect) {
+            choiceTypeSelect.onchange = () => this.handleChoiceTypeChange();
+        }
+
+        // 模态框背景点击关闭
+        const modal = document.getElementById('knowledge-modal');
+        if (modal) {
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    this.closeKnowledgePointModal();
+                }
+            };
+        }
+    }
+
+    // 处理题目类型变化
+    handleQuestionTypeChange(type) {
+        const fillSection = document.getElementById('fill-answer-section');
+        const choiceSection = document.getElementById('choice-answer-section');
+        const answerInput = document.getElementById('answer-input');
+
+        if (type === 'choice') {
+            // 显示选择题配置区域
+            fillSection.style.display = 'none';
+            choiceSection.style.display = 'block';
+            
+            // 选择题不需要答案字段
+            if (answerInput) {
+                answerInput.removeAttribute('required');
+            }
+            
+            // 确保至少有4个选项
+            this.ensureMinimumChoiceOptions();
+            
+        } else {
+            // 显示填空题答案区域
+            fillSection.style.display = 'block';
+            choiceSection.style.display = 'none';
+            
+            // 填空题需要答案字段
+            if (answerInput) {
+                answerInput.setAttribute('required', 'required');
+            }
+        }
+    }
+
+    // 确保最少选项数量
+    ensureMinimumChoiceOptions() {
+        const container = document.getElementById('choice-options-container');
+        const existingOptions = container.querySelectorAll('.choice-option-row');
+        
+        // 如果选项少于4个，补充到4个
+        while (existingOptions.length < 4) {
+            this.addChoiceOption();
+        }
+    }
+
+    // 添加选择题选项
+    addChoiceOption() {
+        const container = document.getElementById('choice-options-container');
+        const existingOptions = container.querySelectorAll('.choice-option-row');
+        const nextIndex = existingOptions.length;
+        
+        // 最多支持8个选项
+        if (nextIndex >= 8) {
+            window.app.showNotification('最多支持8个选项', 'warning');
+            return;
+        }
+
+        const optionKey = String.fromCharCode(65 + nextIndex); // A, B, C, D, E, F, G, H
+        
+        const optionRow = document.createElement('div');
+        optionRow.className = 'choice-option-row';
+        optionRow.innerHTML = `
+            <button type="button" class="option-label clickable" data-option="${optionKey}" title="点击设为正确答案">${optionKey}.</button>
+            <input type="text" class="option-text" placeholder="请输入选项${optionKey}的内容..." ${nextIndex < 2 ? 'required' : ''}>
+        `;
+        
+        container.appendChild(optionRow);
+        
+        // 绑定选项标签点击事件
+        const optionLabel = optionRow.querySelector('.option-label');
+        optionLabel.addEventListener('click', () => this.handleOptionLabelClick(optionKey));
+    }
+
+    // 删除选择题选项
+    removeChoiceOption() {
+        const container = document.getElementById('choice-options-container');
+        const options = container.querySelectorAll('.choice-option-row');
+        
+        // 至少保留2个选项
+        if (options.length <= 2) {
+            window.app.showNotification('至少需要2个选项', 'warning');
+            return;
+        }
+        
+        // 删除最后一个选项
+        const lastOption = options[options.length - 1];
+        container.removeChild(lastOption);
+    }
+
+    // 处理选项标签点击（新方法）
+    handleOptionLabelClick(optionKey) {
+        const choiceType = document.getElementById('choice-type').value;
+        const clickedLabel = document.querySelector(`[data-option="${optionKey}"]`);
+        const isCurrentlyCorrect = clickedLabel.classList.contains('correct');
+        
+        if (choiceType === 'single') {
+            // 单选题：清除所有选项的选中状态，然后设置当前选项
+            document.querySelectorAll('.option-label').forEach(label => {
+                label.classList.remove('correct');
+                label.closest('.choice-option-row').classList.remove('correct-row');
+            });
+            
+            if (!isCurrentlyCorrect) {
+                clickedLabel.classList.add('correct');
+                clickedLabel.closest('.choice-option-row').classList.add('correct-row');
+            }
+        } else {
+            // 多选题：切换当前选项的状态
+            if (isCurrentlyCorrect) {
+                clickedLabel.classList.remove('correct');
+                clickedLabel.closest('.choice-option-row').classList.remove('correct-row');
+            } else {
+                clickedLabel.classList.add('correct');
+                clickedLabel.closest('.choice-option-row').classList.add('correct-row');
+            }
+        }
+    }
+
+    // 处理选择题类型变化（单选/多选）
+    handleChoiceTypeChange() {
+        const choiceType = document.getElementById('choice-type').value;
+        
+        if (choiceType === 'single') {
+            // 单选题：只保留第一个正确答案，清除其他
+            const correctLabels = document.querySelectorAll('.option-label.correct');
+            correctLabels.forEach((label, index) => {
+                if (index > 0) {
+                    label.classList.remove('correct');
+                    label.closest('.choice-option-row').classList.remove('correct-row');
+                }
+            });
+        }
+        // 多选题不需要特殊处理，保持现有状态
+    }
+
+    // 重置选择题选项
+    resetChoiceOptions() {
+        const container = document.getElementById('choice-options-container');
+        container.innerHTML = `
+            <!-- 选项A -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="A" title="点击设为正确答案">A.</button>
+                <input type="text" class="option-text" placeholder="请输入选项A的内容..." required>
+            </div>
+            <!-- 选项B -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="B" title="点击设为正确答案">B.</button>
+                <input type="text" class="option-text" placeholder="请输入选项B的内容..." required>
+            </div>
+            <!-- 选项C -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="C" title="点击设为正确答案">C.</button>
+                <input type="text" class="option-text" placeholder="请输入选项C的内容...">
+            </div>
+            <!-- 选项D -->
+            <div class="choice-option-row">
+                <button type="button" class="option-label clickable" data-option="D" title="点击设为正确答案">D.</button>
+                <input type="text" class="option-text" placeholder="请输入选项D的内容...">
+            </div>
+        `;
+        
+        // 重新绑定选项标签点击事件
+        const optionLabels = container.querySelectorAll('.option-label');
+        optionLabels.forEach(label => {
+            const optionKey = label.getAttribute('data-option');
+            label.addEventListener('click', () => this.handleOptionLabelClick(optionKey));
+        });
+        
+        // 设置单选模式
+        document.getElementById('choice-type').value = 'single';
+        this.handleChoiceTypeChange();
+    }
+
+    // 获取正确答案（更新方法）
+    getCorrectAnswers() {
+        const correctAnswers = [];
+        const correctLabels = document.querySelectorAll('.option-label.correct');
+        
+        correctLabels.forEach(label => {
+            const optionKey = label.getAttribute('data-option');
+            const row = label.closest('.choice-option-row');
+            const text = row.querySelector('.option-text').value.trim();
+            
+            if (text && optionKey) {
+                correctAnswers.push(optionKey);
+            }
+        });
+        
+        return correctAnswers;
+    }
+
+    // 填充选择题选项（更新方法）
+    fillChoiceOptions(options, correctAnswer) {
+        const container = document.getElementById('choice-options-container');
+        container.innerHTML = '';
+        
+        const correctAnswers = correctAnswer.split(',').filter(ans => ans.trim());
+        
+        // 确保至少有2个选项
+        const minOptions = Math.max(options.length, 2);
+        
+        for (let i = 0; i < minOptions; i++) {
+            const option = options[i];
+            const optionKey = String.fromCharCode(65 + i);
+            const isCorrect = correctAnswers.includes(optionKey);
+            
+            const optionRow = document.createElement('div');
+            optionRow.className = `choice-option-row ${isCorrect ? 'correct-row' : ''}`;
+            optionRow.innerHTML = `
+                <button type="button" class="option-label clickable ${isCorrect ? 'correct' : ''}" data-option="${optionKey}" title="点击设为正确答案">${optionKey}.</button>
+                <input type="text" class="option-text" placeholder="请输入选项${optionKey}的内容..." value="${option?.text || ''}" ${i < 2 ? 'required' : ''}>
+            `;
+            
+            container.appendChild(optionRow);
+            
+            // 绑定选项标签点击事件
+            const optionLabel = optionRow.querySelector('.option-label');
+            optionLabel.addEventListener('click', () => this.handleOptionLabelClick(optionKey));
+        }
+        
+        // 处理选择题类型
+        this.handleChoiceTypeChange();
+    }
+
+    // 处理保存知识点
+    async handleSaveKnowledgePoint() {
+        try {
+            // 验证表单
+            const validationResult = this.validateKnowledgePointForm();
+            if (!validationResult.isValid) {
+                window.app.showNotification(validationResult.message, 'error');
+                return;
+            }
+
+            // 收集表单数据
+            const knowledgeData = this.collectKnowledgePointData();
+            
+            // 检查是否为编辑模式
+            const editId = document.getElementById('knowledge-form').getAttribute('data-edit-id');
+            
+            let success;
+            if (editId) {
+                // 编辑模式
+                success = window.storageManager.updateKnowledge(editId, knowledgeData);
+                if (success) {
+                    window.app.showNotification('知识点更新成功！', 'success');
+                }
+            } else {
+                // 添加模式
+                success = window.storageManager.addKnowledge(knowledgeData);
+                if (success) {
+                    window.app.showNotification('知识点添加成功！', 'success');
+                }
+            }
+
+            if (success) {
+                // 关闭模态框
+                this.closeKnowledgePointModal();
+                
+                // 刷新知识点列表
+                this.loadKnowledgePoints();
+                
+                // 刷新仪表盘统计
+                if (window.app && window.app.loadDashboard) {
+                    window.app.loadDashboard();
+                }
+            } else {
+                throw new Error('保存失败');
+            }
+
+        } catch (error) {
+            console.error('保存知识点失败:', error);
+            window.app.showNotification('保存失败：' + error.message, 'error');
+        }
+    }
+
+    // 验证知识点表单
+    validateKnowledgePointForm() {
+        this.clearFormErrors();
+        
+        const question = document.getElementById('question-input').value.trim();
+        const questionType = document.getElementById('question-type').value;
+        
+        // 验证题目
+        if (!question) {
+            this.showFieldError('question-input', '请输入题目内容');
+            return { isValid: false, message: '请输入题目内容' };
+        }
+
+        if (questionType === 'fill') {
+            // 填空题验证
+            const answer = document.getElementById('answer-input').value.trim();
+            if (!answer) {
+                this.showFieldError('answer-input', '请输入答案内容');
+                return { isValid: false, message: '请输入答案内容' };
+            }
+        } else if (questionType === 'choice') {
+            // 选择题验证
+            const options = this.getChoiceOptions();
+            const correctAnswers = this.getCorrectAnswers();
+            
+            // 检查选项数量
+            if (options.length < 2) {
+                return { isValid: false, message: '选择题至少需要2个选项' };
+            }
+            
+            // 检查选项内容
+            const emptyOptions = options.filter(opt => !opt.text.trim());
+            if (emptyOptions.length > 0) {
+                return { isValid: false, message: '请填写所有选项内容' };
+            }
+            
+            // 检查正确答案
+            if (correctAnswers.length === 0) {
+                return { isValid: false, message: '请至少选择一个正确答案' };
+            }
+            
+            // 检查多选题是否有多个正确答案
+            const choiceType = document.getElementById('choice-type').value;
+            if (choiceType === 'multiple' && correctAnswers.length === 1) {
+                if (!confirm('多选题只有一个正确答案，确定要保存吗？')) {
+                    return { isValid: false, message: '用户取消保存' };
+                }
+            }
+        }
+
+        return { isValid: true };
+    }
+
+    // 收集知识点数据
+    collectKnowledgePointData() {
+        const questionType = document.getElementById('question-type').value;
+        const editId = document.getElementById('knowledge-form').getAttribute('data-edit-id');
+        
+        const baseData = {
+            id: editId || this.generateKnowledgeId(), // 编辑模式使用原ID，新增模式生成新ID
+            question: document.getElementById('question-input').value.trim(),
+            type: questionType,
+            explanation: document.getElementById('explanation-input').value.trim(),
+            note: document.getElementById('note-input').value.trim(),
+            category: document.getElementById('category-input').value.trim() || this.currentArea?.name || '',
+            difficulty: parseInt(document.getElementById('difficulty-input').value) || 3,
+            tags: this.parseTags(document.getElementById('tags-input').value),
+            
+            // 关联信息
+            knowledgeBaseId: this.currentBase?.id || '',
+            areaId: this.currentArea?.id || '',
+            
+            // 复习相关字段（编辑时保留原值）
+            reviewCount: 0,
+            correctCount: 0,
+            lastReviewed: null,
+            nextReview: new Date().toISOString(),
+            interval: 1,
+            easeFactor: 2.5,
+            
+            // 时间戳
+            createdAt: editId ? undefined : new Date().toISOString(), // 编辑时不覆盖创建时间
+            updatedAt: new Date().toISOString()
+        };
+
+        // 如果是编辑模式，保留原有的复习数据
+        if (editId) {
+            const originalKnowledge = window.storageManager.getAllKnowledge().find(k => k.id === editId);
+            if (originalKnowledge) {
+                baseData.reviewCount = originalKnowledge.reviewCount || 0;
+                baseData.correctCount = originalKnowledge.correctCount || 0;
+                baseData.lastReviewed = originalKnowledge.lastReviewed;
+                baseData.nextReview = originalKnowledge.nextReview || new Date().toISOString();
+                baseData.interval = originalKnowledge.interval || 1;
+                baseData.easeFactor = originalKnowledge.easeFactor || 2.5;
+                baseData.createdAt = originalKnowledge.createdAt || new Date().toISOString();
+            }
+        }
+
+        if (questionType === 'fill') {
+            // 填空题
+            baseData.answer = document.getElementById('answer-input').value.trim();
+        } else if (questionType === 'choice') {
+            // 选择题
+            baseData.options = this.getChoiceOptions();
+            baseData.correctAnswer = this.getCorrectAnswers().join(',');
+            baseData.choiceType = document.getElementById('choice-type').value;
+            
+            // 分数（选择题特有）
+            const score = document.getElementById('score-input').value;
+            if (score) {
+                baseData.score = parseInt(score);
+            }
+        }
+
+        return baseData;
+    }
+
+    // 生成知识点ID
+    generateKnowledgeId() {
+        return 'knowledge_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // 解析标签
+    parseTags(tagsString) {
+        if (!tagsString) return [];
+        return tagsString.split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0);
+    }
+
+    // 获取选择题选项
+    getChoiceOptions() {
+        const options = [];
+        const optionRows = document.querySelectorAll('.choice-option-row');
+        
+        optionRows.forEach((row, index) => {
+            const text = row.querySelector('.option-text').value.trim();
+            if (text) {
+                options.push({
+                    key: String.fromCharCode(65 + index), // A, B, C, D...
+                    text: text
+                });
+            }
+        });
+        
+        return options;
+    }
+
+    // 显示字段错误
+    showFieldError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            const formGroup = field.closest('.form-group');
+            if (formGroup) {
+                formGroup.classList.add('error');
+                
+                // 添加错误消息
+                let errorDiv = formGroup.querySelector('.form-error');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'form-error';
+                    formGroup.appendChild(errorDiv);
+                }
+                errorDiv.textContent = message;
+            }
+        }
+    }
+
+    // 清除表单错误
+    clearFormErrors() {
+        const errorGroups = document.querySelectorAll('.form-group.error');
+        errorGroups.forEach(group => {
+            group.classList.remove('error');
+            const errorDiv = group.querySelector('.form-error');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        });
+    }
+
+    // 关闭知识点模态框
+    closeKnowledgePointModal() {
+        const modal = document.getElementById('knowledge-modal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+        
+        // 清理表单状态
+        this.resetKnowledgePointForm();
+    }
+
+    // 填充知识点表单数据
+    fillKnowledgePointForm(knowledge) {
+        // 基本信息
+        document.getElementById('question-type').value = knowledge.type || 'fill';
+        document.getElementById('question-input').value = knowledge.question || '';
+        document.getElementById('explanation-input').value = knowledge.explanation || '';
+        document.getElementById('note-input').value = knowledge.note || '';
+        document.getElementById('category-input').value = knowledge.category || '';
+        document.getElementById('difficulty-input').value = knowledge.difficulty || 3;
+        document.getElementById('tags-input').value = Array.isArray(knowledge.tags) ? knowledge.tags.join(', ') : '';
+
+        // 根据类型填充不同的数据
+        if (knowledge.type === 'choice') {
+            // 选择题数据
+            document.getElementById('choice-type').value = knowledge.choiceType || 'single';
+            document.getElementById('score-input').value = knowledge.score || '';
+            
+            // 填充选项
+            this.fillChoiceOptions(knowledge.options || [], knowledge.correctAnswer || '');
+        } else {
+            // 填空题数据
+            document.getElementById('answer-input').value = knowledge.answer || '';
+        }
+
+        // 触发类型变化处理
+        this.handleQuestionTypeChange(knowledge.type || 'fill');
+    }
+
+    // 重置知识点表单
+    resetKnowledgePointForm() {
+        const form = document.getElementById('knowledge-form');
+        if (form) {
+            form.reset();
+            form.removeAttribute('data-edit-id');
+        }
+
+        // 重置为填空题模式
+        document.getElementById('question-type').value = 'fill';
+        this.handleQuestionTypeChange('fill');
+        
+        // 重置选择题选项
+        this.resetChoiceOptions();
+        
+        // 清除错误状态
+        this.clearFormErrors();
     }
 }
 

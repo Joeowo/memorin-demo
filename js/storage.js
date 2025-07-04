@@ -1009,7 +1009,7 @@ class StorageManager {
                         k.areaId = inferredAreaId;
                         wasFixed = true;
                     }
-                }
+    }
 
                 // 确保必要字段存在
                 if (!k.id) {
