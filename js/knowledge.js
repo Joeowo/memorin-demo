@@ -294,9 +294,10 @@ class KnowledgeManager {
 
     // 加载知识点列表
     loadKnowledgePoints() {
-        console.log('开始加载知识点...', {
+        console.log('🔍 开始加载知识点...', {
             currentArea: this.currentArea,
-            areaId: this.currentArea?.id
+            areaId: this.currentArea?.id,
+            currentBase: this.currentBase
         });
         
         const allKnowledge = window.storageManager.getAllKnowledge();
@@ -1267,10 +1268,25 @@ class KnowledgeManager {
 
     // 显示添加知识点模态框
     showAddKnowledgePointModal() {
+        console.log('🎯 显示添加知识点模态框', {
+            currentArea: this.currentArea,
+            currentBase: this.currentBase,
+            currentView: this.currentView
+        });
+        
         if (!this.currentArea) {
+            console.error('❌ currentArea 为空，无法添加知识点');
             window.app.showNotification('请先选择知识区', 'warning');
             return;
         }
+
+        if (!this.currentBase) {
+            console.error('❌ currentBase 为空，无法添加知识点');
+            window.app.showNotification('请先选择知识库', 'warning');
+            return;
+        }
+
+        console.log('✅ 状态检查通过，打开添加知识点模态框');
 
         const modal = document.getElementById('knowledge-modal');
         if (modal) {
@@ -1281,6 +1297,13 @@ class KnowledgeManager {
             // 设置模态框标题
             document.getElementById('modal-title').textContent = '添加知识点';
             document.getElementById('save-btn').textContent = '保存';
+            
+            console.log('🎯 模态框已打开，当前上下文:', {
+                areaId: this.currentArea.id,
+                areaName: this.currentArea.name,
+                baseId: this.currentBase.id,
+                baseName: this.currentBase.name
+            });
         }
     }
 
@@ -1576,6 +1599,7 @@ class KnowledgeManager {
 
             // 收集表单数据
             const knowledgeData = this.collectKnowledgePointData();
+            console.log('💾 准备保存的知识点数据:', knowledgeData);
             
             // 检查是否为编辑模式
             const editId = document.getElementById('knowledge-form').getAttribute('data-edit-id');
@@ -1600,7 +1624,9 @@ class KnowledgeManager {
                 this.closeKnowledgePointModal();
                 
                 // 刷新知识点列表
+                console.log('🔄 开始刷新知识点列表...');
                 this.loadKnowledgePoints();
+                console.log('✅ 知识点列表刷新完成');
                 
                 // 刷新仪表盘统计
                 if (window.app && window.app.loadDashboard) {
@@ -1730,6 +1756,20 @@ class KnowledgeManager {
                 baseData.score = parseInt(score);
             }
         }
+
+        // 🔍 调试日志：输出收集的数据
+        console.log('📊 collectKnowledgePointData 收集的数据:', {
+            id: baseData.id,
+            question: baseData.question,
+            type: baseData.type,
+            knowledgeBaseId: baseData.knowledgeBaseId,
+            areaId: baseData.areaId,
+            answer: baseData.answer,
+            options: baseData.options,
+            correctAnswer: baseData.correctAnswer,
+            currentBase: this.currentBase?.id,
+            currentArea: this.currentArea?.id
+        });
 
         return baseData;
     }

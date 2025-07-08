@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识点添加调试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .debug-output { background: #f5f5f5; padding: 10px; margin: 10px 0; white-space: pre-wrap; }
+        button { margin: 5px; padding: 8px 15px; }
+        input, textarea { margin: 5px; padding: 5px; width: 300px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>知识点添加调试工具</h1>
+    
+    <div class="debug-section">
+        <h2>1. 检查存储管理器</h2>
+        <button onclick="checkStorageManager()">检查存储管理器</button>
+        <div id="storage-check" class="debug-output"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>2. 检查知识库结构</h2>
+        <button onclick="checkKnowledgeBase()">检查知识库结构</button>
+        <div id="knowledge-base-check" class="debug-output"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>3. 模拟添加知识点</h2>
+        <div>
+            <label>题目：</label><br>
+            <input type="text" id="test-question" value="测试题目：什么是调试？" /><br>
+            <label>答案：</label><br>
+            <textarea id="test-answer">调试是发现和修复程序错误的过程。</textarea><br>
+            <label>知识库ID：</label><br>
+            <input type="text" id="test-base-id" value="military_theory_base" /><br>
+            <label>知识区ID：</label><br>
+            <input type="text" id="test-area-id" value="chapter_1" /><br>
+        </div>
+        <button onclick="testAddKnowledge()">测试添加知识点</button>
+        <div id="add-test-result" class="debug-output"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>4. 检查筛选逻辑</h2>
+        <button onclick="testFilterLogic()">测试筛选逻辑</button>
+        <div id="filter-test-result" class="debug-output"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>5. 检查所有知识点</h2>
+        <button onclick="listAllKnowledge()">列出所有知识点</button>
+        <div id="all-knowledge-list" class="debug-output"></div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/knowledge.js"></script>
+    
+    <script>
+        // 初始化存储管理器
+        let storageManager = new StorageManager();
+        let knowledgeManager = new KnowledgeManager();
+        
+        function checkStorageManager() {
+            const output = document.getElementById('storage-check');
+            try {
+                const isSupported = storageManager.isLocalStorageSupported();
+                const data = storageManager.getData();
+                
+                output.innerHTML = `
+存储支持: ${isSupported ? '✅ 支持' : '❌ 不支持'}
+数据存在: ${data ? '✅ 存在' : '❌ 不存在'}
+知识点数量: ${data?.knowledge?.length || 0}
+知识库数量: ${data?.knowledgeBases?.length || 0}
+                `;
+                output.className = 'debug-output success';
+            } catch (error) {
+                output.innerHTML = `错误: ${error.message}`;
+                output.className = 'debug-output error';
+            }
+        }
+
+        function checkKnowledgeBase() {
+            const output = document.getElementById('knowledge-base-check');
+            try {
+                const data = storageManager.getData();
+                const knowledgeBases = data?.knowledgeBases || [];
+                
+                let result = `知识库数量: ${knowledgeBases.length}\n\n`;
+                
+                knowledgeBases.forEach((base, index) => {
+                    result += `知识库 ${index + 1}:\n`;
+                    result += `  ID: ${base.id}\n`;
+                    result += `  名称: ${base.name}\n`;
+                    result += `  知识区数量: ${base.areas?.length || 0}\n`;
+                    
+                    if (base.areas) {
+                        base.areas.forEach((area, areaIndex) => {
+                            result += `    知识区 ${areaIndex + 1}: ${area.id} - ${area.name}\n`;
+                        });
+                    }
+                    result += '\n';
+                });
+                
+                output.innerHTML = result;
+                output.className = 'debug-output success';
+            } catch (error) {
+                output.innerHTML = `错误: ${error.message}`;
+                output.className = 'debug-output error';
+            }
+        }
+
+        function testAddKnowledge() {
+            const output = document.getElementById('add-test-result');
+            try {
+                const testData = {
+                    question: document.getElementById('test-question').value,
+                    answer: document.getElementById('test-answer').value,
+                    type: 'fill',
+                    knowledgeBaseId: document.getElementById('test-base-id').value,
+                    areaId: document.getElementById('test-area-id').value,
+                    explanation: '这是一个测试知识点',
+                    category: '测试分类',
+                    difficulty: 3,
+                    tags: ['测试', '调试']
+                };
+                
+                console.log('准备添加的数据:', testData);
+                
+                const result = storageManager.addKnowledge(testData);
+                
+                if (result) {
+                    output.innerHTML = `✅ 知识点添加成功!\n\n添加的数据:\n${JSON.stringify(result, null, 2)}`;
+                    output.className = 'debug-output success';
+                } else {
+                    output.innerHTML = `❌ 知识点添加失败!`;
+                    output.className = 'debug-output error';
+                }
+            } catch (error) {
+                output.innerHTML = `错误: ${error.message}\n堆栈: ${error.stack}`;
+                output.className = 'debug-output error';
+            }
+        }
+
+        function testFilterLogic() {
+            const output = document.getElementById('filter-test-result');
+            try {
+                const allKnowledge = storageManager.getAllKnowledge();
+                const testAreaId = document.getElementById('test-area-id').value;
+                
+                let result = `所有知识点数量: ${allKnowledge.length}\n\n`;
+                
+                const filteredByAreaId = allKnowledge.filter(point => point.areaId === testAreaId);
+                result += `按 areaId="${testAreaId}" 筛选结果: ${filteredByAreaId.length} 个\n\n`;
+                
+                if (allKnowledge.length > 0) {
+                    result += '前5个知识点的areaId:\n';
+                    allKnowledge.slice(0, 5).forEach((point, index) => {
+                        result += `  ${index + 1}. ID: ${point.id}, areaId: "${point.areaId}", question: "${point.question?.substring(0, 30)}..."\n`;
+                    });
+                }
+                
+                output.innerHTML = result;
+                output.className = 'debug-output success';
+            } catch (error) {
+                output.innerHTML = `错误: ${error.message}`;
+                output.className = 'debug-output error';
+            }
+        }
+
+        function listAllKnowledge() {
+            const output = document.getElementById('all-knowledge-list');
+            try {
+                const allKnowledge = storageManager.getAllKnowledge();
+                
+                let result = `总知识点数量: ${allKnowledge.length}\n\n`;
+                
+                allKnowledge.forEach((point, index) => {
+                    result += `${index + 1}. ID: ${point.id}\n`;
+                    result += `   题目: ${point.question}\n`;
+                    result += `   类型: ${point.type || 'undefined'}\n`;
+                    result += `   知识库ID: ${point.knowledgeBaseId || 'undefined'}\n`;
+                    result += `   知识区ID: ${point.areaId || 'undefined'}\n`;
+                    result += `   分类: ${point.category || 'undefined'}\n`;
+                    result += `   创建时间: ${point.createdAt || 'undefined'}\n`;
+                    result += '\n';
+                });
+                
+                output.innerHTML = result;
+                output.className = 'debug-output success';
+            } catch (error) {
+                output.innerHTML = `错误: ${error.message}`;
+                output.className = 'debug-output error';
+            }
+        }
+
+        // 页面加载时自动检查
+        window.addEventListener('load', () => {
+            checkStorageManager();
+            checkKnowledgeBase();
+        });
+    </script>
+</body>
+</html> 

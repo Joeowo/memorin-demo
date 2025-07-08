@@ -219,28 +219,83 @@ class StorageManager {
         const data = this.getData();
         if (!data) return false;
 
+        // 支持新的三级知识管理结构的完整数据字段
         const newKnowledge = {
-            id: this.generateId(),
+            // 基本信息
+            id: knowledgeData.id || this.generateId(),
             question: knowledgeData.question,
-            answer: knowledgeData.answer,
+            type: knowledgeData.type || 'fill',
             explanation: knowledgeData.explanation || '',
             note: knowledgeData.note || '',
-            score: knowledgeData.score || null,
-            tags: knowledgeData.tags || [],
             category: knowledgeData.category || '',
             difficulty: parseInt(knowledgeData.difficulty) || 3,
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-            reviewCount: 0,
-            correctCount: 0,
-            lastReviewed: null,
-            nextReview: Date.now(), // 新添加的知识点立即可复习
-            interval: 1,
-            easeFactor: 2.5
+            tags: knowledgeData.tags || [],
+            
+            // 关联信息 - 修复关键字段缺失问题
+            knowledgeBaseId: knowledgeData.knowledgeBaseId || '',
+            areaId: knowledgeData.areaId || '',
+            
+            // 题目类型特定字段
+            answer: knowledgeData.answer || '',           // 填空题答案
+            options: knowledgeData.options || [],         // 选择题选项
+            correctAnswer: knowledgeData.correctAnswer || '', // 选择题正确答案
+            choiceType: knowledgeData.choiceType || 'single', // 选择题类型
+            score: knowledgeData.score || null,           // 选择题分数
+            
+            // 复习相关字段
+            reviewCount: knowledgeData.reviewCount || 0,
+            correctCount: knowledgeData.correctCount || 0,
+            lastReviewed: knowledgeData.lastReviewed || null,
+            nextReview: knowledgeData.nextReview || new Date().toISOString(),
+            interval: knowledgeData.interval || 1,
+            easeFactor: knowledgeData.easeFactor || 2.5,
+            
+            // 时间戳格式统一为ISO字符串
+            createdAt: knowledgeData.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         };
 
+        // 数据验证
+        if (!newKnowledge.question.trim()) {
+            console.error('addKnowledge: 题目不能为空');
+            return false;
+        }
+
+        if (newKnowledge.type === 'fill' && !newKnowledge.answer.trim()) {
+            console.error('addKnowledge: 填空题答案不能为空');
+            return false;
+        }
+
+        if (newKnowledge.type === 'choice') {
+            if (!newKnowledge.options || newKnowledge.options.length < 2) {
+                console.error('addKnowledge: 选择题至少需要2个选项');
+                return false;
+            }
+            if (!newKnowledge.correctAnswer) {
+                console.error('addKnowledge: 选择题必须设置正确答案');
+                return false;
+            }
+        }
+
+        // 调试日志
+        console.log('addKnowledge: 保存知识点', {
+            id: newKnowledge.id,
+            type: newKnowledge.type,
+            knowledgeBaseId: newKnowledge.knowledgeBaseId,
+            areaId: newKnowledge.areaId,
+            question: newKnowledge.question.substring(0, 50) + '...'
+        });
+
         data.knowledge.push(newKnowledge);
-        return this.setData(data) ? newKnowledge : null;
+        const success = this.setData(data);
+        
+        if (success) {
+            console.log('addKnowledge: 知识点保存成功');
+            return newKnowledge;
+        } else {
+            console.error('addKnowledge: 知识点保存失败');
+            return null;
+        }
     }
 
     // 更新知识点
@@ -254,7 +309,7 @@ class StorageManager {
         data.knowledge[index] = {
             ...data.knowledge[index],
             ...updates,
-            updatedAt: Date.now()
+            updatedAt: new Date().toISOString()
         };
 
         return this.setData(data);
@@ -269,7 +324,7 @@ class StorageManager {
         if (index === -1) return false;
 
         data.knowledge[index].note = note;
-        data.knowledge[index].updatedAt = Date.now();
+        data.knowledge[index].updatedAt = new Date().toISOString();
 
         return this.setData(data);
     }
@@ -283,7 +338,7 @@ class StorageManager {
         if (index === -1) return false;
 
         data.knowledge[index].score = score;
-        data.knowledge[index].updatedAt = Date.now();
+        data.knowledge[index].updatedAt = new Date().toISOString();
 
         return this.setData(data);
     }
