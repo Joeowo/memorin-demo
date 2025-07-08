@@ -1,3 +1,27 @@
+/* 外部链接样式 */
+.nav-link.external-link {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #fff !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.nav-link.external-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.nav-link.external-link::after {
+    content: '↗';
+    margin-left: 5px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
 /* 模态框样式 - 毛玻璃效果 */
 .modal {
     display: none;

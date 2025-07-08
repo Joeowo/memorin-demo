@@ -1,76 +1,66 @@
 {
-  "name": "memorin",
+  "name": "memorin-frontend",
   "version": "1.0.0",
-  "description": "智能知识复习系统 - 基于间隔重复算法的本地知识管理应用",
-  "main": "index.html",
+  "description": "Memorin智能知识复习系统 - Vue3重构版",
+  "type": "module",
   "scripts": {
-    "dev": "python -m http.server 8080",
-    "dev:node": "npx http-server -p 8080 -c-1",
-    "build": "deploy\\scripts\\build.bat -e prod -c",
-    "build:dev": "deploy\\scripts\\build.bat -e dev -c",
-    "build:test": "deploy\\scripts\\build.bat -e test -c",
-    "build:zip": "deploy\\scripts\\build.bat -e prod -c -z",
-    "build:unix": "chmod +x deploy/scripts/build.sh && ./deploy/scripts/build.sh -e prod -c",
-    "docker:build": "deploy\\scripts\\build.bat -e prod -c -d",
-    "docker:run": "docker-compose -f deploy/docker/docker-compose.yml up",
-    "docker:stop": "docker-compose -f deploy/docker/docker-compose.yml down",
-    "deploy:github": "deploy\\scripts\\build.bat -e prod -c -p",
-    "test:deployment": "node deploy/scripts/test-deployment.js",
-    "clean": "if exist dist rmdir /s /q dist && if exist node_modules rmdir /s /q node_modules",
-    "clean:unix": "rm -rf dist node_modules",
-    "lint:html": "htmlhint index.html",
-    "lint:css": "stylelint css/**/*.css",
-    "lint:js": "eslint js/**/*.js",
-    "test": "echo Running tests... && npm run lint:html && npm run lint:css && npm run lint:js",
-    "serve": "npm run build && npm run dev",
-    "start": "npm run dev"
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:e2e": "cypress open",
+    "test:e2e:ci": "cypress run",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "type-check": "vue-tsc --noEmit"
   },
-  "keywords": [
-    "memorin",
-    "spaced-repetition",
-    "knowledge-management",
-    "study-tool",
-    "sm2-algorithm",
-    "education",
-    "learning",
-    "flashcards",
-    "review-system"
-  ],
-  "author": {
-    "name": "Memorin Team",
-    "email": "support@memorin.com"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/username/memorin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/username/memorin/issues"
-  },
-  "homepage": "https://username.github.io/memorin",
-  "engines": {
-    "node": ">=14.0.0",
-    "python": ">=3.6"
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "chart.js": "^4.4.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^3.2.0",
+    "@vueuse/core": "^10.7.2",
+    "@vueuse/components": "^10.7.2",
+    "three": "^0.160.0",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^5.0.4"
   },
   "devDependencies": {
-    "eslint": "^8.0.0",
-    "stylelint": "^15.0.0",
-    "htmlhint": "^1.1.0",
-    "http-server": "^14.0.0",
-    "uglify-js": "^3.17.0",
-    "clean-css-cli": "^5.6.0"
+    "@types/node": "^20.11.5",
+    "@types/three": "^0.160.0",
+    "@types/lodash-es": "^4.17.12",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/test-utils": "^2.4.4",
+    "@vue/tsconfig": "^0.5.1",
+    "autoprefixer": "^10.4.17",
+    "cypress": "^13.6.4",
+    "eslint": "^8.56.0",
+    "eslint-plugin-cypress": "^2.15.1",
+    "eslint-plugin-vue": "^9.20.1",
+    "jsdom": "^24.0.0",
+    "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
+    "tailwindcss": "^3.4.1",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "typescript": "~5.3.0",
+    "vite": "^5.0.11",
+    "vitest": "^1.2.1",
+    "vue-tsc": "^1.8.27"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead",
-    "not ie 11"
+  "keywords": [
+    "vue3",
+    "typescript",
+    "memorin",
+    "knowledge-review",
+    "spaced-repetition",
+    "sm2-algorithm"
   ],
-  "files": [
-    "dist/**/*",
-    "README.md",
-    "LICENSE"
-  ],
-  "os": ["win32", "darwin", "linux"]
+  "author": "Memorin Team",
+  "license": "MIT"
 } 
