@@ -1,0 +1,38 @@
+# Memorin知识管理服务 - 开发环境配置
+# 专门用于开发调试，禁用Redis相关功能
+
+# 监控配置 - 开发环境
+management:
+  health:
+    redis:
+      enabled: false  # 开发环境禁用Redis健康检查
+    defaults:
+      enabled: true
+
+# Redis配置 - 开发环境（保留配置但标记为可选）
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: memorin_2025
+    database: 2
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 8
+        min-idle: 2
+        max-wait: 2000ms
+    # 开发环境Redis连接失败时不阻塞应用启动
+    jedis:
+      pool:
+        enabled: false
+
+# 日志配置 - 开发环境更详细
+logging:
+  level:
+    com.memorin.knowledge: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.data.redis: WARN  # 降低Redis日志级别
+    redis.clients.jedis: WARN 

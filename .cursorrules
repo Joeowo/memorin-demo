@@ -186,6 +186,16 @@ $env:NODE_ENV = "development"   # 而不是 export NODE_ENV=development
 command1; command2             # 而不是 command1 && command2
 ```
 
+### 路径处理注意事项
+```powershell
+# Windows路径格式
+$projectPath = "E:\Code\memorin-demo"
+$relativePath = ".\rebuildDocs\需求文档\"
+
+# 处理中文路径
+[System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes("需求文档"))
+```
+
 ### 执行策略限制处理
 ```powershell
 # 当前执行策略是Restricted，可能导致npm等脚本无法运行
@@ -201,14 +211,80 @@ node ".\node_modules\.bin\vite" # 而不是 npm run dev
 Get-Alias npm                   # 检查是否有npm别名
 ```
 
-### 路径处理注意事项
-```powershell
-# Windows路径格式
-$projectPath = "E:\Code\memorin-demo"
-$relativePath = ".\rebuildDocs\需求文档\"
+### 🚀 Spring Boot微服务启动规范 (CRITICAL)
 
-# 处理中文路径
-[System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes("需求文档"))
+#### 用户模块启动方式
+```powershell
+# ✅ 正确的用户服务启动命令
+Set-Location "Memorin-rebuild\backend\memorin-user-service"
+
+# 清理并编译项目
+mvn clean compile
+
+# 启动服务（开发环境）
+mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
+```
+
+#### 微服务启动通用规范
+```powershell
+# 1. 进入服务目录
+Set-Location "Memorin-rebuild\backend\{service-name}"
+
+# 2. 清理编译
+mvn clean compile
+
+# 3. 启动服务（指定配置文件）
+mvn spring-boot:run "-Dspring-boot.run.profiles=dev"
+
+# 4. 后台启动（可选）
+Start-Process -NoNewWindow mvn -ArgumentList "spring-boot:run", "-Dspring-boot.run.profiles=dev"
+```
+
+#### 服务端口配置
+```yaml
+微服务端口分配:
+  用户服务: 8081
+  知识库服务: 8082  
+  复习服务: 8083
+  统计服务: 8084
+  API网关: 8080
+```
+
+#### 常见启动问题解决
+```powershell
+# 问题1: Maven插件未找到
+# 解决: 确保在正确的服务目录下执行命令
+Get-Location  # 检查当前目录
+
+# 问题2: 端口被占用
+# 解决: 检查端口占用情况
+netstat -ano | findstr :8081
+
+# 问题3: 配置文件加载失败
+# 解决: 检查application-dev.yml文件是否存在
+Get-ChildItem "src\main\resources\application-dev.yml"
+
+# 问题4: 数据库连接失败
+# 解决: 检查H2数据库配置
+Get-Content "src\main\resources\application-dev.yml"
+```
+
+#### 开发环境测试命令
+```powershell
+# 健康检查
+Invoke-RestMethod -Uri "http://localhost:8081/actuator/health" -Method Get
+
+# 服务信息
+Invoke-RestMethod -Uri "http://localhost:8081/api/test/info" -Method Get
+
+# 创建用户测试
+$body = @{
+    username = "testuser"
+    email = "test@example.com"
+    password = "password123"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8081/api/test/users" -Method Post -Body $body -ContentType "application/json"
 ```
 
 ## 🎨 UI风格保持要求
@@ -290,45 +366,6 @@ $relativePath = ".\rebuildDocs\需求文档\"
 - 页面级响应式媒体查询 (布局相关)
 - 混合使用旧的和新的布局系统
 
-## 🚀 开发工作流程
-
-### 1. 分析阶段
-```
-1. 读取相关核心文件 (最多3个)
-2. 理解现有逻辑和数据流
-3. 识别重构点和拆分边界
-4. 设计组件化方案
-```
-
-### 2. 设计阶段
-```
-1. 绘制组件树结构
-2. 设计状态管理方案
-3. 制定API接口设计
-4. 确定技术实现路径
-```
-
-### 3. 实现阶段
-```
-1. 创建基础项目结构
-2. 实现核心组件
-3. 集成状态管理
-4. 对接后端API
-5. 优化性能和体验
-```
-
-## 📋 任务优先级提醒
-
-### 当前阶段：需求分析
-- **进行中**: Task-2 现状分析与问题识别
-- **重点**: 分析当前代码结构和技术债务
-- **目标**: 为Vue重构和微服务拆分提供依据
-
-### 关键决策点
-1. **组件拆分粒度**: 既要保证复用性又要避免过度拆分
-2. **状态管理策略**: 本地状态 vs 全局状态的边界
-3. **API设计**: RESTful vs GraphQL的选择
-4. **兼容性策略**: 新老系统并存的过渡方案
 
 ## 💡 AI助手行为准则
 
@@ -406,8 +443,3 @@ Step 4: 验证阶段
 ## 🔄 持续优化
 
 这个.cursorrules文件会随着项目进展不断更新，确保AI助手始终了解最新的项目状态和要求。
-
----
-**最后更新**: 2025-01-08
-**项目阶段**: Task-1.1.4 基础UI组件库搭建
-**版本**: v1.1 - 精简版响应式布局规范 
